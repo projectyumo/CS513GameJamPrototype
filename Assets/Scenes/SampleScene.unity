@@ -523,7 +523,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 547344832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f0349262b74d4170aade156021cb2e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 5992783f427b0443db52f66e66b56523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &712416978
@@ -1325,11 +1325,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2061404928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 378aad8a7e9804be7a4e9fa3fbbe0b87, type: 3}
+  m_Script: {fileID: 11500000, guid: d78b9864da5d74f4bbc650d09bfcc546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletObj: {fileID: 6898575357446847441, guid: 4c8a527204f2240148fcfa54a97efd97, type: 3}
-  bulletSpeed: 40
+  bulletSpeed: 10
 --- !u!1 &2091747194
 GameObject:
   m_ObjectHideFlags: 0

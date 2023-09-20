@@ -13,10 +13,10 @@ public class BulletControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < 4){
-            Debug.Log("Test");
-            Destroy(gameObject);
-        }
+        // if (this.GetComponent<Rigidbody2D>().velocity.magnitude < 4){
+        //     Debug.Log("Test");
+        //     Destroy(gameObject);
+        // }
 
     }
 
