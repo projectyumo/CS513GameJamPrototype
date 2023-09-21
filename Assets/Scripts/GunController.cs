@@ -6,7 +6,7 @@ public class GunController : MonoBehaviour
 {
 
     public GameObject bulletObj;
-    public float bulletSpeed = 10f;
+    private float bulletSpeed = 50f;
 
     void Start()
     {
@@ -20,7 +20,7 @@ public class GunController : MonoBehaviour
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Circle(Clone)") == null) )
         {
             Shoot();
         }
