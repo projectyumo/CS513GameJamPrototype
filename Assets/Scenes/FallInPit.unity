@@ -225,7 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353336781}
   - component: {fileID: 353336782}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 553887332}
   - component: {fileID: 553887333}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,14 +342,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 553887331}
-  m_LocalRotation: {x: -0, y: -0, z: -0.4397707, w: 0.89811015}
-  m_LocalPosition: {x: 0.52, y: 0.36, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7053533, w: 0.708856}
+  m_LocalPosition: {x: 0.675, y: 0.013, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 353336781}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -52.179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.716}
 --- !u!212 &553887333
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 742490870}
   - component: {fileID: 742490869}
   - component: {fileID: 742490868}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 1140955363}
   - component: {fileID: 1140955362}
   - component: {fileID: 1140955361}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +608,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140955359}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -836,7 +836,7 @@ GameObject:
   - component: {fileID: 1231610049}
   - component: {fileID: 1231610048}
   - component: {fileID: 1231610047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1357,7 +1357,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.9261
+  orthographic size: 8.40974
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1381,7 +1381,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488311065}
   m_LocalRotation: {x: -0, y: 0.003275526, z: -0, w: 0.99999464}
-  m_LocalPosition: {x: -0.11, y: 0.49, z: -10.01}
+  m_LocalPosition: {x: 0.07, y: 0.49, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1397,7 +1397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1521839824}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1438,7 +1438,7 @@ GameObject:
   - component: {fileID: 1576230041}
   - component: {fileID: 1576230040}
   - component: {fileID: 1576230039}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1632,7 +1632,7 @@ GameObject:
   - component: {fileID: 1682841801}
   - component: {fileID: 1682841800}
   - component: {fileID: 1682841799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1765,40 +1765,14 @@ GameObject:
   - component: {fileID: 1770299841}
   - component: {fileID: 1770299840}
   - component: {fileID: 1770299839}
-  - component: {fileID: 1770299838}
-  m_Layer: 0
+  - component: {fileID: 1770299843}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &1770299838
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1770299837}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!50 &1770299839
 Rigidbody2D:
   serializedVersion: 4
@@ -1811,10 +1785,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1900,6 +1874,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1770299843
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770299837}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1781357049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,7 +1902,7 @@ GameObject:
   - component: {fileID: 1781357053}
   - component: {fileID: 1781357052}
   - component: {fileID: 1781357051}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2293,6 +2283,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1521839824}
     m_Modifications:
+    - target: {fileID: 4170996116538764303, guid: d118f0888cca346348a83d1ae39aadcc, type: 3}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4170996116538764337, guid: d118f0888cca346348a83d1ae39aadcc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2340,6 +2334,10 @@ PrefabInstance:
     - target: {fileID: 4170996116538764338, guid: d118f0888cca346348a83d1ae39aadcc, type: 3}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170996116538764338, guid: d118f0888cca346348a83d1ae39aadcc, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d118f0888cca346348a83d1ae39aadcc, type: 3}
