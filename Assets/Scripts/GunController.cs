@@ -1,17 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
 
     public GameObject bulletObj;
-    private float bulletSpeed = 50f;
-
-    void Start()
-    {
-
-    }
+    private float _bulletSpeed = 50f;
 
     void Update()
     {
@@ -20,7 +13,7 @@ public class GunController : MonoBehaviour
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
 
-        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Circle(Clone)") == null) )
+        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Bullet(Clone)") == null) )
         {
             Shoot();
         }
@@ -35,6 +28,6 @@ public class GunController : MonoBehaviour
         // The direction from the weapon to the mouse
         Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
-        bulletRb.velocity = shootDirection * bulletSpeed;
+        bulletRb.velocity = shootDirection * _bulletSpeed;
     }
 }
