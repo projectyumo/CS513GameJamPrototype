@@ -163,6 +163,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1224166428}
     m_Modifications:
+    - target: {fileID: -2662995233407250540, guid: 1e57fa45ebcfe48589b9352eb6092c8b, type: 3}
+      propertyPath: ballManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 658095813441355910, guid: 1e57fa45ebcfe48589b9352eb6092c8b, type: 3}
       propertyPath: m_Name
       value: Ball2
@@ -412,7 +416,7 @@ GameObject:
   - component: {fileID: 843760732}
   m_Layer: 0
   m_Name: Pocket3
-  m_TagString: Untagged
+  m_TagString: Pocket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1466,7 +1470,7 @@ GameObject:
   - component: {fileID: 1862992429}
   m_Layer: 0
   m_Name: Pocket2
-  m_TagString: Untagged
+  m_TagString: Pocket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1711,6 +1715,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pocket1
       objectReference: {fileID: 0}
+    - target: {fileID: 866264114307752951, guid: 1a6c8d39b5054467b898e290a94aefde, type: 3}
+      propertyPath: m_TagString
+      value: Pocket
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a6c8d39b5054467b898e290a94aefde, type: 3}
 --- !u!1 &866264114115283192 stripped
@@ -1892,7 +1900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6830688996347687942, guid: ef378fe82419543e49d62e5b6f13e4e2, type: 3}
       propertyPath: m_TagString
-      value: Ground
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6830688996347687943, guid: ef378fe82419543e49d62e5b6f13e4e2, type: 3}
       propertyPath: m_RootOrder
