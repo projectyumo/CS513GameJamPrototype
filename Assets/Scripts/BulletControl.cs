@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class BulletControl : MonoBehaviour
 {
+    private AnalyticsManager _analyticsManager;
+    
+    void Start()
+    {
+        _analyticsManager = FindObjectOfType<AnalyticsManager>();
+    }
     void Update()
     {
         if (this.GetComponent<Rigidbody2D>().velocity.magnitude < 4){
@@ -17,5 +23,11 @@ public class BulletControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        // TODO: Update stats if bullet collides with another bullet
+        // if (collision.gameObject.CompareTag("Bullet"))
+        // {
+        //     _analyticsManager.bulletCollisions++;
+        // }
     }
 }
