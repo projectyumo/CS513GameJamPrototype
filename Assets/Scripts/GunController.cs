@@ -7,7 +7,12 @@ public class GunController : MonoBehaviour
     public GameObject bulletObj;
     private float _bulletSpeed = 50f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
-
+    private AnalyticsManager _analyticsManager;
+    
+    void Start()
+    {
+        _analyticsManager = FindObjectOfType<AnalyticsManager>();
+    }
 
     void Update()
     {
@@ -18,6 +23,8 @@ public class GunController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && (GameObject.Find("Bullet(Clone)") == null) )
         {
+            _analyticsManager.shotsTaken++;
+            _analyticsManager.LogAnalytics();
             Shoot();
 
 
