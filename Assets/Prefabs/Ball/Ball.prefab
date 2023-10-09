@@ -117,7 +117,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 658095813441355910}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f6c1b56e21ac0488a877d21df610885e, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -136,3 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc4c64492ded45d1a9d47fb12e96575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballManager: {fileID: 0}
