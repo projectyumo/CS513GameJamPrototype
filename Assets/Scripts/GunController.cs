@@ -47,8 +47,9 @@ public class GunController : MonoBehaviour
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
         // The direction from the weapon to the mouse
-        Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-
+        Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        shootDirection.Normalize();
+        
         bulletRb.velocity = shootDirection * _bulletSpeed;
 
         // Save this shot
