@@ -19,7 +19,7 @@ public class BulletControl : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //Check for a collision with Ball
-        if (collision.gameObject.name.Substring(0, 4) == "Ball")
+        if (collision.gameObject.name.Substring(0, 4) == "Ball" || collision.gameObject.name.Substring(0, 5) == "Floor")
         {
             Destroy(gameObject);
         }
