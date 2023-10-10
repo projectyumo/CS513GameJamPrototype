@@ -5,10 +5,11 @@ public class GunController : MonoBehaviour
 {
 
     public GameObject bulletObj;
-    private float _bulletSpeed = 50f;
+    public GameObject ghostBulletObj;
+    private float _bulletSpeed = 15f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
-    
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -21,13 +22,13 @@ public class GunController : MonoBehaviour
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
 
-        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Bullet(Clone)") == null) )
+        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Bullet(Clone)") == null) && (GameObject.Find("activeGhost") == null) )
         {
             _analyticsManager.shotsTaken++;
             _analyticsManager.LogAnalytics();
             Shoot();
-
-
+            GameObject ghostBullet = Instantiate(ghostBulletObj, transform.position, Quaternion.identity);
+            ghostBullet.name = "idleGhost";
         }
     }
 
@@ -37,9 +38,13 @@ public class GunController : MonoBehaviour
         if (_previousShots.Count > 0)
         {
             var shot = _previousShots.Dequeue();
-            GameObject ghostBullet = Instantiate(bulletObj, shot.position, Quaternion.identity);
-            Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
-            ghostBulletRb.velocity = shot.direction * _bulletSpeed;
+
+            GameObject ghostBullet = GameObject.Find("idleGhost");
+            if (ghostBullet){
+              Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
+              ghostBulletRb.velocity = shot.direction * _bulletSpeed;
+              ghostBullet.name = "activeGhost";
+            }
         }
 
         // Instantiate bullet and set its direction
@@ -49,12 +54,11 @@ public class GunController : MonoBehaviour
         // The direction from the weapon to the mouse
         Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         shootDirection.Normalize();
-        
+
         bulletRb.velocity = shootDirection * _bulletSpeed;
 
         // Save this shot
         _previousShots.Enqueue(new ShotDetails { position = transform.position, direction = shootDirection });
-
     }
 
     private class ShotDetails
