@@ -20,7 +20,7 @@ public class BulletControl : MonoBehaviour
     {
         Debug.Log("COLLISION WITH:" + collision.gameObject.name);
         //Check for a collision with Ball
-        if (collision.gameObject.name.Substring(0, 4) == "Ball" || collision.gameObject.name.Substring(0, 5) == "Floor")
+        if (collision.gameObject.name.Substring(0, 4) == "Ball" || collision.gameObject.name.Substring(0, 5) == "Floor" || collision.gameObject.name.Substring(0, 6) == "Pocket")
         {
             Destroy(gameObject);
         }
