@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletObj: {fileID: 6898575357446847441, guid: 4c8a527204f2240148fcfa54a97efd97, type: 3}
+  ghostBulletObj: {fileID: 6898575357446847441, guid: bddaafac82c194adbbe5a938d985b9d3, type: 3}
+  gameManager: {fileID: 0}
 --- !u!1 &553887331
 GameObject:
   m_ObjectHideFlags: 0
