@@ -29,6 +29,10 @@ public class GunController : MonoBehaviour
             Shoot();
             GameObject ghostBullet = Instantiate(ghostBulletObj, transform.position, Quaternion.identity);
             ghostBullet.name = "idleGhost";
+
+            // 3: Player, changing layer=3 will give the ghostBullet the same collision properties
+            // as the player. Idle ghostBullets should not collide with any balls.
+            ghostBullet.layer = 3;
         }
     }
 
@@ -44,6 +48,9 @@ public class GunController : MonoBehaviour
               Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
               ghostBulletRb.velocity = shot.direction * _bulletSpeed;
               ghostBullet.name = "activeGhost";
+
+              // 8: ghostBullet, activates the collision properties of the ball
+              ghostBullet.layer = 8;
             }
         }
 
