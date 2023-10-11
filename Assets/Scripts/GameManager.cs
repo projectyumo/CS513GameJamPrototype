@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public int bulletCount = 2;
+    public int bulletCount = 10;
     public int totalPoints = 0;
 
     public TextMeshProUGUI gameOverText;
@@ -37,9 +37,9 @@ public class GameManager : MonoBehaviour
         if (bulletCount!= -1) {
             bulletCountText.text = "Remaining shot: " + bulletCount.ToString();
         }
-        
+
         // All balls are knocked off
-        
+
     }
 
     public void addOnePoint()
