@@ -1,16 +1,15 @@
 using UnityEngine;
-using TMPro;
 
 public class BallManager : MonoBehaviour
 {
     public int ballCount;
     private AnalyticsManager _analyticsManager;
-    public TextMeshProUGUI gameOverText;
-
+    private LevelManager _levelManager;
+    
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
-        gameOverText.gameObject.SetActive(false);
+        _levelManager = FindObjectOfType<LevelManager>();
         ballCount = transform.childCount;
     }
     
@@ -25,8 +24,7 @@ public class BallManager : MonoBehaviour
         // All balls are knocked off
         if (ballCount == 0)
         {
-            gameOverText.gameObject.SetActive(true);
-            gameOverText.text = "You Win!";
+            _levelManager.ShowGameOverText("You Win!");
         }
     }
 }
