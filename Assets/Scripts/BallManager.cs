@@ -24,7 +24,7 @@ public class BallManager : MonoBehaviour
         // All balls are knocked off
         if (ballCount == 0)
         {
-            _levelManager.ShowGameOverText("You Win!");
+            _levelManager.WinCase();
         }
     }
 }
