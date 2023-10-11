@@ -1010,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8e96d2f0b7549f486db4e4618192c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletCount: 2
+  bulletCount: 10
   totalPoints: 0
   gameOverText: {fileID: 1406681017}
   bulletCountText: {fileID: 1791347434}
