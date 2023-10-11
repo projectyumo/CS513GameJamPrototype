@@ -1,29 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class OnePoint : MonoBehaviour
+public class PointsController : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public LevelManager levelManager;
+    public int points = 5;
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            levelManager.addOnePoint();
-            
+            levelManager.AddPoints(points);
         }
     }
 }

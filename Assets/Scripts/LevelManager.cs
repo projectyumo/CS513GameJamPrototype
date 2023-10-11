@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -39,24 +37,11 @@ public class LevelManager : MonoBehaviour
         }
 
         // All balls are knocked off
-
     }
-
-    public void addOnePoint()
+    
+    public void AddPoints(int points)
     {
-        totalPoints += 1;
-        pointText.text = "Score: " + totalPoints.ToString();
-    }
-
-    public void addFivePoints()
-    {
-        totalPoints += 5;
-        pointText.text = "Score: " + totalPoints.ToString();
-    }
-
-    public void addTenPoints()
-    {
-        totalPoints += 10;
+        totalPoints += points;
         pointText.text = "Score: " + totalPoints.ToString();
     }
 }
