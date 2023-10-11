@@ -6,10 +6,10 @@ public class FivePoints : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public GameManager gameManager;
+    public LevelManager levelManager;
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Update is called once per frame
@@ -22,7 +22,7 @@ public class FivePoints : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            gameManager.addFivePoints();
+            levelManager.addFivePoints();
 
         }
     }
