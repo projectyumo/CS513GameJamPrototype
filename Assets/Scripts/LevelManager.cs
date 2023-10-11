@@ -8,6 +8,8 @@ public class LevelManager : MonoBehaviour
     public int bulletCount = 5;
     public int totalPoints = 0;
     public int winTextDisplayTime = 3;
+    static public int maxPocketCount = 10;
+    public int[] pocketPoints = new int[maxPocketCount];
 
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI bulletCountText;
@@ -39,10 +41,54 @@ public class LevelManager : MonoBehaviour
         }
     }
     
-    public void AddPoints(int points)
+    public void AddPoints(string pocket)
     {
-        totalPoints += points;
+        totalPoints += GetPocketPoints(pocket);
         pointText.text = "Score: " + totalPoints.ToString();
+    }
+    
+    private int GetPocketPoints(string pocket)
+    {
+        int index = int.Parse(pocket.Substring(6)) - 1;
+        int points = 0;
+        switch (index)
+        {
+            case 0:
+                points += pocketPoints[index];
+                break;
+            case 1:
+                points += pocketPoints[index];
+                break;
+            case 2:
+                points += pocketPoints[index];
+                break;
+            case 3:
+                points += pocketPoints[index];
+                break;
+            case 4:
+                points += pocketPoints[index];
+                break;
+            case 5:
+                points += pocketPoints[index];
+                break;
+            case 6:
+                points += pocketPoints[index];
+                break;
+            case 7:
+                points += pocketPoints[index];
+                break;
+            case 8:
+                points += pocketPoints[index];
+                break;
+            case 9:
+                points += pocketPoints[index];
+                break;
+            default:
+                points += 1;
+                break;
+        }
+        Debug.Log(points);
+        return points;
     }
     
     public void ShowGameOverText(string text)
