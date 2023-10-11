@@ -648,6 +648,8 @@ MonoBehaviour:
   bulletCount: 6
   totalPoints: 0
   winTextDisplayTime: 3
+  pocketPoints: 060000000700000008000000
+  pocketCount: 10
   gameOverText: {fileID: 3605096517804949264}
   bulletCountText: {fileID: 2601490813215643683}
   pointText: {fileID: 5656411721117096484}

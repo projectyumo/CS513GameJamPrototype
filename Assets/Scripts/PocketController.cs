@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class PointsController : MonoBehaviour
+public class PocketController : MonoBehaviour
 {
     public LevelManager levelManager;
-    public int points = 5;
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
@@ -13,7 +12,7 @@ public class PointsController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            levelManager.AddPoints(points);
+            levelManager.AddPoints(gameObject.name);
         }
     }
 }
