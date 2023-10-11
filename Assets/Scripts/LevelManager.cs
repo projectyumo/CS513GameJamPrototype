@@ -41,13 +41,13 @@ public class LevelManager : MonoBehaviour
         }
     }
     
-    public void AddPoints(string pocket)
+    public void AddPoints(int points)
     {
-        totalPoints += GetPocketPoints(pocket);
+        totalPoints += points;
         pointText.text = "Score: " + totalPoints.ToString();
     }
     
-    private int GetPocketPoints(string pocket)
+    public int GetPocketPoints(string pocket)
     {
         int index = int.Parse(pocket.Substring(6)) - 1;
         int points = 0;
@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
                 points += 1;
                 break;
         }
-        Debug.Log(points);
+        
         return points;
     }
     
