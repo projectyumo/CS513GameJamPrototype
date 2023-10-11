@@ -12,36 +12,31 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
 
-
     void Start()
     {
+        gameOverText.gameObject.SetActive(false);
         bulletCountText.text = "Remaining shot: " + bulletCount.ToString();
         pointText.text = "Score: " + totalPoints.ToString();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (bulletCount == -1)
-        {
-            gameOverText.gameObject.SetActive(true);
-            gameOverText.text = "Game Over!";
-        }
     }
 
     public void BulletCountDown()
     {
         bulletCount--;
-        if (bulletCount!= -1) {
-            bulletCountText.text = "Remaining shot: " + bulletCount.ToString();
+        bulletCountText.text = "Remaining shot: " + bulletCount.ToString();
+        if (bulletCount == 0) {
+            ShowGameOverText("You Lose!");
         }
-
-        // All balls are knocked off
     }
     
     public void AddPoints(int points)
     {
         totalPoints += points;
         pointText.text = "Score: " + totalPoints.ToString();
+    }
+    
+    public void ShowGameOverText(string text)
+    {
+        gameOverText.gameObject.SetActive(true);
+        gameOverText.text = text;
     }
 }
