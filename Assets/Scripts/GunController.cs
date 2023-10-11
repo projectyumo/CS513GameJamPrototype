@@ -9,12 +9,12 @@ public class GunController : MonoBehaviour
     private float _bulletSpeed = 15f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
-    public GameManager gameManager;
+    public LevelManager levelManager;
 
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
-        gameManager = FindObjectOfType<GameManager>();
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     void Update()
@@ -68,7 +68,7 @@ public class GunController : MonoBehaviour
 
         // Save this shot
         _previousShots.Enqueue(new ShotDetails { position = transform.position, direction = shootDirection });
-        gameManager.BulletCountDown();
+        levelManager.BulletCountDown();
     }
 
     private class ShotDetails
