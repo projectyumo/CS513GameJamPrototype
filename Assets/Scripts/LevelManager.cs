@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
     public GameManager gameManager;
+    public GameObject tutorial;
 
     void Start()
     {
@@ -22,6 +23,11 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         bulletCountText.text = "Remaining shots: " + bulletCount.ToString();
         pointText.text = "Score: " + totalPoints.ToString();
+        tutorial = GameObject.FindGameObjectWithTag("Tutorial");
+        if (tutorial != null)
+        {
+            tutorial.SetActive(false);
+        }
     }
 
     public void BulletCountDown()
@@ -117,5 +123,21 @@ public class LevelManager : MonoBehaviour
     public void RestartCurrentLevel()
     {
         gameManager.RestartCurrentScene();
+    }
+
+    public void ShowTutorial()
+    {
+        if (tutorial != null)
+        {
+            tutorial.SetActive(true);
+        }
+    }
+    
+    public void HideTutorial()
+    {
+        if (tutorial != null)
+        {
+            tutorial.SetActive(false);
+        }
     }
 }
