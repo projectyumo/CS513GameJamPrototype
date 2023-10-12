@@ -39,24 +39,22 @@ public class AnalyticsManager : MonoBehaviour
     IEnumerator PushDataCoroutine(string url, string jsonPayload)
     {
         // Using PUT to overwrite data at the specified location or create it if not existent
-        using (var request = new UnityWebRequest(url, "PUT"))
+        using var request = new UnityWebRequest(url, "PUT");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
         {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError(request.error);
-            }
-            else
-            {
-                Debug.Log("Analytics logged successfully");
-            }
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Analytics logged successfully");
         }
     }
 }

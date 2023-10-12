@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Pocket
   - Ball
+  - Tutorial
   layers:
   - Default
   - TransparentFX
