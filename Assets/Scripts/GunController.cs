@@ -6,6 +6,7 @@ public class GunController : MonoBehaviour
 
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
+    public GameObject playerObj;
     private float _bulletSpeed = 15f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
@@ -29,13 +30,30 @@ public class GunController : MonoBehaviour
             _analyticsManager.shotsTaken++;
             _analyticsManager.LogAnalytics();
             Shoot();
+            CreateEcho();
+        }
+    }
+
+    void CreateEcho()
+    {
             GameObject ghostBullet = Instantiate(ghostBulletObj, transform.position, Quaternion.identity);
             ghostBullet.name = "idleGhost";
 
             // 3: Player, changing layer=3 will give the ghostBullet the same collision properties
             // as the player. Idle ghostBullets should not collide with any balls.
             ghostBullet.layer = 3;
-        }
+
+            GameObject existingGhostPlayer = GameObject.Find("ghostPlayer");
+            if (existingGhostPlayer != null) {
+                Destroy(existingGhostPlayer);
+            }
+            GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
+            ghostPlayer.name = "ghostPlayer";
+            //  Need to remove the script from ghost player or else it will just follow the user controls.
+            PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
+            GunController gunScript = ghostPlayer.transform.Find("AimPointer").GetComponent<GunController>();
+            Destroy(playerScript);
+            Destroy(gunScript);
     }
 
     void Shoot()
