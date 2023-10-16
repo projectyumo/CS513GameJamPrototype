@@ -4,14 +4,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance
-    public static GameManager instance;
+    public static GameManager Instance;
+    public string mainMenuSceneName = "MainMenu";
 
     // On Awake, set up the Singleton pattern
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject); // This object will persist across scenes
         }
         else
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
     
     public void LoadMainMenuScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(mainMenuSceneName);
     }
     
     public void RestartCurrentScene()

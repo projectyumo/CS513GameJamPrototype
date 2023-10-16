@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     private float _horizontalInput;
-    private float _speed = 10.0f;
+    public float speed = 10.0f;
     private float _playerWallOffset = 1.5f;
     
     public BoxCollider2D leftWall;
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
         _horizontalInput = Input.GetAxis("Horizontal");
         
         // Calculate the new position
-        float newPositionX = transform.position.x + (_horizontalInput * _speed * Time.deltaTime);
+        float newPositionX = transform.position.x + (_horizontalInput * speed * Time.deltaTime);
 
         // Check if the new position exceeds the bounds of the walls
         if (newPositionX < leftWall.bounds.max.x + _playerWallOffset)

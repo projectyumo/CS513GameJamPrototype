@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
@@ -10,7 +11,7 @@ public class GunController : MonoBehaviour
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
     public GameObject playerObj;
-    private float _bulletSpeed = 15f;
+    public float bulletSpeed = 15f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
     public LevelManager levelManager;
@@ -46,12 +47,13 @@ public class GunController : MonoBehaviour
             // as the player. Idle ghostBullets should not collide with any balls.
             ghostBullet.layer = 3;
 
-            GameObject existingGhostPlayer = GameObject.Find("ghostPlayer");
+            var ghostPlayerName = "ghostPlayer";
+            GameObject existingGhostPlayer = GameObject.Find(ghostPlayerName);
             if (existingGhostPlayer != null) {
                 Destroy(existingGhostPlayer);
             }
             GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
-            ghostPlayer.name = "ghostPlayer";
+            ghostPlayer.name = ghostPlayerName;
             //  Need to remove the script from ghost player or else it will just follow the user controls.
             PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
             GunController gunScript = ghostPlayer.transform.Find("AimPointer").GetComponent<GunController>();
@@ -69,7 +71,7 @@ public class GunController : MonoBehaviour
             GameObject ghostBullet = GameObject.Find("idleGhost");
             if (ghostBullet){
               Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
-              ghostBulletRb.velocity = shot.direction * _bulletSpeed;
+              ghostBulletRb.velocity = shot.Direction * bulletSpeed;
               ghostBullet.name = "activeGhost";
 
               // 8: ghostBullet, activates the collision properties of the ball
@@ -85,16 +87,16 @@ public class GunController : MonoBehaviour
         Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
         shootDirection.Normalize();
 
-        bulletRb.velocity = shootDirection * _bulletSpeed;
+        bulletRb.velocity = shootDirection * bulletSpeed;
 
         // Save this shot
-        _previousShots.Enqueue(new ShotDetails { position = transform.position, direction = shootDirection });
+        _previousShots.Enqueue(new ShotDetails { Position = transform.position, Direction = shootDirection });
         levelManager.BulletCountDown();
     }
 
     private class ShotDetails
     {
-        public Vector3 position;
-        public Vector2 direction;
+        public Vector3 Position;
+        public Vector2 Direction;
     }
 }

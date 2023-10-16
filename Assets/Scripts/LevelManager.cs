@@ -8,21 +8,24 @@ public class LevelManager : MonoBehaviour
     public int bulletCount = 5;
     public int totalPoints = 0;
     public int winTextDisplayTime = 3;
-    static public int maxPocketCount = 10;
-    public int[] pocketPoints = new int[maxPocketCount];
+    static public int MaxPocketCount = 10;
+    public int[] pocketPoints = new int[MaxPocketCount];
 
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
     public GameManager gameManager;
     public GameObject tutorial;
+    public string winText = "You Win!";
+    public string remainingShotsText = "Remaining shots: ";
+    public string scoreText = "Score: ";
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         gameOverText.gameObject.SetActive(false);
-        bulletCountText.text = "Remaining shots: " + bulletCount.ToString();
-        pointText.text = "Score: " + totalPoints.ToString();
+        bulletCountText.text = remainingShotsText + bulletCount.ToString();
+        pointText.text = scoreText + totalPoints.ToString();
         tutorial = GameObject.FindGameObjectWithTag("Tutorial");
         if (tutorial != null)
         {
@@ -33,16 +36,16 @@ public class LevelManager : MonoBehaviour
     public void BulletCountDown()
     {
         bulletCount--;
-        string text = "Remaining shots: ";
+        string text = remainingShotsText;
         if (bulletCount < 0) {
-            text = "Remaining shots: 0";
+            text = remainingShotsText + "0";
         }
         else
         {
             text += bulletCount.ToString();
         }
         bulletCountText.text = text;
-        if (bulletCount == -1) {
+        if (bulletCount < 0) {
             ShowGameOverText("You Lose!");
         }
     }
@@ -50,51 +53,17 @@ public class LevelManager : MonoBehaviour
     public void AddPoints(int points)
     {
         totalPoints += points;
-        pointText.text = "Score: " + totalPoints.ToString();
+        pointText.text = scoreText + totalPoints.ToString();
     }
     
     public int GetPocketPoints(string pocket)
     {
         int index = int.Parse(pocket.Substring(6)) - 1;
-        int points = 0;
-        switch (index)
+        if (index < 0 || index >= MaxPocketCount)
         {
-            case 0:
-                points += pocketPoints[index];
-                break;
-            case 1:
-                points += pocketPoints[index];
-                break;
-            case 2:
-                points += pocketPoints[index];
-                break;
-            case 3:
-                points += pocketPoints[index];
-                break;
-            case 4:
-                points += pocketPoints[index];
-                break;
-            case 5:
-                points += pocketPoints[index];
-                break;
-            case 6:
-                points += pocketPoints[index];
-                break;
-            case 7:
-                points += pocketPoints[index];
-                break;
-            case 8:
-                points += pocketPoints[index];
-                break;
-            case 9:
-                points += pocketPoints[index];
-                break;
-            default:
-                points += 1;
-                break;
+            return 0;
         }
-        
-        return points;
+        return pocketPoints[index];
     }
     
     public void ShowGameOverText(string text)
@@ -105,7 +74,7 @@ public class LevelManager : MonoBehaviour
     
     public void WinCase()
     {
-        ShowGameOverText("You Win!");
+        ShowGameOverText(winText);
         Invoke("LoadNextLevel", winTextDisplayTime);
     }
 
