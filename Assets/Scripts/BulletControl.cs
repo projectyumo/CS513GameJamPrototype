@@ -3,6 +3,7 @@ using UnityEngine;
 public class BulletControl : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
+    private int destroyTime = 7;
 
     void Start()
     {
@@ -10,6 +11,7 @@ public class BulletControl : MonoBehaviour
     }
     void Update()
     {
+        Destroy(gameObject, destroyTime);
         if (this.GetComponent<Rigidbody2D>().velocity.magnitude < 4 && this.name!="idleGhost"){
             Destroy(gameObject);
         }
