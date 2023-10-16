@@ -10,9 +10,9 @@ public class BallController : MonoBehaviour
         ballManager = FindObjectOfType<BallManager>();
     }
     
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Pocket"))
+        if (other.gameObject.CompareTag("Pocket"))
         {
             ballManager.HandleBallCollision(gameObject);
             Destroy(gameObject);
