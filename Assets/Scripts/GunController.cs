@@ -11,17 +11,27 @@ public class GunController : MonoBehaviour
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
     public GameObject playerObj;
-    public float bulletSpeed = 15f;
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
+    private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
-    public int destroyTime = 5;
+    private int destroyTime = 5;
     public Color ghostPlayerColor = new(0.572549f, 0.7764707f, 0.7764707f, 0.7f);
+
+    private float bulletSpeed = 0f;
+    private float minBulletSpeed = 5f;
+    private float maxBulletSpeed = 20f;
+    private float chargeRate = 50f;
+    private float maxCharge = 100f;
+    private float currentCharge = 0f;
+    private string spritePath = "Assets/Icons/aim_pointer.png";
 
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         levelManager = FindObjectOfType<LevelManager>();
+        Transform gun = this.transform.Find("Gun");
+        spriteRenderer = gun.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -31,12 +41,46 @@ public class GunController : MonoBehaviour
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
 
-        if (Input.GetMouseButtonDown(0) && (GameObject.Find("Bullet(Clone)") == null) && (GameObject.Find("activeGhost") == null) )
+        // DEBUG STATEMENT
+        // if (currentCharge > 0f){ Debug.Log("Current Charge" + currentCharge); }
+
+        // While mouse is being held down, shot will charge
+        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null) && (GameObject.Find("activeGhost") == null) )
         {
+            currentCharge += chargeRate * Time.deltaTime;
+            currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+            if (currentCharge <= 14){
+              spritePath = "Assets/Icons/aim_pointer.png";
+            } else if (currentCharge <= 28){
+              spritePath = "Assets/Icons/aim_pointer_charge_1.png";
+            } else if (currentCharge <= 42){
+              spritePath = "Assets/Icons/aim_pointer_charge_2.png";
+            } else if (currentCharge <= 56){
+              spritePath = "Assets/Icons/aim_pointer_charge_3.png";
+            } else if (currentCharge <= 70){
+              spritePath = "Assets/Icons/aim_pointer_charge_4.png";
+            } else if (currentCharge <= 84){
+              spritePath = "Assets/Icons/aim_pointer_charge_5.png";
+            } else {
+              spritePath = "Assets/Icons/aim_pointer_charge_6.png";
+            }
+            spriteRenderer.sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
+
+        // When mouse is released, and current charge
+        } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
             _analyticsManager.shotsTaken++;
             _analyticsManager.LogAnalytics();
+
+            // Don't want players to waste shot because they didn't know they needed to charge it
+            // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
+            bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+            bulletSpeed = Mathf.Max(bulletSpeed, minBulletSpeed);
+            currentCharge = 0f;
+            spriteRenderer.sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Icons/aim_pointer.png");
+            // Shoot and create Echo.
             Shoot();
             CreateEcho();
+
         }
     }
 
@@ -56,6 +100,8 @@ public class GunController : MonoBehaviour
             }
             GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
             ghostPlayer.name = ghostPlayerName;
+            ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
+
             //  Need to remove the script from ghost player or else it will just follow the user controls.
             PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
             GunController gunScript = ghostPlayer.transform.Find("AimPointer").GetComponent<GunController>();
@@ -77,7 +123,7 @@ public class GunController : MonoBehaviour
             GameObject ghostBullet = GameObject.Find("idleGhost");
             if (ghostBullet){
               Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
-              ghostBulletRb.velocity = shot.Direction * bulletSpeed;
+              ghostBulletRb.velocity = shot.Velocity;
               ghostBullet.name = "activeGhost";
               Destroy(ghostBullet, destroyTime);
               // 8: ghostBullet, activates the collision properties of the ball
@@ -97,7 +143,7 @@ public class GunController : MonoBehaviour
         Destroy(bullet, destroyTime);
 
         // Save this shot
-        _previousShots.Enqueue(new ShotDetails { Position = transform.position, Direction = shootDirection });
+        _previousShots.Enqueue(new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed});
         levelManager.BulletCountDown();
     }
 
@@ -105,5 +151,6 @@ public class GunController : MonoBehaviour
     {
         public Vector3 Position;
         public Vector2 Direction;
+        public Vector2 Velocity;
     }
 }
