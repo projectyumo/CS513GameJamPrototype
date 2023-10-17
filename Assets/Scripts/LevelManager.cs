@@ -6,6 +6,7 @@ using static GameConstants;
 public class LevelManager : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
+    private PlayerController _playerController;
 
     public int bulletCount = 5;
     public int totalPoints;
@@ -23,6 +24,7 @@ public class LevelManager : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
+        _playerController = FindObjectOfType<PlayerController>();
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -90,6 +92,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoseCase()
     {
+        Destroy(_playerController.gameObject);
         _analyticsManager.ld.levelState = LevelState.Failed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(loseText);
@@ -98,6 +101,7 @@ public class LevelManager : MonoBehaviour
     
     public void WinCase()
     {
+        Destroy(_playerController.gameObject);
         _analyticsManager.ld.levelState = LevelState.Completed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(winText);
