@@ -1266,6 +1266,9 @@ MonoBehaviour:
   pointText: {fileID: 464945787}
   gameManager: {fileID: 0}
   tutorial: {fileID: 0}
+  winText: You Win!
+  remainingShotsText: 'Remaining shots: '
+  scoreText: 'Score: '
 --- !u!4 &1113648971
 Transform:
   m_ObjectHideFlags: 0
@@ -3248,6 +3251,10 @@ PrefabInstance:
     - target: {fileID: 9019762168485273074, guid: 114ec7047885040df92d194f04ad210d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019762168485273075, guid: 114ec7047885040df92d194f04ad210d, type: 3}
+      propertyPath: shotsTakenLevel
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 114ec7047885040df92d194f04ad210d, type: 3}

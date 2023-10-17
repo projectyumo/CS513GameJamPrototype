@@ -11,7 +11,7 @@ public class AnalyticsManager : MonoBehaviour
     public int shotsTaken = 0;
 
     // Number of shots taken (per level)
-    public int shotsTakenLevel = 0;
+    public int shotsTakenLevel = 1;
 
     // Number of shots taken (per ball)
     public int shotsTakenBall = 0;
@@ -55,6 +55,7 @@ public class AnalyticsManager : MonoBehaviour
         else
         {
             Debug.Log("Analytics logged successfully");
+            Debug.Log(jsonPayload);
         }
     }
 }
