@@ -37,7 +37,7 @@ public class AnalyticsManager : MonoBehaviour
     public void LogAnalytics()
     {
         string jsonPayload = JsonUtility.ToJson(ld);
-        string url = $"{DatabaseURL}analytics/{ld.levelSessionId}.json";
+        string url = $"{DatabaseURL}analytics_v2/{ld.levelSessionId}.json";
 
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }
