@@ -16,6 +16,7 @@ public class GunController : MonoBehaviour
     private AnalyticsManager _analyticsManager;
     public LevelManager levelManager;
     public int destroyTime = 5;
+    public Color ghostPlayerColor = new(0.572549f, 0.7764707f, 0.7764707f, 0.7f);
 
     void Start()
     {
@@ -60,6 +61,10 @@ public class GunController : MonoBehaviour
             GunController gunScript = ghostPlayer.transform.Find("AimPointer").GetComponent<GunController>();
             Destroy(playerScript);
             Destroy(gunScript);
+
+            // Change the color of the ghost player
+            ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
+            ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
     }
 
     void Shoot()
