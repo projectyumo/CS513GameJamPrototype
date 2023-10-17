@@ -15,6 +15,7 @@ public class GunController : MonoBehaviour
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
     public LevelManager levelManager;
+    public int destroyTime = 5;
 
     void Start()
     {
@@ -73,7 +74,7 @@ public class GunController : MonoBehaviour
               Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
               ghostBulletRb.velocity = shot.Direction * bulletSpeed;
               ghostBullet.name = "activeGhost";
-
+              Destroy(ghostBullet, destroyTime);
               // 8: ghostBullet, activates the collision properties of the ball
               ghostBullet.layer = 8;
             }
@@ -88,6 +89,7 @@ public class GunController : MonoBehaviour
         shootDirection.Normalize();
 
         bulletRb.velocity = shootDirection * bulletSpeed;
+        Destroy(bullet, destroyTime);
 
         // Save this shot
         _previousShots.Enqueue(new ShotDetails { Position = transform.position, Direction = shootDirection });
