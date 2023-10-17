@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -46,25 +50,25 @@ public class GunController : MonoBehaviour
             currentCharge += chargeRate * Time.deltaTime;
             currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
             if (currentCharge <= 14){
-              spritePath = "Assets/Icons/aim_pointer.png";
+              spritePath = "Sprites/aim_pointer";
             } else if (currentCharge <= 28){
-              spritePath = "Assets/Icons/aim_pointer_charge_1.png";
+              spritePath = "Sprites/aim_pointer_charge_1";
             } else if (currentCharge <= 42){
-              spritePath = "Assets/Icons/aim_pointer_charge_2.png";
+              spritePath = "Sprites/aim_pointer_charge_2";
             } else if (currentCharge <= 56){
-              spritePath = "Assets/Icons/aim_pointer_charge_3.png";
+              spritePath = "Sprites/aim_pointer_charge_3";
             } else if (currentCharge <= 70){
-              spritePath = "Assets/Icons/aim_pointer_charge_4.png";
+              spritePath = "Sprites/aim_pointer_charge_4";
             } else if (currentCharge <= 84){
-              spritePath = "Assets/Icons/aim_pointer_charge_5.png";
+              spritePath = "Sprites/aim_pointer_charge_5";
             } else {
-              spritePath = "Assets/Icons/aim_pointer_charge_6.png";
+              spritePath = "Sprites/aim_pointer_charge_6";
             }
-            spriteRenderer.sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
+            spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
 
         // When mouse is released, and current charge
         } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
-            _analyticsManager.ld.shotsTaken++;
+            _analyticsManager.shotsTaken++;
             _analyticsManager.LogAnalytics();
 
             // Don't want players to waste shot because they didn't know they needed to charge it
@@ -72,7 +76,7 @@ public class GunController : MonoBehaviour
             bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
             bulletSpeed = Mathf.Max(bulletSpeed, minBulletSpeed);
             currentCharge = 0f;
-            spriteRenderer.sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Icons/aim_pointer.png");
+            spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
             // Shoot and create Echo.
             Shoot();
             CreateEcho();
@@ -96,7 +100,7 @@ public class GunController : MonoBehaviour
             }
             GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
             ghostPlayer.name = ghostPlayerName;
-            ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
+            ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
 
             //  Need to remove the script from ghost player or else it will just follow the user controls.
             PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
