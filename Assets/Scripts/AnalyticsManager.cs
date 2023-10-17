@@ -17,6 +17,7 @@ public class LevelData
     public LevelState levelState;
     public long timeStarted;
     public long timeUpdated;
+    public ShotData[] shots = new ShotData[maxShotCount];
 }
 
 public class AnalyticsManager : MonoBehaviour
@@ -41,8 +42,9 @@ public class AnalyticsManager : MonoBehaviour
     {
         ld.timeUpdated = System.DateTimeOffset.Now.ToUnixTimeSeconds();
         ld.timeTaken = ld.timeUpdated - ld.timeStarted;
-        string jsonPayload = JsonUtility.ToJson(ld);
-        string url = $"{DatabaseURL}analytics_v3/{ld.levelSessionId}.json";
+        string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(ld);
+        Debug.Log(jsonPayload);
+        string url = $"{DatabaseURL}analytics_v4/{ld.levelSessionId}.json";
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }
 
