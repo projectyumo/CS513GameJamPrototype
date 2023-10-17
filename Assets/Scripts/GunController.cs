@@ -143,7 +143,19 @@ public class GunController : MonoBehaviour
         Destroy(bullet, destroyTime);
 
         // Save this shot
-        _previousShots.Enqueue(new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed});
+        var shotDetail = new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
+        _previousShots.Enqueue(shotDetail);
+        _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = new ShotData
+        {
+            PositionX = shotDetail.Position.x,
+            PositionY = shotDetail.Position.y,
+            PositionZ = shotDetail.Position.z,
+            DirectionX = shotDetail.Direction.x,
+            DirectionY = shotDetail.Direction.y,
+            VelocityX = shotDetail.Velocity.x,
+            VelocityY = shotDetail.Velocity.y
+        };
+        _analyticsManager.LogAnalytics();
         levelManager.BulletCountDown();
     }
 

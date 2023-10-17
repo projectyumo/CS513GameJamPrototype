@@ -15,6 +15,7 @@ public class LevelData
     public int currentLevel;
     public string levelName;
     public LevelState levelState;
+    public ShotData[] shots = new ShotData[maxShotCount];
 }
 
 public class AnalyticsManager : MonoBehaviour
@@ -37,7 +38,7 @@ public class AnalyticsManager : MonoBehaviour
     public void LogAnalytics()
     {
         string jsonPayload = JsonUtility.ToJson(ld);
-        string url = $"{DatabaseURL}analytics_v2/{ld.levelSessionId}.json";
+        string url = $"{DatabaseURL}analytics_v3_test/{ld.levelSessionId}.json";
 
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }
