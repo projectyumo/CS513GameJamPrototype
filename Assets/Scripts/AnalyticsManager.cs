@@ -11,10 +11,12 @@ public class LevelData
     public int[] ballsPerPocket = new int[maxPocketCount];
     public int ballsKnockedOff;
     public int bulletCollisions;
-    public float timeTaken;
+    public long timeTaken;
     public int currentLevel;
     public string levelName;
     public LevelState levelState;
+    public long timeStarted;
+    public long timeUpdated;
 }
 
 public class AnalyticsManager : MonoBehaviour
@@ -31,14 +33,16 @@ public class AnalyticsManager : MonoBehaviour
         ld.gameSessionId = _gameManager.GetGameSessionId();
         ld.levelSessionId = System.Guid.NewGuid().ToString();
         ld.levelState = LevelState.InProgress;
+        ld.timeStarted = System.DateTimeOffset.Now.ToUnixTimeSeconds();
     }
 
     // Method to log analytics to Firebase Realtime Database
     public void LogAnalytics()
     {
+        ld.timeUpdated = System.DateTimeOffset.Now.ToUnixTimeSeconds();
+        ld.timeTaken = ld.timeUpdated - ld.timeStarted;
         string jsonPayload = JsonUtility.ToJson(ld);
-        string url = $"{DatabaseURL}analytics_v2/{ld.levelSessionId}.json";
-
+        string url = $"{DatabaseURL}analytics_v3/{ld.levelSessionId}.json";
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }
 
