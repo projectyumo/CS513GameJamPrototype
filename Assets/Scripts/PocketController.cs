@@ -12,13 +12,4 @@ public class PocketController : MonoBehaviour
         points = levelManager.GetPocketPoints(gameObject.name);
         pocketNumber = levelManager.GetPocketNumber(gameObject.name);
     }
-    
-    // void OnTriggerEnter2D(Collider2D other)
-    // {
-    //     if (other.gameObject.CompareTag("Ball"))
-    //     {
-    //         levelManager.AddPoints(points, pocketNumber);
-    //         Destroy(other.gameObject);
-    //     }
-    // }
 }
