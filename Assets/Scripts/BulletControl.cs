@@ -26,10 +26,11 @@ public class BulletControl : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // TODO: Update stats if bullet collides with another bullet
-        // if (collision.gameObject.CompareTag("Bullet"))
-        // {
-        //     _analyticsManager.bulletCollisions++;
-        // }
+        // Update stats if bullet collides with another bullet
+        if (collision.gameObject.name == "activeGhost")
+        {
+             _analyticsManager.ld.bulletCollisions++;
+             _analyticsManager.LogAnalytics();
+        }
     }
 }
