@@ -1,37 +1,43 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using static GameConstants;
+
+public class LevelData
+{
+    public string gameSessionId;
+    public string levelSessionId;
+    public int shotsTaken;
+    public int[] ballsPerPocket = new int[maxPocketCount];
+    public int ballsKnockedOff;
+    public int bulletCollisions;
+    public float timeTaken;
+    public int currentLevel;
+    public string levelName;
+    public LevelState levelState;
+}
 
 public class AnalyticsManager : MonoBehaviour
 {
-    // Unique ID for each game session
-    private readonly string _gameSessionId = System.Guid.NewGuid().ToString();
-
-    // Number of shots taken (total)
-    public int shotsTaken = 0;
-
-    // Number of shots taken (per level)
-    public int shotsTakenLevel = 1;
-
-    // Number of shots taken (per ball)
-    public int shotsTakenBall = 0;
-
-    // Number of balls knocked off (total)
-    public int ballsKnockedOff = 0;
-
-    // Number of bullet collisions (total)
-    public int bulletCollisions = 0;
-
-    // Time taken to complete game
-    public float timeTakenGame = 0;
+    private GameManager _gameManager;
+    public LevelData ld; 
 
     private const string DatabaseURL = "https://lastcallstudios-c8991-default-rtdb.firebaseio.com/";
+    
+    void Start()
+    {
+        ld = new LevelData();
+        _gameManager = FindObjectOfType<GameManager>();
+        ld.gameSessionId = _gameManager.GetGameSessionId();
+        ld.levelSessionId = System.Guid.NewGuid().ToString();
+        ld.levelState = LevelState.InProgress;
+    }
 
     // Method to log analytics to Firebase Realtime Database
     public void LogAnalytics()
     {
-        string jsonPayload = JsonUtility.ToJson(this);
-        string url = $"{DatabaseURL}analytics/{_gameSessionId}.json";
+        string jsonPayload = JsonUtility.ToJson(ld);
+        string url = $"{DatabaseURL}analytics/{ld.levelSessionId}.json";
 
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }

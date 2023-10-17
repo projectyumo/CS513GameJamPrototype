@@ -4,15 +4,18 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance
-    public static GameManager Instance;
+    public static GameManager instance;
+    
+    // Unique ID for game session
+    private readonly string _gameSessionId = System.Guid.NewGuid().ToString();
     public string mainMenuSceneName = "MainMenu";
 
     // On Awake, set up the Singleton pattern
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject); // This object will persist across scenes
         }
         else
@@ -53,5 +56,10 @@ public class GameManager : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+    }
+    
+    public string GetGameSessionId()
+    {
+        return _gameSessionId;
     }
 }
