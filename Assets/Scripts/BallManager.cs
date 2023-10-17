@@ -18,7 +18,7 @@ public class BallManager : MonoBehaviour
         ballCount--;
 
         // Update stats
-        _analyticsManager.ballsKnockedOff++;
+        _analyticsManager.ld.ballsKnockedOff++;
         _analyticsManager.LogAnalytics();
         
         // All balls are knocked off

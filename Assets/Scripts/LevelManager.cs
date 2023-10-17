@@ -1,28 +1,32 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using static GameConstants;
 
 public class LevelManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private AnalyticsManager _analyticsManager;
 
     public int bulletCount = 5;
-    public int totalPoints = 0;
-    public int winTextDisplayTime = 3;
-    static public int MaxPocketCount = 10;
-    public int[] pocketPoints = new int[MaxPocketCount];
+    public int totalPoints;
+    public int[] pocketPoints = new int[maxPocketCount];
 
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
     public GameManager gameManager;
     public GameObject tutorial;
-    public string winText = "You Win!";
-    public string remainingShotsText = "Remaining shots: ";
-    public string scoreText = "Score: ";
+    public string levelName;
+    public int currentLevel;
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        _analyticsManager = FindObjectOfType<AnalyticsManager>();
+        levelName = SceneManager.GetActiveScene().name;
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        _analyticsManager.ld.currentLevel = currentLevel;
+        _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
         bulletCountText.text = remainingShotsText + bulletCount.ToString();
         pointText.text = scoreText + totalPoints.ToString();
@@ -46,20 +50,32 @@ public class LevelManager : MonoBehaviour
         }
         bulletCountText.text = text;
         if (bulletCount < 0) {
-            ShowGameOverText("You Lose!");
+            LoseCase();
         }
     }
     
-    public void AddPoints(int points)
+    public void AddPoints(int points, int pocketNumber)
     {
         totalPoints += points;
         pointText.text = scoreText + totalPoints.ToString();
+        _analyticsManager.ld.ballsPerPocket[pocketNumber - 1]++;
+        _analyticsManager.LogAnalytics();
+    }
+    
+    public int GetPocketNumber(string pocket)
+    {
+        int index = int.Parse(pocket.Substring(6)) - 1;
+        if (index < 0 || index >= maxPocketCount)
+        {
+            return 0;
+        }
+        return index + 1;
     }
     
     public int GetPocketPoints(string pocket)
     {
         int index = int.Parse(pocket.Substring(6)) - 1;
-        if (index < 0 || index >= MaxPocketCount)
+        if (index < 0 || index >= maxPocketCount)
         {
             return 0;
         }
@@ -71,9 +87,19 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(true);
         gameOverText.text = text;
     }
+
+    public void LoseCase()
+    {
+        _analyticsManager.ld.levelState = LevelState.Failed;
+        _analyticsManager.LogAnalytics();
+        ShowGameOverText(loseText);
+        Invoke("LoadMainMenuScene", winTextDisplayTime);
+    }
     
     public void WinCase()
     {
+        _analyticsManager.ld.levelState = LevelState.Completed;
+        _analyticsManager.LogAnalytics();
         ShowGameOverText(winText);
         Invoke("LoadNextLevel", winTextDisplayTime);
     }
@@ -86,11 +112,14 @@ public class LevelManager : MonoBehaviour
     
     public void LoadMainMenuScene()
     {
+        gameOverText.gameObject.SetActive(false);
         gameManager.LoadMainMenuScene();
     }
 
     public void RestartCurrentLevel()
     {
+        _analyticsManager.ld.levelState = LevelState.InProgress;
+        _analyticsManager.LogAnalytics();
         gameManager.RestartCurrentScene();
     }
 

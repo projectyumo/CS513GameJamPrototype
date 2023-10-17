@@ -3,18 +3,22 @@ using UnityEngine;
 public class PocketController : MonoBehaviour
 {
     public LevelManager levelManager;
-    private int _points;
+    public int points;
+    public int pocketNumber;
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
         // Get the points for this pocket
-        _points = levelManager.GetPocketPoints(gameObject.name);
+        points = levelManager.GetPocketPoints(gameObject.name);
+        pocketNumber = levelManager.GetPocketNumber(gameObject.name);
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            levelManager.AddPoints(_points);
-        }
-    }
+    
+    // void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.gameObject.CompareTag("Ball"))
+    //     {
+    //         levelManager.AddPoints(points, pocketNumber);
+    //         Destroy(other.gameObject);
+    //     }
+    // }
 }

@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -68,7 +64,7 @@ public class GunController : MonoBehaviour
 
         // When mouse is released, and current charge
         } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
-            _analyticsManager.shotsTaken++;
+            _analyticsManager.ld.shotsTaken++;
             _analyticsManager.LogAnalytics();
 
             // Don't want players to waste shot because they didn't know they needed to charge it
