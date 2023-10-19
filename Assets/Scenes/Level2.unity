@@ -1645,18 +1645,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8e96d2f0b7549f486db4e4618192c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletCount: 6
+  bulletCount: 10
   totalPoints: 0
-  winTextDisplayTime: 3
   pocketPoints: 060000000700000008000000
   gameOverText: {fileID: 184722743}
   bulletCountText: {fileID: 184722742}
   pointText: {fileID: 184722740}
   gameManager: {fileID: 0}
   tutorial: {fileID: 0}
-  winText: You Win!
-  remainingShotsText: 'Remaining shots: '
-  scoreText: 'Score: '
+  levelName: 
+  currentLevel: 0
 --- !u!4 &1113648971
 Transform:
   m_ObjectHideFlags: 0
@@ -3291,7 +3289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6830688996347687942, guid: ef378fe82419543e49d62e5b6f13e4e2, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 6830688996347687943, guid: ef378fe82419543e49d62e5b6f13e4e2, type: 3}
       propertyPath: m_RootOrder
