@@ -18,6 +18,9 @@ public class LevelManager : MonoBehaviour
     public GameManager gameManager;
     public GameObject tutorial;
     public string levelName;
+    // currentLevel variable indicates which level you are currently playing.
+    // We will be using buildIndex - 1 of SceneManager to set this variable.
+    // Since, Level0 will have buildIndex of 1, we will subtract 1 from it to get currentLevel = 0.
     public int currentLevel;
 
     void Start()
@@ -26,7 +29,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         _playerController = FindObjectOfType<PlayerController>();
         levelName = SceneManager.GetActiveScene().name;
-        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
