@@ -8,7 +8,12 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
     }
-    
+
+    public void LoadLevel0()
+    {
+        gameManager.LoadSceneByName("Level0");
+    }
+
     public void LoadLevel1()
     {
         gameManager.LoadSceneByName("Level1");
