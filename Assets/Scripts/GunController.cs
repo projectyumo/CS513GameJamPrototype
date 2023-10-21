@@ -49,7 +49,7 @@ public class GunController : MonoBehaviour
 
         // DEBUG STATEMENT
         // if (currentCharge > 0f){ Debug.Log("Current Charge" + currentCharge); }
-        
+
         if (levelManager.bulletCount == 1)
         {
             isLastBullet = true;
@@ -85,16 +85,21 @@ public class GunController : MonoBehaviour
             // Don't want players to waste shot because they didn't know they needed to charge it
             // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
             bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
-            bulletSpeed = Mathf.Max(bulletSpeed, minBulletSpeed);
+            bulletSpeed = Mathf.Max(bulletSpeed, 0);
             currentCharge = 0f;
             spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
-            // Shoot and create Echo.
-            Shoot();
-            // Create echo only if it is not the last bullet.
-            if (!isLastBullet)
-            {
-                CreateEcho();
+
+            if (bulletSpeed >= minBulletSpeed){
+              // Shoot and create Echo.
+              Shoot();
+
+              // Create echo only if it is not the last bullet.
+              if (!isLastBullet)
+              {
+                  CreateEcho();
+              }
             }
+
         }
     }
 
@@ -106,7 +111,7 @@ public class GunController : MonoBehaviour
             // 3: Player, changing layer=3 will give the ghostBullet the same collision properties
             // as the player. Idle ghostBullets should not collide with any balls.
             ghostBullet.layer = 3;
-            
+
             // TODO: Need to enqueue as many times as the number of idle ghost bullets instantiated.
             idleGhostBullets.Enqueue(ghostBullet);
 
@@ -116,7 +121,7 @@ public class GunController : MonoBehaviour
                 GameObject existingGhostPlayer = activeGhostPlayers.Dequeue();
                 Destroy(existingGhostPlayer);
             }
-            
+
             var ghostPlayerName = "ghostPlayer";
             GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
             ghostPlayer.name = ghostPlayerName;
@@ -131,7 +136,7 @@ public class GunController : MonoBehaviour
             // Change the color of the ghost player
             ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
             ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
-            
+
             // Track ghostPlayer objects
             // TODO: Need to enqueue as many times as the number of ghost players instantiated.
             activeGhostPlayers.Enqueue(ghostPlayer);
@@ -154,7 +159,7 @@ public class GunController : MonoBehaviour
               Destroy(ghostBullet, destroyTime);
               // 8: ghostBullet, activates the collision properties of the ball
               ghostBullet.layer = 8;
-              
+
               // TODO: Need to dequeue as many times as idle ghost bullets are activated
               idleGhostBullets.Dequeue();
             }
@@ -185,7 +190,7 @@ public class GunController : MonoBehaviour
         );
         _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
         _analyticsManager.LogAnalytics();
-            
+
         // Decrement remaining shots
         levelManager.BulletCountDown();
     }
