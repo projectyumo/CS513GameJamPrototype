@@ -7,7 +7,10 @@ public class LevelManager : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
     private PlayerController _playerController;
+    private GunController _gunController;
+    private BallManager _ballManager;
 
+    // Number of allowed bullets
     public int bulletCount = 5;
     public int totalPoints;
     public int[] pocketPoints = new int[maxPocketCount];
@@ -22,12 +25,16 @@ public class LevelManager : MonoBehaviour
     // We will be using buildIndex - 1 of SceneManager to set this variable.
     // Since, Level0 will have buildIndex of 1, we will subtract 1 from it to get currentLevel = 0.
     public int currentLevel;
+    private bool _isGameOver = false;
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         _playerController = FindObjectOfType<PlayerController>();
+        _gunController = FindObjectOfType<GunController>();
+        _ballManager = FindObjectOfType<BallManager>();
+        
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -39,6 +46,15 @@ public class LevelManager : MonoBehaviour
         if (tutorial != null)
         {
             tutorial.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        // Lose case
+        if (!_isGameOver && bulletCount == 0 && BulletControl.activeBulletCount == 0)
+        {
+            Invoke("LoseCase", 1);
         }
     }
 
@@ -54,9 +70,6 @@ public class LevelManager : MonoBehaviour
             text += bulletCount.ToString();
         }
         bulletCountText.text = text;
-        if (bulletCount < 0) {
-            LoseCase();
-        }
     }
     
     public void AddPoints(int points, int pocketNumber)
@@ -93,9 +106,40 @@ public class LevelManager : MonoBehaviour
         gameOverText.text = text;
     }
 
+    private void DestroyPlayers()
+    {
+        // Destroy all active ghost players
+        while (_gunController.activeGhostPlayers.Count > 0)
+        {
+            GameObject ghostPlayer;
+            if (_gunController.activeGhostPlayers.TryDequeue(out ghostPlayer))
+            {
+                Destroy(ghostPlayer);
+            }
+        }
+        
+        // Destroy all idle ghost bullets
+        while (_gunController.idleGhostBullets.Count > 0)
+        {
+            GameObject ghostBullet;
+            if (_gunController.idleGhostBullets.TryDequeue(out ghostBullet))
+            {
+                Destroy(ghostBullet);
+            }
+        }
+        
+        Destroy(_playerController.gameObject);
+    }
+
     public void LoseCase()
     {
-        Destroy(_playerController.gameObject);
+        // If there are still balls moving, wait for them to stop
+        if (_ballManager.movingBallsCount > 0 || _isGameOver)
+        {
+            return;
+        }
+        _isGameOver = true;
+        DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Failed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(loseText);
@@ -104,7 +148,8 @@ public class LevelManager : MonoBehaviour
     
     public void WinCase()
     {
-        Destroy(_playerController.gameObject);
+        _isGameOver = true;
+        DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Completed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(winText);
