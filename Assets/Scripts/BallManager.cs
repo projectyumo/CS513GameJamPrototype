@@ -5,6 +5,7 @@ public class BallManager : MonoBehaviour
     public int ballCount;
     private AnalyticsManager _analyticsManager;
     private LevelManager _levelManager;
+    public int movingBallsCount = 0;
     
     void Start()
     {
@@ -26,5 +27,15 @@ public class BallManager : MonoBehaviour
         {
             _levelManager.WinCase();
         }
+    }
+    
+    public void BallStartedMoving()
+    {
+        movingBallsCount++;
+    }
+
+    public void BallStoppedMoving()
+    {
+        movingBallsCount--;
     }
 }

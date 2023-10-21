@@ -4,11 +4,17 @@ public class BulletControl : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
     public int minVelocity = 4;
+    // Track active bullets count
+    public static int activeBulletCount = 0;
 
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
+        
+        // Increment activeBulletCount to track the number of bullets in the scene
+        activeBulletCount++;
     }
+    
     void Update()
     {
         if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost"){
@@ -32,5 +38,11 @@ public class BulletControl : MonoBehaviour
              _analyticsManager.ld.bulletCollisions++;
              _analyticsManager.LogAnalytics();
         }
+    }
+    
+    // Decrement activeBulletCount when the bullet is destroyed
+    void OnDestroy()
+    {
+        activeBulletCount--;
     }
 }
