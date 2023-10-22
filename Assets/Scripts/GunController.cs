@@ -25,8 +25,8 @@ public class GunController : MonoBehaviour
     private bool isLastBullet = false;
 
     private float bulletSpeed = 0f;
-    private float minBulletSpeed = 5f;
-    private float maxBulletSpeed = 20f;
+    public float minBulletSpeed = 10f;
+    public float maxBulletSpeed = 30f;
     private float chargeRate = 50f;
     private float maxCharge = 100f;
     private float currentCharge = 0f;
