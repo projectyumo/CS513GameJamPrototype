@@ -51,6 +51,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: RemainingShot
       objectReference: {fileID: 0}
+    - target: {fileID: 2601490815006855880, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2601490815006855880, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
+      propertyPath: m_margin.x
+      value: -139.23169
+      objectReference: {fileID: 0}
+    - target: {fileID: 2601490815006855880, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 2601490815006855882, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -117,11 +129,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2601490815006855882, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 530
       objectReference: {fileID: 0}
     - target: {fileID: 2601490815006855882, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 348
+      value: 410
       objectReference: {fileID: 0}
     - target: {fileID: 2601490815006855882, guid: 9a143f9b39c40434ba885a37eed97974, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -251,6 +263,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 461316873169402693}
     m_Modifications:
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_margin.z
+      value: -0.00012207031
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299478, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_Name
       value: ScoreBoard
@@ -321,11 +345,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299483, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 320.00043
+      value: 779
       objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299483, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 347.99997
+      value: 410
       objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299483, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
