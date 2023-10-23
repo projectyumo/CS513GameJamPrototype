@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
         bulletCountText.text = remainingShotsText + bulletCount.ToString();
         pointText.text = scoreText + totalPoints.ToString();
         tutorial = GameObject.FindGameObjectWithTag("Tutorial");
-        if (tutorial != null)
+        if (tutorial != null && currentLevel != 0)
         {
             tutorial.SetActive(false);
         }
