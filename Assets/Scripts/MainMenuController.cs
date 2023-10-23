@@ -28,4 +28,14 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager.LoadSceneByName("Level3");
     }
+
+    public void LoadLevel4()
+    {
+        gameManager.LoadSceneByName("Level4");
+    }
+
+    public void LoadLevel5()
+    {
+        gameManager.LoadSceneByName("Level5");
+    }
 }
