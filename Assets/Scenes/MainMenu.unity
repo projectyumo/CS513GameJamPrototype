@@ -1024,7 +1024,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_text
-      value: Level 0- Tutorial
+      value: Level 0 - Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 4198112740279862822, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_Pivot.x
