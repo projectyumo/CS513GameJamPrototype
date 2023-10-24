@@ -10,6 +10,7 @@ public class GunController : MonoBehaviour
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
     public GameObject playerObj;
+
     private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer spriteRenderer;
@@ -31,6 +32,14 @@ public class GunController : MonoBehaviour
     private float maxCharge = 100f;
     private float currentCharge = 0f;
     private string spritePath = "Assets/Icons/aim_pointer.png";
+    private int numTrajectoryPoints = 50;
+    private bool showTrajectory = false;
+
+    Rigidbody2D rb;
+    LineRenderer lr;
+    public float bounciness = 0.75f; // Represents how much energy is preserved on bounce (0-1)
+    public LayerMask collisionMask; // Layer mask to detect ground or other objects to bounce off
+    public int maxBounces = 3;
 
     void Start()
     {
@@ -38,6 +47,16 @@ public class GunController : MonoBehaviour
         levelManager = FindObjectOfType<LevelManager>();
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        lr = GetComponent<LineRenderer>();
+
+        Texture2D tex = CreateDashedTexture(32, 1, Color.white, 0.5f); // 32x1 pixel texture with 50% filled
+        Material mat = new Material(Shader.Find("Sprites/Default"));
+        mat.mainTexture = tex;
+        lr.material = mat;
+
+        // Adjust tiling to make dashes appear along the length of the line
+        lr.material.mainTextureScale = new Vector2(10, 1);
     }
 
     void Update()
@@ -46,6 +65,8 @@ public class GunController : MonoBehaviour
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+
+        if (showTrajectory) DisplayTrajectory();
 
         // DEBUG STATEMENT
         // if (currentCharge > 0f){ Debug.Log("Current Charge" + currentCharge); }
@@ -76,7 +97,6 @@ public class GunController : MonoBehaviour
               spritePath = "Sprites/aim_pointer_charge_6";
             }
             spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
-
         // When mouse is released, and current charge
         } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
             _analyticsManager.ld.shotsTaken++;
@@ -193,6 +213,77 @@ public class GunController : MonoBehaviour
 
         // Decrement remaining shots
         levelManager.BulletCountDown();
+    }
+
+    public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps) {
+         List<Vector2> results = new List<Vector2>();
+        float timeStep = Time.fixedDeltaTime/Physics2D.velocityIterations;
+        Vector2 moveStep = velocity * timeStep;
+        int numBounces = 0;
+
+        for (int i = 0; i < steps; i++){
+          if (numBounces < 2){
+              float projectileRadius = 0.5f; // adjust this to your projectile's size
+              RaycastHit2D hit = Physics2D.CircleCast(pos, projectileRadius, velocity, moveStep.magnitude, collisionMask);
+              // if (numBounces >= maxBounces) {return results;}
+              if (hit.collider != null)
+              {
+                  numBounces++;
+                  if (numBounces == 2) break;
+                  // Move directly to the collision point.
+                  pos = hit.point;
+
+                  // Reflect the velocity against the normal.
+                  velocity = Vector2.Reflect(velocity, hit.normal) * bounciness;
+
+                  // Using the remaining timeStep for the next move after reflection.
+                  float remainingTime = timeStep * (1 - hit.fraction); // hit.fraction gives us the fraction of the raycast distance at which the hit occurred.
+                  moveStep = velocity * remainingTime;
+
+                  pos += moveStep;
+
+              }
+              else
+              {
+                  pos += moveStep;
+              }
+              results.Add(pos);
+          }
+          else {
+            break;
+          }
+        }
+
+        return results.ToArray();
+    }
+
+    Texture2D CreateDashedTexture(int width, int height, Color dashColor, float dashPercentage = 0.5f)
+    {
+        Texture2D texture = new Texture2D(width, height);
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                bool inDash = (x % width) < (width * dashPercentage);
+                texture.SetPixel(x, y, inDash ? dashColor : Color.clear);
+            }
+        }
+        texture.Apply();
+        return texture;
+    }
+
+    void DisplayTrajectory(){
+      Vector2 startPos = (Vector2)transform.position;
+      Vector2 endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      Vector2 _velocity = (endPos - startPos)*50f;
+
+      Vector2[] trajectory = Plot(rb, (Vector2)transform.position, _velocity, numTrajectoryPoints);
+      lr.positionCount = trajectory.Length;
+      Vector3[] positions = new Vector3[trajectory.Length];
+      for (int i = 0; i < positions.Length; i++) {
+        positions[i] = trajectory[i];
+      }
+      lr.SetPositions(positions);
     }
 
     private class ShotDetails
