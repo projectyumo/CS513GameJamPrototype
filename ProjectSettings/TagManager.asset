@@ -8,6 +8,8 @@ TagManager:
   - Pocket
   - Ball
   - Tutorial
+  - idleGhost
+  - activeGhost
   layers:
   - Default
   - TransparentFX

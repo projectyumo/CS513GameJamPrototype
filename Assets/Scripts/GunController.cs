@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour
     public Queue<GameObject> activeGhostPlayers = new Queue<GameObject>();
     // Queue of idle bullets. Used to keep track of the bullets that are currently idle.
     public Queue<GameObject> idleGhostBullets = new Queue<GameObject>();
+    private List<ShotDetails> _previousShotsList = new List<ShotDetails>();
     // Tracks if the current bullet shot is the last bullet among remaining shots.
     private bool isLastBullet = false;
 
@@ -33,7 +34,9 @@ public class GunController : MonoBehaviour
     private float currentCharge = 0f;
     private string spritePath = "Assets/Icons/aim_pointer.png";
     private int numTrajectoryPoints = 50;
-    private bool showTrajectory = false;
+    private bool showTrajectory = true;
+    private int numGhosts = 2;
+    private int activeGhosts = 0;
 
     Rigidbody2D rb;
     LineRenderer lr;
@@ -57,6 +60,13 @@ public class GunController : MonoBehaviour
 
         // Adjust tiling to make dashes appear along the length of the line
         lr.material.mainTextureScale = new Vector2(10, 1);
+
+        Debug.Log("LEVEL NAME:" + levelManager.levelName);
+        if (levelManager.levelName == "Sandbox"){
+            showTrajectory = true;
+            numGhosts = 2;
+        }
+
     }
 
     void Update()
@@ -132,17 +142,10 @@ public class GunController : MonoBehaviour
             // as the player. Idle ghostBullets should not collide with any balls.
             ghostBullet.layer = 3;
 
-            // TODO: Need to enqueue as many times as the number of idle ghost bullets instantiated.
-            idleGhostBullets.Enqueue(ghostBullet);
+            // // TODO: Need to enqueue as many times as the number of idle ghost bullets instantiated.
+            // idleGhostBullets.Enqueue(ghostBullet);
 
-            // Remove any existing ghost players
-            while (activeGhostPlayers.Count > 0)
-            {
-                GameObject existingGhostPlayer = activeGhostPlayers.Dequeue();
-                Destroy(existingGhostPlayer);
-            }
-
-            var ghostPlayerName = "ghostPlayer";
+            var ghostPlayerName = "ghostPlayer"+activeGhosts;
             GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
             ghostPlayer.name = ghostPlayerName;
             ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
@@ -159,31 +162,44 @@ public class GunController : MonoBehaviour
 
             // Track ghostPlayer objects
             // TODO: Need to enqueue as many times as the number of ghost players instantiated.
-            activeGhostPlayers.Enqueue(ghostPlayer);
+            // activeGhostPlayers.Enqueue(ghostPlayer);
+            activeGhosts++;
+            if (activeGhosts > numGhosts) {
+              Destroy(GameObject.Find("ghostPlayer"+(activeGhosts-numGhosts-1)));
+            }
+            // // Remove any existing ghost players
+            // while (activeGhostPlayers.Count >= numGhosts)
+            // {
+            //     GameObject existingGhostPlayer = activeGhostPlayers.Dequeue();
+            //     Destroy(existingGhostPlayer);
+            // }
     }
 
     void Shoot()
     {
-        // If queue is not empty, reshoot the previous shot
-        if (_previousShots.Count > 0)
-        {
-            var shot = _previousShots.Dequeue();
+        List<ShotDetails> tempShots = new List<ShotDetails>();
 
-            GameObject ghostBullet = GameObject.Find("idleGhost");
-            // Make idle ghost bullet active
+        int shotsToRecreate = Math.Min(numGhosts, _previousShotsList.Count);
+        // Create echo only if it is not the last bullet.
+        for (int i = 0; i < shotsToRecreate; i++)
+        {
+            var shot = _previousShotsList[i];
+
+            GameObject ghostBullet = GameObject.Find("idleGhost"+i);
+            Destroy(GameObject.Find("idleGhost"));
             if (ghostBullet)
             {
-              Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
-              ghostBulletRb.velocity = shot.Velocity;
-              ghostBullet.name = "activeGhost";
-              Destroy(ghostBullet, destroyTime);
-              // 8: ghostBullet, activates the collision properties of the ball
-              ghostBullet.layer = 8;
-
-              // TODO: Need to dequeue as many times as idle ghost bullets are activated
-              idleGhostBullets.Dequeue();
+                Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
+                ghostBulletRb.velocity = shot.Velocity;
+                ghostBullet.name = "activeGhost" + (i+1).ToString();  // unique names for each ghost
+                Destroy(ghostBullet, destroyTime);
+                ghostBullet.layer = 8; // activates the collision properties of the ball
+                // idleGhostBullets.Dequeue();
             }
-        }
+
+            // tempShots.Add(shot);
+          }
+
 
         // Instantiate bullet and set its direction
         GameObject bullet = Instantiate(bulletObj, transform.position, Quaternion.identity);
@@ -198,7 +214,28 @@ public class GunController : MonoBehaviour
 
         // Save this shot
         var shotDetail = new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
-        _previousShots.Enqueue(shotDetail);
+        _previousShotsList.Add(shotDetail);
+
+        // Ensure the list only keeps the last 3 shots
+        while (_previousShotsList.Count > numGhosts)
+        {
+            _previousShotsList.RemoveAt(0);
+        }
+
+        if (!isLastBullet)
+        {
+          for (int i = 0; i < _previousShotsList.Count; i++)
+          {
+              GameObject ghostBullet = Instantiate(ghostBulletObj, _previousShotsList[i].Position, Quaternion.identity);
+              ghostBullet.name = "idleGhost" + i;
+              // 3: Player, changing layer=3 will give the ghostBullet the same collision properties
+              // as the player. Idle ghostBullets should not collide with any balls.
+              ghostBullet.layer = 3;
+              Debug.Log("Bullet instantiated at " + _previousShotsList[i].Position);
+          }
+        }
+        Debug.Log("LIST COUNT: " + _previousShotsList.Count);
+
         ShotData shotData = new ShotData(
             shotDetail.Position.x,
             shotDetail.Position.y,
@@ -291,5 +328,6 @@ public class GunController : MonoBehaviour
         public Vector3 Position;
         public Vector2 Direction;
         public Vector2 Velocity;
+        public int GhostNumber;
     }
 }

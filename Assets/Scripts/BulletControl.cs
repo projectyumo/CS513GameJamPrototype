@@ -10,14 +10,14 @@ public class BulletControl : MonoBehaviour
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
-        
+
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
     }
-    
+
     void Update()
     {
-        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost"){
+        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.tag!="idleGhost"){
             Destroy(gameObject);
         }
     }
@@ -39,7 +39,7 @@ public class BulletControl : MonoBehaviour
              _analyticsManager.LogAnalytics();
         }
     }
-    
+
     // Decrement activeBulletCount when the bullet is destroyed
     void OnDestroy()
     {
