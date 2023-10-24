@@ -38,4 +38,9 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager.LoadSceneByName("Level5");
     }
+
+    public void LoadTesting()
+    {
+        gameManager.LoadSceneByName("Sandbox");
+    }
 }
