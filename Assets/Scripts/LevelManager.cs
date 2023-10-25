@@ -109,22 +109,12 @@ public class LevelManager : MonoBehaviour
     private void DestroyPlayers()
     {
         // Destroy all active ghost players
-        while (_gunController.activeGhostPlayers.Count > 0)
+        while (_gunController.ghostPlayers.Count > 0)
         {
             GameObject ghostPlayer;
-            if (_gunController.activeGhostPlayers.TryDequeue(out ghostPlayer))
+            if (_gunController.ghostPlayers.TryDequeue(out ghostPlayer))
             {
                 Destroy(ghostPlayer);
-            }
-        }
-        
-        // Destroy all idle ghost bullets
-        while (_gunController.idleGhostBullets.Count > 0)
-        {
-            GameObject ghostBullet;
-            if (_gunController.idleGhostBullets.TryDequeue(out ghostBullet))
-            {
-                Destroy(ghostBullet);
             }
         }
         

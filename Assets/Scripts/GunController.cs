@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -11,19 +7,19 @@ public class GunController : MonoBehaviour
     public GameObject ghostBulletObj;
     public GameObject playerObj;
 
-    private Queue<ShotDetails> _previousShots = new Queue<ShotDetails>();
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
     private int destroyTime = 5;
     public Color ghostPlayerColor = new(0.572549f, 0.7764707f, 0.7764707f, 0.7f);
-    // Queue of active ghost players. Used to keep track of the ghost players that are currently active.
-    // So that they can be referenced from here when they have to be destroyed.
-    public Queue<GameObject> activeGhostPlayers = new Queue<GameObject>();
-    // Queue of idle bullets. Used to keep track of the bullets that are currently idle.
-    public Queue<GameObject> idleGhostBullets = new Queue<GameObject>();
+    // Queue of active ghost players. Used to keep track of the ghost players.
+    public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
     // Tracks if the current bullet shot is the last bullet among remaining shots.
     private bool isLastBullet = false;
+    // Tracks the previous bullet positions when the bullet disappears.
+    public Queue<Vector3> prevBulletPositions = new Queue<Vector3>();
+    // Specifies player or ghost player is in focus
+    private bool isPlayer = true;
 
     private float bulletSpeed = 0f;
     public float minBulletSpeed = 10f;
@@ -61,23 +57,29 @@ public class GunController : MonoBehaviour
 
     void Update()
     {
-        // Rotation logic
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+        // Get mouse rotation input
+        if (isPlayer)
+        {
+            transform.rotation = GetRotation();
+        }
+        else if (ghostPlayers.Count > 0)
+        {
+            GameObject ghostPlayer = ghostPlayers.Peek();
+            ghostPlayer.transform.rotation = transform.rotation;
+        }
 
         if (showTrajectory) DisplayTrajectory();
 
         // DEBUG STATEMENT
         // if (currentCharge > 0f){ Debug.Log("Current Charge" + currentCharge); }
 
-        if (levelManager.bulletCount == 1)
+        if (levelManager.bulletCount == 0)
         {
             isLastBullet = true;
         }
 
         // While mouse is being held down, shot will charge
-        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null) && (GameObject.Find("activeGhost") == null) )
+        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
         {
             currentCharge += chargeRate * Time.deltaTime;
             currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
@@ -97,10 +99,9 @@ public class GunController : MonoBehaviour
               spritePath = "Sprites/aim_pointer_charge_6";
             }
             spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
-        // When mouse is released, and current charge
+            
+        // When mouse is released, and there is charge
         } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
-            _analyticsManager.ld.shotsTaken++;
-            _analyticsManager.LogAnalytics();
 
             // Don't want players to waste shot because they didn't know they needed to charge it
             // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
@@ -109,110 +110,136 @@ public class GunController : MonoBehaviour
             currentCharge = 0f;
             spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
 
-            if (bulletSpeed >= minBulletSpeed){
-              // Shoot and create Echo.
-              Shoot();
-
-              // Create echo only if it is not the last bullet.
-              if (!isLastBullet)
-              {
-                  CreateEcho();
-              }
+            // Shoot bullet if it is charged enough
+            if (bulletSpeed >= minBulletSpeed) { 
+                Shoot();
             }
-
         }
     }
 
-    void CreateEcho()
+    // Get mouse rotation input
+    Quaternion GetRotation()
     {
-            GameObject ghostBullet = Instantiate(ghostBulletObj, transform.position, Quaternion.identity);
-            ghostBullet.name = "idleGhost";
+        // Rotation logic
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        return Quaternion.Euler(0f, 0f, rotationZ);
+    }
 
-            // 3: Player, changing layer=3 will give the ghostBullet the same collision properties
-            // as the player. Idle ghostBullets should not collide with any balls.
-            ghostBullet.layer = 3;
+    void CreateGhostPlayer()
+    {
+        // Get previous bullet disappear position
+        Vector3 prevShotPosition = prevBulletPositions.Dequeue();
+        // Instantiate ghost player with previous shot disappear position
+        GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
+        ghostPlayer.name = "ghostPlayer";
+        
+        // S_TODO: Remove
+        // Add aim pointer
+        // ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
 
-            // TODO: Need to enqueue as many times as the number of idle ghost bullets instantiated.
-            idleGhostBullets.Enqueue(ghostBullet);
+        //  Need to remove the script from ghost player or else it will just follow the user controls.
+        PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
+        Destroy(playerScript);
 
-            // Remove any existing ghost players
-            while (activeGhostPlayers.Count > 0)
-            {
-                GameObject existingGhostPlayer = activeGhostPlayers.Dequeue();
-                Destroy(existingGhostPlayer);
-            }
+        // Change the color of the ghost player
+        ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
+        ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
 
-            var ghostPlayerName = "ghostPlayer";
-            GameObject ghostPlayer = Instantiate(playerObj, transform.position, Quaternion.identity);
-            ghostPlayer.name = ghostPlayerName;
-            ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
+        // Track ghostPlayer objects
+        ghostPlayers.Enqueue(ghostPlayer);
+    }
+    
+    public void SaveBulletPosition(Vector3 bulletPosition)
+    {
+        prevBulletPositions.Enqueue(bulletPosition);
+        // Create ghost player only if it is not the last bullet.
+        if (!isLastBullet)
+        {
+            CreateGhostPlayer();
+        }
+    }
 
-            //  Need to remove the script from ghost player or else it will just follow the user controls.
-            PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
-            GunController gunScript = ghostPlayer.transform.Find("AimPointer").GetComponent<GunController>();
-            Destroy(playerScript);
-            Destroy(gunScript);
+    // Get mouse shoot direction
+    Vector2 GetShootDirection(Vector3 position)
+    {
+        Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - position);
+        shootDirection.Normalize();
+        return shootDirection;
+    }
 
-            // Change the color of the ghost player
-            ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
-            ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
+    void ShootBullet(bool isGhost)
+    {
+        GameObject go; // Player or Ghost
+        GameObject bo; // Bullet or Ghost Bullet
+        
+        if (isGhost)
+        {
+            go = ghostPlayers.Dequeue();
+            bo = ghostBulletObj;
+        }
+        else
+        {
+            go = gameObject;
+            bo = bulletObj;
+        }
+        
+        // Instantiate bullet and set its direction
+        GameObject bullet = Instantiate(bo, go.transform.position, Quaternion.identity);
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
-            // Track ghostPlayer objects
-            // TODO: Need to enqueue as many times as the number of ghost players instantiated.
-            activeGhostPlayers.Enqueue(ghostPlayer);
+        // The direction from the weapon to the mouse
+        Vector2 shootDirection = GetShootDirection(go.transform.position);
+        bulletRb.velocity = shootDirection * bulletSpeed;
+        
+        var shotDetail = new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
+
+        if (isGhost)
+        {
+            bullet.name = "activeGhost";
+            // layer 8: ghostBullet, activates the collision properties of the ball
+            bullet.layer = 8;
+            
+            // Destroy ghost player
+            Destroy(go);
+        }
+        else
+        {
+            // S_TODO: Add shot data to analytics for ghost bullet as well
+            ShotData shotData = new ShotData(
+                shotDetail.Position.x,
+                shotDetail.Position.y,
+                shotDetail.Position.z,
+                shotDetail.Direction.x,
+                shotDetail.Direction.y,
+                shotDetail.Velocity.x,
+                shotDetail.Velocity.y
+            );
+            _analyticsManager.ld.shotsTaken++;
+            _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
+            _analyticsManager.LogAnalytics();
+        }
+        
+        Destroy(bullet, destroyTime);
+        
+        // Decrement remaining shots
+        levelManager.BulletCountDown();
     }
 
     void Shoot()
     {
-        // If queue is not empty, reshoot the previous shot
-        if (_previousShots.Count > 0)
+        // Player shoots
+        if (isPlayer)
         {
-            var shot = _previousShots.Dequeue();
-
-            GameObject ghostBullet = GameObject.Find("idleGhost");
-            // Make idle ghost bullet active
-            if (ghostBullet)
-            {
-              Rigidbody2D ghostBulletRb = ghostBullet.GetComponent<Rigidbody2D>();
-              ghostBulletRb.velocity = shot.Velocity;
-              ghostBullet.name = "activeGhost";
-              Destroy(ghostBullet, destroyTime);
-              // 8: ghostBullet, activates the collision properties of the ball
-              ghostBullet.layer = 8;
-
-              // TODO: Need to dequeue as many times as idle ghost bullets are activated
-              idleGhostBullets.Dequeue();
-            }
+            ShootBullet(false);
+            isPlayer = false;
         }
-
-        // Instantiate bullet and set its direction
-        GameObject bullet = Instantiate(bulletObj, transform.position, Quaternion.identity);
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-
-        // The direction from the weapon to the mouse
-        Vector2 shootDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
-        shootDirection.Normalize();
-
-        bulletRb.velocity = shootDirection * bulletSpeed;
-        Destroy(bullet, destroyTime);
-
-        // Save this shot
-        var shotDetail = new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
-        _previousShots.Enqueue(shotDetail);
-        ShotData shotData = new ShotData(
-            shotDetail.Position.x,
-            shotDetail.Position.y,
-            shotDetail.Position.z,
-            shotDetail.Direction.x,
-            shotDetail.Direction.y,
-            shotDetail.Velocity.x,
-            shotDetail.Velocity.y
-        );
-        _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
-        _analyticsManager.LogAnalytics();
-
-        // Decrement remaining shots
-        levelManager.BulletCountDown();
+        // Ghost player shoots
+        else if (ghostPlayers.Count > 0)
+        {
+            ShootBullet(true);
+            isPlayer = true;
+        }
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps) {

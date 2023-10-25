@@ -63,10 +63,10 @@ public class AnalyticsManager : MonoBehaviour
         {
             Debug.LogError(request.error);
         }
-        else
-        {
-            Debug.Log("Analytics logged successfully");
-            Debug.Log(jsonPayload);
-        }
+        // else
+        // {
+        //     Debug.Log("Analytics logged successfully");
+        //     Debug.Log(jsonPayload);
+        // }
     }
 }
