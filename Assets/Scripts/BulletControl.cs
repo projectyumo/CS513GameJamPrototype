@@ -3,6 +3,7 @@ using UnityEngine;
 public class BulletControl : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
+    private GunController _gunController;
     public int minVelocity = 4;
     // Track active bullets count
     public static int activeBulletCount = 0;
@@ -10,6 +11,7 @@ public class BulletControl : MonoBehaviour
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
+        _gunController = FindObjectOfType<GunController>();
         
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
@@ -25,7 +27,6 @@ public class BulletControl : MonoBehaviour
     //Detect collisions between the appropriate surfaces
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(this.name + "COLLISION WITH:" + collision.gameObject.name);
         //Check for a collision with Ball
         if (collision.gameObject.tag == "Ball" || collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Pocket")
         {
@@ -44,5 +45,11 @@ public class BulletControl : MonoBehaviour
     void OnDestroy()
     {
         activeBulletCount--;
+        
+        // Save position of the bullet when it is destroyed for the echo shot player
+        if (gameObject.name == "Bullet(Clone)")
+        {
+            _gunController.SaveBulletPosition(gameObject.transform.position);
+        }
     }
 }
