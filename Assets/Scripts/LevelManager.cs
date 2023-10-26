@@ -66,9 +66,11 @@ public class LevelManager : MonoBehaviour
     // Enable mechanics here pertaining to the current level
     void SetFeatureFlags()
     {
-        // Core mechanic
         if (currentLevel > 1)
+        {
+            // Core mechanic
             featureFlags.coreMechanic = true;
+        }
     }
 
     public void BulletCountDown()
