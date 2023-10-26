@@ -156,7 +156,9 @@ public class GunController : MonoBehaviour
         // Create ghost player only if it is not the last bullet.
         if (!isLastBullet)
         {
-            CreateGhostPlayer();
+            // FEATURE_FLAG_CONTROL: Core Mechanic
+            if (levelManager.featureFlags.coreMechanic)
+                CreateGhostPlayer();
         }
     }
 
@@ -234,10 +236,19 @@ public class GunController : MonoBehaviour
             ShootBullet(false);
             isPlayer = false;
         }
+        
+        // FEATURE_FLAG_CONTROL: Core Mechanic
         // Ghost player shoots
-        else if (ghostPlayers.Count > 0)
+        if (levelManager.featureFlags.coreMechanic)
         {
-            ShootBullet(true);
+            if (ghostPlayers.Count > 0)
+            {
+                ShootBullet(true);
+                isPlayer = true;
+            }
+        }
+        else
+        {
             isPlayer = true;
         }
     }
