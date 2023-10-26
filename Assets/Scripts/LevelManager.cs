@@ -26,6 +26,9 @@ public class LevelManager : MonoBehaviour
     // Since, Level0 will have buildIndex of 1, we will subtract 1 from it to get currentLevel = 0.
     public int currentLevel;
     private bool _isGameOver = false;
+    
+    // Feature flags to indicate which mechanics are active for the current level
+    public FeatureFlags featureFlags = new FeatureFlags();
 
     void Start()
     {
@@ -47,6 +50,8 @@ public class LevelManager : MonoBehaviour
         {
             tutorial.SetActive(false);
         }
+        
+        SetFeatureFlags();
     }
 
     void Update()
@@ -56,6 +61,14 @@ public class LevelManager : MonoBehaviour
         {
             Invoke("LoseCase", 1);
         }
+    }
+
+    // Enable mechanics here pertaining to the current level
+    void SetFeatureFlags()
+    {
+        // Core mechanic
+        if (currentLevel > 1)
+            featureFlags.coreMechanic = true;
     }
 
     public void BulletCountDown()

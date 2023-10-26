@@ -25,3 +25,13 @@ public struct ShotData
         VelocityY = velocityY;
     }
 }
+
+// This struct is used to enable or disable features(Mechanics) in the game
+public class FeatureFlags
+{
+    public bool coreMechanic;
+    public FeatureFlags()
+    {
+        coreMechanic = false;
+    }
+}
