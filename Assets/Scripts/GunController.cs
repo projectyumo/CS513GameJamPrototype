@@ -19,7 +19,7 @@ public class GunController : MonoBehaviour
     // Tracks the previous bullet positions when the bullet disappears.
     public Queue<Vector3> prevBulletPositions = new Queue<Vector3>();
     // Specifies player or ghost player is in focus
-    private bool isPlayer = true;
+    private bool _isPlayer = true;
 
     private float bulletSpeed = 0f;
     public float minBulletSpeed = 10f;
@@ -58,7 +58,7 @@ public class GunController : MonoBehaviour
     void Update()
     {
         // Get mouse rotation input
-        if (isPlayer)
+        if (_isPlayer)
         {
             transform.rotation = GetRotation();
         }
@@ -69,9 +69,6 @@ public class GunController : MonoBehaviour
         }
 
         if (showTrajectory) DisplayTrajectory();
-
-        // DEBUG STATEMENT
-        // if (currentCharge > 0f){ Debug.Log("Current Charge" + currentCharge); }
 
         if (levelManager.bulletCount == 0)
         {
@@ -98,9 +95,13 @@ public class GunController : MonoBehaviour
             } else {
               spritePath = "Sprites/aim_pointer_charge_6";
             }
-            spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
-            
-        // When mouse is released, and there is charge
+
+            if (_isPlayer)
+            {
+                spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
+            }
+
+            // When mouse is released, and there is charge
         } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
 
             // Don't want players to waste shot because they didn't know they needed to charge it
@@ -134,10 +135,6 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
         
-        // S_TODO: Remove
-        // Add aim pointer
-        // ghostPlayer.transform.Find("AimPointer").transform.Find("Gun").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
-
         //  Need to remove the script from ghost player or else it will just follow the user controls.
         PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
         Destroy(playerScript);
@@ -231,10 +228,10 @@ public class GunController : MonoBehaviour
     void Shoot()
     {
         // Player shoots
-        if (isPlayer)
+        if (_isPlayer)
         {
             ShootBullet(false);
-            isPlayer = false;
+            _isPlayer = false;
         }
         
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -244,12 +241,12 @@ public class GunController : MonoBehaviour
             if (ghostPlayers.Count > 0)
             {
                 ShootBullet(true);
-                isPlayer = true;
+                _isPlayer = true;
             }
         }
         else
         {
-            isPlayer = true;
+            _isPlayer = true;
         }
     }
 
