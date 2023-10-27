@@ -22,14 +22,16 @@ public class GunController : MonoBehaviour
     private bool _isPlayer = true;
 
     private float bulletSpeed = 0f;
-    public float minBulletSpeed = 10f;
-    public float maxBulletSpeed = 30f;
+    public float minBulletSpeed = 5f;
+    public float maxBulletSpeed = 40f;
     private float chargeRate = 50f;
     private float maxCharge = 100f;
+    private float minCharge = 0f;
     private float currentCharge = 0f;
     private string spritePath = "Assets/Icons/aim_pointer.png";
     private int numTrajectoryPoints = 50;
     private bool showTrajectory = false;
+    private bool isChargeIncreasing = true;
 
     Rigidbody2D rb;
     LineRenderer lr;
@@ -78,24 +80,9 @@ public class GunController : MonoBehaviour
         // While mouse is being held down, shot will charge
         if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
         {
-            currentCharge += chargeRate * Time.deltaTime;
-            currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
-            if (currentCharge <= 14){
-              spritePath = "Sprites/aim_pointer";
-            } else if (currentCharge <= 28){
-              spritePath = "Sprites/aim_pointer_charge_1";
-            } else if (currentCharge <= 42){
-              spritePath = "Sprites/aim_pointer_charge_2";
-            } else if (currentCharge <= 56){
-              spritePath = "Sprites/aim_pointer_charge_3";
-            } else if (currentCharge <= 70){
-              spritePath = "Sprites/aim_pointer_charge_4";
-            } else if (currentCharge <= 84){
-              spritePath = "Sprites/aim_pointer_charge_5";
-            } else {
-              spritePath = "Sprites/aim_pointer_charge_6";
-            }
-
+            // Set Charge
+            SetCharge();
+            SetSpritePathOnCharge();
             if (_isPlayer)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
@@ -115,6 +102,49 @@ public class GunController : MonoBehaviour
             if (bulletSpeed >= minBulletSpeed) { 
                 Shoot();
             }
+        }
+    }
+
+    void SetCharge()
+    {
+        // Increase phase
+        if (isChargeIncreasing)
+        {
+            currentCharge += chargeRate * Time.deltaTime;
+            if (currentCharge >= maxCharge)
+            {
+                currentCharge = maxCharge;
+                isChargeIncreasing = false;
+            }
+        }
+        // Decrease phase
+        else
+        {
+            currentCharge -= chargeRate * Time.deltaTime;
+            if (currentCharge <= minCharge)
+            {
+                currentCharge = minCharge;
+                isChargeIncreasing = true;
+            }
+        }
+    }
+
+    void SetSpritePathOnCharge()
+    {
+        if (currentCharge <= 14){
+            spritePath = "Sprites/aim_pointer";
+        } else if (currentCharge <= 28){
+            spritePath = "Sprites/aim_pointer_charge_1";
+        } else if (currentCharge <= 42){
+            spritePath = "Sprites/aim_pointer_charge_2";
+        } else if (currentCharge <= 56){
+            spritePath = "Sprites/aim_pointer_charge_3";
+        } else if (currentCharge <= 70){
+            spritePath = "Sprites/aim_pointer_charge_4";
+        } else if (currentCharge <= 84){
+            spritePath = "Sprites/aim_pointer_charge_5";
+        } else {
+            spritePath = "Sprites/aim_pointer_charge_6";
         }
     }
 
