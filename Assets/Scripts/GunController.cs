@@ -169,6 +169,10 @@ public class GunController : MonoBehaviour
         PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
         Destroy(playerScript);
 
+        // Set the SmilingGhostIcon active
+        GameObject ghostIcon = ghostPlayer.transform.Find("SmilingGhostIcon").gameObject;
+        ghostIcon.SetActive(true);
+
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
         ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
