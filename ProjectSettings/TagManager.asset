@@ -8,6 +8,10 @@ TagManager:
   - Pocket
   - Ball
   - Tutorial
+  - LevelText
+  - GameOverText
+  - BulletCountText
+  - PointText
   layers:
   - Default
   - TransparentFX

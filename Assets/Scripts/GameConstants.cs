@@ -8,4 +8,5 @@ public static class GameConstants
     static public readonly string loseText = "You Lose!";
     static public readonly string remainingShotsText = "Remaining shots: ";
     static public readonly string scoreText = "Score: ";
+    static public readonly string currentLevelText = "Level: ";
 }
