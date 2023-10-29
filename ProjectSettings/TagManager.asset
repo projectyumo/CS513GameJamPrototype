@@ -12,6 +12,7 @@ TagManager:
   - GameOverText
   - BulletCountText
   - PointText
+  - GlassShelf
   layers:
   - Default
   - TransparentFX

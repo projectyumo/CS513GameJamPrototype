@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level5.unity
     guid: 534fe6779b0bf924b8bbe2a6adeb02c5
+  - enabled: 1
+    path: Assets/Scenes/Level6_GlassShelf.unity
+    guid: 50938f865e6274b8bb3045e237eb904c
+  - enabled: 1
+    path: Assets/Scenes/Level7_GlassShelf.unity
+    guid: 7fd2464aab343407c8d9837f5513921c
   m_configObjects: {}

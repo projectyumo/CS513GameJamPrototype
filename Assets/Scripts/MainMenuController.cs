@@ -38,4 +38,14 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager.LoadSceneByName("Level5");
     }
+    
+    public void LoadLevel6_GlassShelf()
+    {
+        gameManager.LoadSceneByName("Level6_GlassShelf");
+    }
+
+    public void LoadLevel7_GlassShelf()
+    {
+        gameManager.LoadSceneByName("Level7_GlassShelf");
+    }
 }

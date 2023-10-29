@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BulletControl : MonoBehaviour
@@ -28,7 +29,7 @@ public class BulletControl : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //Check for a collision with Ball
-        if (collision.gameObject.tag == "Ball" || collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Pocket")
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
         {
             Destroy(gameObject);
         }
@@ -40,7 +41,7 @@ public class BulletControl : MonoBehaviour
              _analyticsManager.LogAnalytics();
         }
     }
-    
+
     // Decrement activeBulletCount when the bullet is destroyed
     void OnDestroy()
     {

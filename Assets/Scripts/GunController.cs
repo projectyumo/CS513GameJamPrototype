@@ -11,15 +11,23 @@ public class GunController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
     private int destroyTime = 5;
+
     public Color ghostPlayerColor = new(0.572549f, 0.7764707f, 0.7764707f, 0.7f);
+
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
+
     // Tracks if the current bullet shot is the last bullet among remaining shots.
     private bool isLastBullet = false;
+
     // Tracks the previous bullet positions when the bullet disappears.
     public Queue<Vector3> prevBulletPositions = new Queue<Vector3>();
+
     // Specifies player or ghost player is in focus
     private bool _isPlayer = true;
+
+    // Store the colliders of all the glass shelves
+    private List<Collider2D> _glassShelfColliders = new List<Collider2D>();
 
     private float bulletSpeed = 0f;
     public float minBulletSpeed = 5f;
@@ -55,6 +63,12 @@ public class GunController : MonoBehaviour
 
         // Adjust tiling to make dashes appear along the length of the line
         lr.material.mainTextureScale = new Vector2(10, 1);
+
+        // Get all the glass shelf colliders
+        foreach (GameObject glassShelf in GameObject.FindGameObjectsWithTag("GlassShelf"))
+        {
+            _glassShelfColliders.Add(glassShelf.GetComponent<Collider2D>());
+        }
     }
 
     void Update()
@@ -89,17 +103,19 @@ public class GunController : MonoBehaviour
             }
 
             // When mouse is released, and there is charge
-        } else if (Input.GetMouseButtonUp(0) && currentCharge > 0f){
-
+        }
+        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f)
+        {
             // Don't want players to waste shot because they didn't know they needed to charge it
             // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
-            bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+            bulletSpeed = maxBulletSpeed * currentCharge / maxCharge;
             bulletSpeed = Mathf.Max(bulletSpeed, 0);
             currentCharge = 0f;
             spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
 
             // Shoot bullet if it is charged enough
-            if (bulletSpeed >= minBulletSpeed) { 
+            if (bulletSpeed >= minBulletSpeed)
+            {
                 Shoot();
             }
         }
@@ -131,19 +147,32 @@ public class GunController : MonoBehaviour
 
     void SetSpritePathOnCharge()
     {
-        if (currentCharge <= 14){
+        if (currentCharge <= 14)
+        {
             spritePath = "Sprites/aim_pointer";
-        } else if (currentCharge <= 28){
+        }
+        else if (currentCharge <= 28)
+        {
             spritePath = "Sprites/aim_pointer_charge_1";
-        } else if (currentCharge <= 42){
+        }
+        else if (currentCharge <= 42)
+        {
             spritePath = "Sprites/aim_pointer_charge_2";
-        } else if (currentCharge <= 56){
+        }
+        else if (currentCharge <= 56)
+        {
             spritePath = "Sprites/aim_pointer_charge_3";
-        } else if (currentCharge <= 70){
+        }
+        else if (currentCharge <= 70)
+        {
             spritePath = "Sprites/aim_pointer_charge_4";
-        } else if (currentCharge <= 84){
+        }
+        else if (currentCharge <= 84)
+        {
             spritePath = "Sprites/aim_pointer_charge_5";
-        } else {
+        }
+        else
+        {
             spritePath = "Sprites/aim_pointer_charge_6";
         }
     }
@@ -164,7 +193,7 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
-        
+
         //  Need to remove the script from ghost player or else it will just follow the user controls.
         PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
         Destroy(playerScript);
@@ -180,7 +209,7 @@ public class GunController : MonoBehaviour
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
     }
-    
+
     public void SaveBulletPosition(Vector3 bulletPosition)
     {
         prevBulletPositions.Enqueue(bulletPosition);
@@ -205,7 +234,7 @@ public class GunController : MonoBehaviour
     {
         GameObject go; // Player or Ghost
         GameObject bo; // Bullet or Ghost Bullet
-        
+
         if (isGhost)
         {
             go = ghostPlayers.Dequeue();
@@ -216,23 +245,34 @@ public class GunController : MonoBehaviour
             go = gameObject;
             bo = bulletObj;
         }
-        
+
         // Instantiate bullet and set its direction
         GameObject bullet = Instantiate(bo, go.transform.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
+        // Ignore collision between ghost bullet and glass shelves
+        var bulletCollider = bullet.GetComponent<CircleCollider2D>();
+        if (isGhost)
+        {
+            foreach (Collider2D glassShelfCollider in _glassShelfColliders)
+            {
+                Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
+            }
+        }
+
         // The direction from the weapon to the mouse
         Vector2 shootDirection = GetShootDirection(go.transform.position);
         bulletRb.velocity = shootDirection * bulletSpeed;
-        
-        var shotDetail = new ShotDetails { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
+
+        var shotDetail = new ShotDetails
+            { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
 
         if (isGhost)
         {
             bullet.name = "activeGhost";
             // layer 8: ghostBullet, activates the collision properties of the ball
             bullet.layer = 8;
-            
+
             // Destroy ghost player
             Destroy(go);
         }
@@ -252,9 +292,9 @@ public class GunController : MonoBehaviour
             _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
             _analyticsManager.LogAnalytics();
         }
-        
+
         Destroy(bullet, destroyTime);
-        
+
         // Decrement remaining shots
         levelManager.BulletCountDown();
     }
@@ -267,7 +307,7 @@ public class GunController : MonoBehaviour
             ShootBullet(false);
             _isPlayer = false;
         }
-        
+
         // FEATURE_FLAG_CONTROL: Core Mechanic
         // Ghost player shoots
         if (levelManager.featureFlags.coreMechanic)
@@ -284,43 +324,51 @@ public class GunController : MonoBehaviour
         }
     }
 
-    public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps) {
-         List<Vector2> results = new List<Vector2>();
-        float timeStep = Time.fixedDeltaTime/Physics2D.velocityIterations;
+    public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps)
+    {
+        List<Vector2> results = new List<Vector2>();
+        float timeStep = Time.fixedDeltaTime / Physics2D.velocityIterations;
         Vector2 moveStep = velocity * timeStep;
         int numBounces = 0;
 
-        for (int i = 0; i < steps; i++){
-          if (numBounces < 2){
-              float projectileRadius = 0.5f; // adjust this to your projectile's size
-              RaycastHit2D hit = Physics2D.CircleCast(pos, projectileRadius, velocity, moveStep.magnitude, collisionMask);
-              // if (numBounces >= maxBounces) {return results;}
-              if (hit.collider != null)
-              {
-                  numBounces++;
-                  if (numBounces == 2) break;
-                  // Move directly to the collision point.
-                  pos = hit.point;
+        for (int i = 0; i < steps; i++)
+        {
+            if (numBounces < 2)
+            {
+                float projectileRadius = 0.5f; // adjust this to your projectile's size
+                RaycastHit2D hit =
+                    Physics2D.CircleCast(pos, projectileRadius, velocity, moveStep.magnitude, collisionMask);
+                // if (numBounces >= maxBounces) {return results;}
+                if (hit.collider != null)
+                {
+                    numBounces++;
+                    if (numBounces == 2) break;
+                    // Move directly to the collision point.
+                    pos = hit.point;
 
-                  // Reflect the velocity against the normal.
-                  velocity = Vector2.Reflect(velocity, hit.normal) * bounciness;
+                    // Reflect the velocity against the normal.
+                    velocity = Vector2.Reflect(velocity, hit.normal) * bounciness;
 
-                  // Using the remaining timeStep for the next move after reflection.
-                  float remainingTime = timeStep * (1 - hit.fraction); // hit.fraction gives us the fraction of the raycast distance at which the hit occurred.
-                  moveStep = velocity * remainingTime;
+                    // Using the remaining timeStep for the next move after reflection.
+                    float
+                        remainingTime =
+                            timeStep * (1 -
+                                        hit.fraction); // hit.fraction gives us the fraction of the raycast distance at which the hit occurred.
+                    moveStep = velocity * remainingTime;
 
-                  pos += moveStep;
+                    pos += moveStep;
+                }
+                else
+                {
+                    pos += moveStep;
+                }
 
-              }
-              else
-              {
-                  pos += moveStep;
-              }
-              results.Add(pos);
-          }
-          else {
-            break;
-          }
+                results.Add(pos);
+            }
+            else
+            {
+                break;
+            }
         }
 
         return results.ToArray();
@@ -337,22 +385,26 @@ public class GunController : MonoBehaviour
                 texture.SetPixel(x, y, inDash ? dashColor : Color.clear);
             }
         }
+
         texture.Apply();
         return texture;
     }
 
-    void DisplayTrajectory(){
-      Vector2 startPos = (Vector2)transform.position;
-      Vector2 endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      Vector2 _velocity = (endPos - startPos)*50f;
+    void DisplayTrajectory()
+    {
+        Vector2 startPos = (Vector2)transform.position;
+        Vector2 endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 _velocity = (endPos - startPos) * 50f;
 
-      Vector2[] trajectory = Plot(rb, (Vector2)transform.position, _velocity, numTrajectoryPoints);
-      lr.positionCount = trajectory.Length;
-      Vector3[] positions = new Vector3[trajectory.Length];
-      for (int i = 0; i < positions.Length; i++) {
-        positions[i] = trajectory[i];
-      }
-      lr.SetPositions(positions);
+        Vector2[] trajectory = Plot(rb, (Vector2)transform.position, _velocity, numTrajectoryPoints);
+        lr.positionCount = trajectory.Length;
+        Vector3[] positions = new Vector3[trajectory.Length];
+        for (int i = 0; i < positions.Length; i++)
+        {
+            positions[i] = trajectory[i];
+        }
+
+        lr.SetPositions(positions);
     }
 
     private class ShotDetails
