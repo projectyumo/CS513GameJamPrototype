@@ -956,6 +956,7 @@ MonoBehaviour:
   gameOverText: {fileID: 1574118794}
   bulletCountText: {fileID: 1690327258}
   pointText: {fileID: 758507035}
+  levelText: {fileID: 0}
   gameManager: {fileID: 0}
   tutorial: {fileID: 0}
   levelName: 
@@ -1543,13 +1544,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1557904437404788085, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -39.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557904437404788085, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -16.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5676828055057200992, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -267.4
+      value: -540.1
       objectReference: {fileID: 0}
     - target: {fileID: 5676828055057200992, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -49.5
+      value: -160.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
