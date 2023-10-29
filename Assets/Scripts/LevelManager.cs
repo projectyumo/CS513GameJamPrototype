@@ -18,15 +18,18 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
+    public TextMeshProUGUI levelText;
     public GameManager gameManager;
     public GameObject tutorial;
+
     public string levelName;
+
     // currentLevel variable indicates which level you are currently playing.
     // We will be using buildIndex - 1 of SceneManager to set this variable.
     // Since, Level0 will have buildIndex of 1, we will subtract 1 from it to get currentLevel = 0.
     public int currentLevel;
     private bool _isGameOver = false;
-    
+
     // Feature flags to indicate which mechanics are active for the current level
     public FeatureFlags featureFlags = new FeatureFlags();
 
@@ -37,7 +40,12 @@ public class LevelManager : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
         _gunController = FindObjectOfType<GunController>();
         _ballManager = FindObjectOfType<BallManager>();
-        
+
+        gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<TextMeshProUGUI>();
+        bulletCountText = GameObject.FindGameObjectWithTag("BulletCountText").GetComponent<TextMeshProUGUI>();
+        pointText = GameObject.FindGameObjectWithTag("PointText").GetComponent<TextMeshProUGUI>();
+        levelText = GameObject.FindGameObjectWithTag("LevelText").GetComponent<TextMeshProUGUI>();
+
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -45,12 +53,21 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         bulletCountText.text = remainingShotsText + bulletCount.ToString();
         pointText.text = scoreText + totalPoints.ToString();
+        if (currentLevel == 0)
+        {
+            levelText.text = currentLevelText + "Tutorial";
+        }
+        else
+        {
+            levelText.text = currentLevelText + currentLevel.ToString();
+        }
+
         tutorial = GameObject.FindGameObjectWithTag("Tutorial");
         if (tutorial != null && currentLevel != 0)
         {
             tutorial.SetActive(false);
         }
-        
+
         SetFeatureFlags();
     }
 
@@ -77,16 +94,18 @@ public class LevelManager : MonoBehaviour
     {
         bulletCount--;
         string text = remainingShotsText;
-        if (bulletCount < 0) {
+        if (bulletCount < 0)
+        {
             text = remainingShotsText + "0";
         }
         else
         {
             text += bulletCount.ToString();
         }
+
         bulletCountText.text = text;
     }
-    
+
     public void AddPoints(int points, int pocketNumber)
     {
         totalPoints += points;
@@ -94,7 +113,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.ballsPerPocket[pocketNumber - 1]++;
         _analyticsManager.LogAnalytics();
     }
-    
+
     public int GetPocketNumber(string pocket)
     {
         int index = int.Parse(pocket.Substring(6)) - 1;
@@ -102,9 +121,10 @@ public class LevelManager : MonoBehaviour
         {
             return 0;
         }
+
         return index + 1;
     }
-    
+
     public int GetPocketPoints(string pocket)
     {
         int index = int.Parse(pocket.Substring(6)) - 1;
@@ -112,9 +132,10 @@ public class LevelManager : MonoBehaviour
         {
             return 0;
         }
+
         return pocketPoints[index];
     }
-    
+
     public void ShowGameOverText(string text)
     {
         gameOverText.gameObject.SetActive(true);
@@ -132,7 +153,7 @@ public class LevelManager : MonoBehaviour
                 Destroy(ghostPlayer);
             }
         }
-        
+
         Destroy(_playerController.gameObject);
     }
 
@@ -143,6 +164,7 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
+
         _isGameOver = true;
         DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Failed;
@@ -150,7 +172,7 @@ public class LevelManager : MonoBehaviour
         ShowGameOverText(loseText);
         Invoke("LoadMainMenuScene", winTextDisplayTime);
     }
-    
+
     public void WinCase()
     {
         _isGameOver = true;
@@ -166,7 +188,7 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         gameManager.LoadNextScene();
     }
-    
+
     public void LoadMainMenuScene()
     {
         gameOverText.gameObject.SetActive(false);
@@ -187,7 +209,7 @@ public class LevelManager : MonoBehaviour
             tutorial.SetActive(true);
         }
     }
-    
+
     public void HideTutorial()
     {
         if (tutorial != null)
