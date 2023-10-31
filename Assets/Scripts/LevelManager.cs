@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public GameManager gameManager;
     public GameObject tutorial;
+    public TextMeshProUGUI ghostPlayerTutorialText;
 
     public string levelName;
 
@@ -28,7 +29,7 @@ public class LevelManager : MonoBehaviour
     // We will be using buildIndex - 1 of SceneManager to set this variable.
     // Since, Level0 will have buildIndex of 1, we will subtract 1 from it to get currentLevel = 0.
     public int currentLevel;
-    private bool _isGameOver = false;
+    private bool _isGameOver;
 
     // Feature flags to indicate which mechanics are active for the current level
     public FeatureFlags featureFlags = new FeatureFlags();
@@ -45,6 +46,10 @@ public class LevelManager : MonoBehaviour
         bulletCountText = GameObject.FindGameObjectWithTag("BulletCountText").GetComponent<TextMeshProUGUI>();
         pointText = GameObject.FindGameObjectWithTag("PointText").GetComponent<TextMeshProUGUI>();
         levelText = GameObject.FindGameObjectWithTag("LevelText").GetComponent<TextMeshProUGUI>();
+        if (GameObject.FindGameObjectWithTag("GhostPlayerTutorialText"))
+        {
+            ghostPlayerTutorialText = GameObject.FindGameObjectWithTag("GhostPlayerTutorialText").GetComponent<TextMeshProUGUI>();
+        }
 
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
@@ -66,6 +71,11 @@ public class LevelManager : MonoBehaviour
         if (tutorial != null && currentLevel != 0)
         {
             tutorial.SetActive(false);
+        }
+
+        if (ghostPlayerTutorialText != null)
+        {
+            ghostPlayerTutorialText.gameObject.SetActive(false);
         }
 
         SetFeatureFlags();
@@ -216,5 +226,19 @@ public class LevelManager : MonoBehaviour
         {
             tutorial.SetActive(false);
         }
+    }
+
+    public void ShowGhostPlayerTutorialText()
+    {
+        if (ghostPlayerTutorialText != null)
+        {
+            ghostPlayerTutorialText.gameObject.SetActive(true);
+            Invoke("HideGhostPlayerTutorialText", 5);
+        }
+    }
+
+    private void HideGhostPlayerTutorialText()
+    {
+        ghostPlayerTutorialText.gameObject.SetActive(false);
     }
 }
