@@ -13,6 +13,7 @@ TagManager:
   - BulletCountText
   - PointText
   - GlassShelf
+  - GhostWall
   layers:
   - Default
   - TransparentFX
