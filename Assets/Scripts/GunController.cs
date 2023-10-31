@@ -11,8 +11,7 @@ public class GunController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
     private int destroyTime = 5;
-    public Color ghostPlayerColor = new Color(0f, 1f, 1f, 0.8706f);
-
+    
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
 
@@ -39,6 +38,7 @@ public class GunController : MonoBehaviour
     private int numTrajectoryPoints = 50;
     private bool showTrajectory = false;
     private bool isChargeIncreasing = true;
+    private bool isFirstGhostPlayer = true;
 
     Rigidbody2D rb;
     LineRenderer lr;
@@ -193,13 +193,13 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
         
+        // Change the color of the ghost player
+        ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
+        ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
+        
         // Set the SmilingGhostIcon active
         GameObject ghostIcon = ghostPlayer.transform.Find("SmilingGhostIcon").gameObject;
         ghostIcon.SetActive(true);
-        
-        // Change the color of the ghost player
-        ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
-        ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
         
         //  Need to remove the script from ghost player or else it will just follow the user controls.
         PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
@@ -217,7 +217,16 @@ public class GunController : MonoBehaviour
         {
             // FEATURE_FLAG_CONTROL: Core Mechanic
             if (levelManager.featureFlags.coreMechanic)
+            {
                 CreateGhostPlayer();
+                if (isFirstGhostPlayer)
+                {
+                    // Hook for tutorial
+                    levelManager.ShowGhostPlayerTutorialText();
+                    
+                    isFirstGhostPlayer = false;
+                }
+            }
         }
     }
 
