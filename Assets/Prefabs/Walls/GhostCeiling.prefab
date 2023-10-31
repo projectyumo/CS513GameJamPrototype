@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2241513034732588005}
   m_Layer: 6
   m_Name: GhostCeiling
-  m_TagString: Untagged
+  m_TagString: GhostWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -29,7 +29,7 @@ public class BulletControl : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //Check for a collision with Ball
-        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket") || collision.gameObject.CompareTag("GhostWall"))
         {
             Destroy(gameObject);
         }
