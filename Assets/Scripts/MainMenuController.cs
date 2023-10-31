@@ -48,10 +48,17 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager.LoadSceneByName("Level7_GlassShelf");
     }
+
+    public void LoadLevel8_GhostWall()
+    {
+        gameManager.LoadSceneByName("Level8_GhostWall");
+    }
+
     public void LoadLevel9_Projectile()
     {
         gameManager.LoadSceneByName("Level9_Projectile");
     }
+
     public void LoadLevel10_Projectile()
     {
         gameManager.LoadSceneByName("Level10_Projectile");
