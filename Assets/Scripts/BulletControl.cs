@@ -31,8 +31,12 @@ public class BulletControl : MonoBehaviour
     {
         totalBounces++;
         //Check for a collision with Ball
-        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket") || collision.gameObject.CompareTag("GhostWall"))
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
         {
+            Destroy(gameObject);
+        }
+
+        if (gameObject.name == "Bullet(Clone)" && collision.gameObject.CompareTag("GhostWall")) {
             Destroy(gameObject);
         }
         // if (totalBounces > 4){
