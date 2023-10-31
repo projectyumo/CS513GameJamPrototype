@@ -10,6 +10,7 @@ public class GunController : MonoBehaviour
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
+    private PlayerController _playerController;
     private int destroyTime = 5;
 
     // Queue of active ghost players. Used to keep track of the ghost players.
@@ -56,6 +57,7 @@ public class GunController : MonoBehaviour
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         levelManager = FindObjectOfType<LevelManager>();
+        _playerController = FindObjectOfType<PlayerController>();
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
 
@@ -385,6 +387,7 @@ public class GunController : MonoBehaviour
             _isPlayer = false;
             // Visual indication that its not player's turn
             playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
+            _playerController.SetPlayerMovement(false);
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -397,6 +400,7 @@ public class GunController : MonoBehaviour
                 _isPlayer = true;
                 // Visual indication that its player's turn
                 playerObj.GetComponent<SpriteRenderer>().color = Color.white;
+                _playerController.SetPlayerMovement(true);
             }
         }
         else
@@ -404,6 +408,7 @@ public class GunController : MonoBehaviour
             _isPlayer = true;
             // Visual indication that its player's turn
             playerObj.GetComponent<SpriteRenderer>().color = Color.white;
+            _playerController.SetPlayerMovement(true);
         }
     }
 

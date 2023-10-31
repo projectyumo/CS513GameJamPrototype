@@ -6,12 +6,21 @@ public class PlayerController : MonoBehaviour
     private float _horizontalInput;
     public float speed = 10.0f;
     private float _playerWallOffset = 1.5f;
+    private bool _isMovementAllowed = true;
     
     public BoxCollider2D leftWall;
     public BoxCollider2D rightWall;
 
     // Update is called once per frame
     void Update()
+    {
+        if (_isMovementAllowed)
+        {
+            PlayerMovement();
+        }
+    }
+
+    void PlayerMovement()
     {
         _horizontalInput = Input.GetAxis("Horizontal");
         
@@ -30,5 +39,10 @@ public class PlayerController : MonoBehaviour
 
         // Update the player's position
         transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
+    }
+    
+    public void SetPlayerMovement(bool isAllowed)
+    {
+        _isMovementAllowed = isAllowed;
     }
 }
