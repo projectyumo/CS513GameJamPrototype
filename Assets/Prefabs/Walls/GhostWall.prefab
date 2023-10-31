@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2241513034732588002}
   - component: {fileID: 2241513034732588005}
   m_Layer: 6
-  m_Name: GhostCeiling
+  m_Name: GhostWall
   m_TagString: GhostWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2241513034732588007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 16.5, z: 0}
-  m_LocalScale: {x: 35.766903, y: 3.7550423, z: 7.152462}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

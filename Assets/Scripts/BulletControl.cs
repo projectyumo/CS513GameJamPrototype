@@ -31,7 +31,7 @@ public class BulletControl : MonoBehaviour
     {
         totalBounces++;
         //Check for a collision with Ball
-        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("GhostBall") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
         {
             Destroy(gameObject);
         }
