@@ -15,6 +15,7 @@ TagManager:
   - GlassShelf
   - GhostWall
   - GhostPlayerTutorialText
+  - GhostBall
   layers:
   - Default
   - TransparentFX
@@ -26,8 +27,8 @@ TagManager:
   - Bullet
   - GhostBullet
   - Shelf
-  - Ball
-  - GhostBall
+  - 
+  - 
   - 
   - 
   - 

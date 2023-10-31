@@ -26,6 +26,9 @@ public class GunController : MonoBehaviour
 
     // Store the colliders of all the glass shelves
     private List<Collider2D> _glassShelfColliders = new List<Collider2D>();
+    
+    // Store the colliders of all the ghost balls
+    private List<Collider2D> _ghostBallColliders = new List<Collider2D>();
 
     private float bulletSpeed = 0f;
     public float minBulletSpeed = 5f;
@@ -56,9 +59,12 @@ public class GunController : MonoBehaviour
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
 
-        // Sprite renderer to toggle projectile shot.
-        parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
-        parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+        if (levelManager.featureFlags.projectile)
+        {
+            // Sprite renderer to toggle projectile shot.
+            parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+            parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+        }
 
         rb = GetComponent<Rigidbody2D>();
         lr = GetComponent<LineRenderer>();
@@ -75,6 +81,12 @@ public class GunController : MonoBehaviour
         foreach (GameObject glassShelf in GameObject.FindGameObjectsWithTag("GlassShelf"))
         {
             _glassShelfColliders.Add(glassShelf.GetComponent<Collider2D>());
+        }
+        
+        // Get all the ghost ball colliders
+        foreach (GameObject ghostBall in GameObject.FindGameObjectsWithTag("GhostBall"))
+        {
+            _ghostBallColliders.Add(ghostBall.GetComponent<Collider2D>());
         }
 
     }
@@ -104,7 +116,7 @@ public class GunController : MonoBehaviour
         }
 
         // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
-        if (Input.GetKeyDown(KeyCode.Space) && showTrajectory) {
+        if (showTrajectory && Input.GetKeyDown(KeyCode.Space)) {
             useCurvedTrajectory = !useCurvedTrajectory;
 
             // Speed changed for projectile shot to improve efficacy of mechanic
@@ -147,9 +159,12 @@ public class GunController : MonoBehaviour
             {
                 Shoot();
 
-                // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
-                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
-                useCurvedTrajectory = false;
+                if (levelManager.featureFlags.projectile)
+                {
+                    // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
+                    parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+                    useCurvedTrajectory = false;
+                }
             }
         }
     }
@@ -302,6 +317,16 @@ public class GunController : MonoBehaviour
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
+            }
+        }
+        else // Ignore collision between player bullet and ghost balls
+        {
+            foreach (Collider2D ghostBallCollider in _ghostBallColliders)
+            {
+                if (ghostBallCollider)
+                {
+                    Physics2D.IgnoreCollision(bulletCollider, ghostBallCollider, true);   
+                }
             }
         }
 
