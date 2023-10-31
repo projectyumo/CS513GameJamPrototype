@@ -11,8 +11,7 @@ public class GunController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
     private int destroyTime = 5;
-
-    public Color ghostPlayerColor = new(0.572549f, 0.7764707f, 0.7764707f, 0.7f);
+    public Color ghostPlayerColor = new Color(0f, 1f, 1f, 0.8706f);
 
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
@@ -193,18 +192,18 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
-
-        //  Need to remove the script from ghost player or else it will just follow the user controls.
-        PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
-        Destroy(playerScript);
-
+        
         // Set the SmilingGhostIcon active
         GameObject ghostIcon = ghostPlayer.transform.Find("SmilingGhostIcon").gameObject;
         ghostIcon.SetActive(true);
-
+        
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = ghostPlayerColor;
         ghostPlayer.GetComponent<Renderer>().sortingOrder = 5;
+        
+        //  Need to remove the script from ghost player or else it will just follow the user controls.
+        PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
+        Destroy(playerScript);
 
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
@@ -306,6 +305,8 @@ public class GunController : MonoBehaviour
         {
             ShootBullet(false);
             _isPlayer = false;
+            // Visual indication that its not player's turn
+            playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -316,11 +317,15 @@ public class GunController : MonoBehaviour
             {
                 ShootBullet(true);
                 _isPlayer = true;
+                // Visual indication that its player's turn
+                playerObj.GetComponent<SpriteRenderer>().color = Color.white;
             }
         }
         else
         {
             _isPlayer = true;
+            // Visual indication that its player's turn
+            playerObj.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 
