@@ -93,8 +93,7 @@ public class LevelManager : MonoBehaviour
     // Enable mechanics here pertaining to the current level
     void SetFeatureFlags()
     {
-        Debug.Log("CURRENT LEVEL:" + currentLevel);
-        if (currentLevel > 1)
+        if (currentLevel >= 1)
         {
             // Core mechanic
             featureFlags.coreMechanic = true;

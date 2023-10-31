@@ -13,7 +13,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 658095813441355910, guid: 1e57fa45ebcfe48589b9352eb6092c8b, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 658095813441355910, guid: 1e57fa45ebcfe48589b9352eb6092c8b, type: 3}
+      propertyPath: m_TagString
+      value: GhostBall
       objectReference: {fileID: 0}
     - target: {fileID: 1244629027227808031, guid: 1e57fa45ebcfe48589b9352eb6092c8b, type: 3}
       propertyPath: m_Color.b
