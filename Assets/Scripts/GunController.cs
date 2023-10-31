@@ -76,10 +76,15 @@ public class GunController : MonoBehaviour
         {
             _glassShelfColliders.Add(glassShelf.GetComponent<Collider2D>());
         }
+
     }
 
     void Update()
     {
+        if (levelManager.featureFlags.projectile){
+          showTrajectory = true;
+
+        }
         // Get mouse rotation input
         if (_isPlayer)
         {
@@ -98,8 +103,8 @@ public class GunController : MonoBehaviour
             isLastBullet = true;
         }
 
-        // Toggle between curved shot and straight shot
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
+        if (Input.GetKeyDown(KeyCode.Space) && showTrajectory) {
             useCurvedTrajectory = !useCurvedTrajectory;
 
             // Speed changed for projectile shot to improve efficacy of mechanic
@@ -118,6 +123,7 @@ public class GunController : MonoBehaviour
         if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
         {
             // Set Charge
+            //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
             SetCharge();
             SetSpritePathOnCharge();
             if (_isPlayer)
@@ -166,6 +172,9 @@ public class GunController : MonoBehaviour
                 isChargeIncreasing = true;
             }
         }
+        currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+        bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+        bulletSpeed = Mathf.Max(bulletSpeed, 0);
     }
 
     void SetSpritePathOnCharge()
