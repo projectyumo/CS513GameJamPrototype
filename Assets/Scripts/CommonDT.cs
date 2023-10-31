@@ -30,8 +30,11 @@ public struct ShotData
 public class FeatureFlags
 {
     public bool coreMechanic;
+    public bool projectile;
+    
     public FeatureFlags()
     {
         coreMechanic = false;
+        projectile = false;
     }
 }

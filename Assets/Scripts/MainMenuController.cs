@@ -38,7 +38,7 @@ public class MainMenuController : MonoBehaviour
     {
         gameManager.LoadSceneByName("Level5");
     }
-    
+
     public void LoadLevel6_GlassShelf()
     {
         gameManager.LoadSceneByName("Level6_GlassShelf");
@@ -47,5 +47,13 @@ public class MainMenuController : MonoBehaviour
     public void LoadLevel7_GlassShelf()
     {
         gameManager.LoadSceneByName("Level7_GlassShelf");
+    }
+    public void LoadLevel9_Projectile()
+    {
+        gameManager.LoadSceneByName("Level9_Projectile");
+    }
+    public void LoadLevel10_Projectile()
+    {
+        gameManager.LoadSceneByName("Level10_Projectile");
     }
 }
