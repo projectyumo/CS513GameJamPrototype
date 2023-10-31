@@ -8,16 +8,17 @@ public class BulletControl : MonoBehaviour
     public int minVelocity = 4;
     // Track active bullets count
     public static int activeBulletCount = 0;
+    private int totalBounces = 0;
 
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         _gunController = FindObjectOfType<GunController>();
-        
+
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
     }
-    
+
     void Update()
     {
         if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost"){
@@ -28,12 +29,15 @@ public class BulletControl : MonoBehaviour
     //Detect collisions between the appropriate surfaces
     void OnCollisionEnter2D(Collision2D collision)
     {
+        totalBounces++;
         //Check for a collision with Ball
         if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket") || collision.gameObject.CompareTag("GhostWall"))
         {
             Destroy(gameObject);
         }
-
+        // if (totalBounces > 4){
+        //     Destroy(gameObject);
+        // }
         // Update stats if bullet collides with another bullet
         if (collision.gameObject.name == "activeGhost")
         {
@@ -46,7 +50,7 @@ public class BulletControl : MonoBehaviour
     void OnDestroy()
     {
         activeBulletCount--;
-        
+
         // Save position of the bullet when it is destroyed for the echo shot player
         if (gameObject.name == "Bullet(Clone)")
         {

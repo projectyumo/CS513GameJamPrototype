@@ -11,7 +11,7 @@ public class GunController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
     private int destroyTime = 5;
-    
+
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
 
@@ -40,6 +40,9 @@ public class GunController : MonoBehaviour
     private bool isChargeIncreasing = true;
     private bool isFirstGhostPlayer = true;
 
+    private bool useCurvedTrajectory = false;
+    private SpriteRenderer parentSpriteRenderer;
+
     Rigidbody2D rb;
     LineRenderer lr;
     public float bounciness = 0.75f; // Represents how much energy is preserved on bounce (0-1)
@@ -52,6 +55,11 @@ public class GunController : MonoBehaviour
         levelManager = FindObjectOfType<LevelManager>();
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
+
+        // Sprite renderer to toggle projectile shot.
+        parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+        parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+
         rb = GetComponent<Rigidbody2D>();
         lr = GetComponent<LineRenderer>();
 
@@ -68,10 +76,15 @@ public class GunController : MonoBehaviour
         {
             _glassShelfColliders.Add(glassShelf.GetComponent<Collider2D>());
         }
+
     }
 
     void Update()
     {
+        if (levelManager.featureFlags.projectile){
+          showTrajectory = true;
+
+        }
         // Get mouse rotation input
         if (_isPlayer)
         {
@@ -90,10 +103,27 @@ public class GunController : MonoBehaviour
             isLastBullet = true;
         }
 
+        // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
+        if (Input.GetKeyDown(KeyCode.Space) && showTrajectory) {
+            useCurvedTrajectory = !useCurvedTrajectory;
+
+            // Speed changed for projectile shot to improve efficacy of mechanic
+            // Loads sprites for user knowledge of which shot they're on
+            if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
+              maxBulletSpeed = 30f;
+              parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+            } else {
+              maxBulletSpeed = 35f;
+              parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
+            }
+            parentSpriteRenderer.size = new Vector2(1f, 1f);
+        }
+
         // While mouse is being held down, shot will charge
         if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
         {
             // Set Charge
+            //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
             SetCharge();
             SetSpritePathOnCharge();
             if (_isPlayer)
@@ -116,6 +146,10 @@ public class GunController : MonoBehaviour
             if (bulletSpeed >= minBulletSpeed)
             {
                 Shoot();
+
+                // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
+                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+                useCurvedTrajectory = false;
             }
         }
     }
@@ -142,6 +176,9 @@ public class GunController : MonoBehaviour
                 isChargeIncreasing = true;
             }
         }
+        currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+        bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+        bulletSpeed = Mathf.Max(bulletSpeed, 0);
     }
 
     void SetSpritePathOnCharge()
@@ -192,15 +229,15 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
-        
+
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
         ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
-        
+
         // Set the SmilingGhostIcon active
         GameObject ghostIcon = ghostPlayer.transform.Find("SmilingGhostIcon").gameObject;
         ghostIcon.SetActive(true);
-        
+
         //  Need to remove the script from ghost player or else it will just follow the user controls.
         PlayerController playerScript = ghostPlayer.GetComponent<PlayerController>();
         Destroy(playerScript);
@@ -223,7 +260,7 @@ public class GunController : MonoBehaviour
                 {
                     // Hook for tutorial
                     levelManager.ShowGhostPlayerTutorialText();
-                    
+
                     isFirstGhostPlayer = false;
                 }
             }
@@ -271,6 +308,13 @@ public class GunController : MonoBehaviour
         // The direction from the weapon to the mouse
         Vector2 shootDirection = GetShootDirection(go.transform.position);
         bulletRb.velocity = shootDirection * bulletSpeed;
+
+        // To create curvature, create gravity for object if toggled on
+        if (useCurvedTrajectory) {
+          bulletRb.gravityScale = 3;
+        } else {
+          bulletRb.gravityScale = 0;
+        }
 
         var shotDetail = new ShotDetails
             { Position = transform.position, Direction = shootDirection, Velocity = shootDirection * bulletSpeed };
@@ -338,55 +382,55 @@ public class GunController : MonoBehaviour
         }
     }
 
-    public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps)
-    {
-        List<Vector2> results = new List<Vector2>();
-        float timeStep = Time.fixedDeltaTime / Physics2D.velocityIterations;
-        Vector2 moveStep = velocity * timeStep;
-        int numBounces = 0;
+    public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
+       List<Vector2> results = new List<Vector2>();
+       float timeStep = Time.fixedDeltaTime/Physics2D.velocityIterations;
+       Vector2 moveStep = velocity * timeStep;
+       int numBounces = 0;
 
-        for (int i = 0; i < steps; i++)
-        {
-            if (numBounces < 2)
-            {
-                float projectileRadius = 0.5f; // adjust this to your projectile's size
-                RaycastHit2D hit =
-                    Physics2D.CircleCast(pos, projectileRadius, velocity, moveStep.magnitude, collisionMask);
-                // if (numBounces >= maxBounces) {return results;}
-                if (hit.collider != null)
-                {
-                    numBounces++;
-                    if (numBounces == 2) break;
-                    // Move directly to the collision point.
-                    pos = hit.point;
+       for (int i = 0; i < 1000; i++){
+         moveStep = velocity * timeStep;
+         if (numBounces < 2){
+             float projectileRadius = 0.5f; // adjust this to your projectile's size
+             RaycastHit2D hit = Physics2D.CircleCast(pos, projectileRadius, velocity, moveStep.magnitude, collisionMask);
+             // if (numBounces >= maxBounces) {return results;}
+             if (hit.collider != null)
+             {
+                 numBounces++;
+                 if (numBounces == 2) break;
+                 // Move directly to the collision point.
+                 pos = hit.point;
 
-                    // Reflect the velocity against the normal.
-                    velocity = Vector2.Reflect(velocity, hit.normal) * bounciness;
+                 // Reflect the velocity against the normal.
+                 velocity = Vector2.Reflect(velocity, hit.normal) * bounciness;
 
-                    // Using the remaining timeStep for the next move after reflection.
-                    float
-                        remainingTime =
-                            timeStep * (1 -
-                                        hit.fraction); // hit.fraction gives us the fraction of the raycast distance at which the hit occurred.
-                    moveStep = velocity * remainingTime;
+                 // Using the remaining timeStep for the next move after reflection.
+                 float remainingTime = timeStep * (1 - hit.fraction); // hit.fraction gives us the fraction of the raycast distance at which the hit occurred.
+                 moveStep = velocity * remainingTime;
 
-                    pos += moveStep;
-                }
-                else
-                {
-                    pos += moveStep;
-                }
+                 pos += moveStep;
 
-                results.Add(pos);
-            }
-            else
-            {
-                break;
-            }
-        }
+             }
+             else
+             {
+                 if (useCurvedTrajectory){
+                   velocity += Physics2D.gravity*3*timeStep;
+                 }
 
-        return results.ToArray();
-    }
+                 pos += moveStep;
+             }
+             results.Add(pos);
+         }
+         else {
+           break;
+         }
+       }
+
+       return results.ToArray();
+   }
+
+
+
 
     Texture2D CreateDashedTexture(int width, int height, Color dashColor, float dashPercentage = 0.5f)
     {
@@ -399,26 +443,24 @@ public class GunController : MonoBehaviour
                 texture.SetPixel(x, y, inDash ? dashColor : Color.clear);
             }
         }
-
         texture.Apply();
         return texture;
     }
 
-    void DisplayTrajectory()
-    {
-        Vector2 startPos = (Vector2)transform.position;
-        Vector2 endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 _velocity = (endPos - startPos) * 50f;
+    void DisplayTrajectory(){
+      Vector2 startPos = (Vector2)transform.position;
+      Vector2 endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      Vector2 _velocity = (endPos - startPos);
+      _velocity.Normalize();
+      _velocity*=bulletSpeed;
 
-        Vector2[] trajectory = Plot(rb, (Vector2)transform.position, _velocity, numTrajectoryPoints);
-        lr.positionCount = trajectory.Length;
-        Vector3[] positions = new Vector3[trajectory.Length];
-        for (int i = 0; i < positions.Length; i++)
-        {
-            positions[i] = trajectory[i];
-        }
-
-        lr.SetPositions(positions);
+      Vector2[] trajectory = Plot(rb, (Vector2)transform.position, _velocity, numTrajectoryPoints, useCurvedTrajectory);
+      lr.positionCount = trajectory.Length;
+      Vector3[] positions = new Vector3[trajectory.Length];
+      for (int i = 0; i < positions.Length; i++) {
+        positions[i] = trajectory[i];
+      }
+      lr.SetPositions(positions);
     }
 
     private class ShotDetails
