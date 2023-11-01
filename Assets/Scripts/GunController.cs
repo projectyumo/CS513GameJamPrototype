@@ -30,6 +30,9 @@ public class GunController : MonoBehaviour
     
     // Store the colliders of all the ghost balls
     private List<Collider2D> _ghostBallColliders = new List<Collider2D>();
+    
+    // Store the colliders of all the regular balls
+    private List<Collider2D> _ballColliders = new List<Collider2D>();
 
     private float bulletSpeed = 0f;
     public float minBulletSpeed = 5f;
@@ -89,6 +92,20 @@ public class GunController : MonoBehaviour
         foreach (GameObject ghostBall in GameObject.FindGameObjectsWithTag("GhostBall"))
         {
             _ghostBallColliders.Add(ghostBall.GetComponent<Collider2D>());
+        }
+        
+        // Get all the regular ball colliders
+        foreach (GameObject ball in GameObject.FindGameObjectsWithTag("Ball"))
+        {
+            _ballColliders.Add(ball.GetComponent<Collider2D>());
+        }
+        // Disable the colliders between regular balls and ghost balls
+        foreach (Collider2D ballCollider in _ballColliders)
+        {
+            foreach (Collider2D ghostBallCollider in _ghostBallColliders)
+            {
+                Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
+            }
         }
 
     }
