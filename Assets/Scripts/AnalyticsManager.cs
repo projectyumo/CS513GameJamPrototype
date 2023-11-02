@@ -9,9 +9,14 @@ public class LevelData
     public string levelSessionId;
     public int shotsTaken;
     public int[] ballsPerPocket = new int[maxPocketCount];
+    // Balls knocked analytics
     public int ballsKnockedOff;
     public int ballsKnockedByPlayer;
     public int ballsKnockedByGhost;
+    // Barrier interaction analytics
+    public int barrierPlayerCollisions;
+    public int barrierGhostCollisions;
+    
     public int bulletCollisions;
     public long timeTaken;
     public int currentLevel;

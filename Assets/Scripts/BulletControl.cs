@@ -53,6 +53,7 @@ public class BulletControl : MonoBehaviour
                 break;
 
             case "Barrier":
+                BarrierInteractionAnalytics(thisName);
                 if (thisName == "activeGhost")
                     Destroy(other);
                 break;
@@ -79,6 +80,8 @@ public class BulletControl : MonoBehaviour
         }
     }
 
+    // This analytic will help us understand how effectively is the player using the ghost.
+    // High hits by player than ghost indicates that the player is not using the ghost effectively.
     void CaptureBallKnockedAnalytics(string thisName)
     {
         switch (thisName)
@@ -88,6 +91,23 @@ public class BulletControl : MonoBehaviour
                 break;
             case "activeGhost":
                 _analyticsManager.ld.ballsKnockedByGhost++;
+                break;
+        }
+        
+        _analyticsManager.LogAnalytics();
+    }
+
+    // This analytic will help us understand how often players are targeting or accidentally hitting the Barrier.
+    // High hits by player indicates player confusion, depending on the level design.
+    void BarrierInteractionAnalytics(string thisName)
+    {
+        switch (thisName)
+        {
+            case "Bullet(Clone)":
+                _analyticsManager.ld.barrierPlayerCollisions++;
+                break;
+            case "activeGhost":
+                _analyticsManager.ld.barrierGhostCollisions++;
                 break;
         }
         
