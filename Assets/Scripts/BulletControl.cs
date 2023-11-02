@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class BulletControl : MonoBehaviour
@@ -7,8 +6,7 @@ public class BulletControl : MonoBehaviour
     private GunController _gunController;
     public int minVelocity = 4;
     // Track active bullets count
-    public static int activeBulletCount = 0;
-    private int totalBounces = 0;
+    public static int activeBulletCount;
 
     void Start()
     {
@@ -29,7 +27,6 @@ public class BulletControl : MonoBehaviour
     //Detect collisions between the appropriate surfaces
     void OnCollisionEnter2D(Collision2D collision)
     {
-        totalBounces++;
         //Check for a collision with Ball
         if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("GhostBall") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
         {
@@ -47,6 +44,11 @@ public class BulletControl : MonoBehaviour
         {
              _analyticsManager.ld.bulletCollisions++;
              _analyticsManager.LogAnalytics();
+        }
+        
+        if (gameObject.name == "activeGhost" && collision.gameObject.CompareTag("Barrier"))
+        {
+             Destroy(collision.gameObject);
         }
     }
 
