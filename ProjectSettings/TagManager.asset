@@ -16,6 +16,7 @@ TagManager:
   - GhostWall
   - GhostPlayerTutorialText
   - GhostBall
+  - Barrier
   layers:
   - Default
   - TransparentFX
