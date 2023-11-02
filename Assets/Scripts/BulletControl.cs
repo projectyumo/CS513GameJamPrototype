@@ -27,31 +27,46 @@ public class BulletControl : MonoBehaviour
     //Detect collisions between the appropriate surfaces
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //Check for a collision with Ball
-        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("GhostBall") || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Pocket"))
+        var other = collision.gameObject;
+        var otherTag = other.tag;
+        var thisName = gameObject.name;
+
+        switch (otherTag)
         {
-            Destroy(gameObject);
+            case "Ball":
+                CaptureBallKnockedAnalytics(thisName);
+                Destroy(gameObject);
+                break;
+            case "GhostBall":
+                CaptureBallKnockedAnalytics(thisName);
+                Destroy(gameObject);
+                break;
+            
+            case "Ground":
+            case "Pocket":
+                Destroy(gameObject);
+                break;
+
+            case "GhostWall":
+                if (thisName == "Bullet(Clone)")
+                    Destroy(gameObject);
+                break;
+
+            case "Barrier":
+                if (thisName == "activeGhost")
+                    Destroy(other);
+                break;
         }
 
-        if (gameObject.name == "Bullet(Clone)" && collision.gameObject.CompareTag("GhostWall")) {
-            Destroy(gameObject);
-        }
-        // if (totalBounces > 4){
-        //     Destroy(gameObject);
-        // }
-        // Update stats if bullet collides with another bullet
-        if (collision.gameObject.name == "activeGhost")
+        // S_TODO: Maybe not an useful analytic now?
+        // Check for collision with another bullet
+        if (other.name == "activeGhost" && thisName != "Bullet(Clone)")
         {
-             _analyticsManager.ld.bulletCollisions++;
-             _analyticsManager.LogAnalytics();
-        }
-        
-        if (gameObject.name == "activeGhost" && collision.gameObject.CompareTag("Barrier"))
-        {
-             Destroy(collision.gameObject);
+            _analyticsManager.ld.bulletCollisions++;
+            _analyticsManager.LogAnalytics();
         }
     }
-
+    
     // Decrement activeBulletCount when the bullet is destroyed
     void OnDestroy()
     {
@@ -62,5 +77,20 @@ public class BulletControl : MonoBehaviour
         {
             _gunController.SaveBulletPosition(gameObject.transform.position);
         }
+    }
+
+    void CaptureBallKnockedAnalytics(string thisName)
+    {
+        switch (thisName)
+        {
+            case "Bullet(Clone)":
+                _analyticsManager.ld.ballsKnockedByPlayer++;
+                break;
+            case "activeGhost":
+                _analyticsManager.ld.ballsKnockedByGhost++;
+                break;
+        }
+        
+        _analyticsManager.LogAnalytics();
     }
 }

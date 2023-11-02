@@ -17,7 +17,7 @@ public class GunController : MonoBehaviour
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
 
     // Tracks if the current bullet shot is the last bullet among remaining shots.
-    private bool isLastBullet = false;
+    private bool isLastBullet;
 
     // Tracks the previous bullet positions when the bullet disappears.
     public Queue<Vector3> prevBulletPositions = new Queue<Vector3>();
@@ -34,20 +34,20 @@ public class GunController : MonoBehaviour
     // Store the colliders of all the regular balls
     private List<Collider2D> _ballColliders = new List<Collider2D>();
 
-    private float bulletSpeed = 0f;
+    private float bulletSpeed;
     public float minBulletSpeed = 5f;
     public float maxBulletSpeed = 40f;
     private float chargeRate = 50f;
     private float maxCharge = 100f;
     private float minCharge = 0f;
-    private float currentCharge = 0f;
+    private float currentCharge;
     private string spritePath = "Assets/Icons/aim_pointer.png";
     private int numTrajectoryPoints = 50;
-    private bool showTrajectory = false;
+    private bool showTrajectory;
     private bool isChargeIncreasing = true;
     private bool isFirstGhostPlayer = true;
 
-    private bool useCurvedTrajectory = false;
+    private bool useCurvedTrajectory;
     private SpriteRenderer parentSpriteRenderer;
 
     Rigidbody2D rb;
@@ -372,22 +372,21 @@ public class GunController : MonoBehaviour
             // Destroy ghost player
             Destroy(go);
         }
-        else
-        {
-            // S_TODO: Add shot data to analytics for ghost bullet as well
-            ShotData shotData = new ShotData(
-                shotDetail.Position.x,
-                shotDetail.Position.y,
-                shotDetail.Position.z,
-                shotDetail.Direction.x,
-                shotDetail.Direction.y,
-                shotDetail.Velocity.x,
-                shotDetail.Velocity.y
-            );
-            _analyticsManager.ld.shotsTaken++;
-            _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
-            _analyticsManager.LogAnalytics();
-        }
+        
+        // Log Shot data analytics
+        ShotData shotData = new ShotData(
+            isGhost,
+            shotDetail.Position.x,
+            shotDetail.Position.y,
+            shotDetail.Position.z,
+            shotDetail.Direction.x,
+            shotDetail.Direction.y,
+            shotDetail.Velocity.x,
+            shotDetail.Velocity.y
+        );
+        _analyticsManager.ld.shotsTaken++;
+        _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
+        _analyticsManager.LogAnalytics();
 
         Destroy(bullet, destroyTime);
 

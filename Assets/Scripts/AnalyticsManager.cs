@@ -10,6 +10,8 @@ public class LevelData
     public int shotsTaken;
     public int[] ballsPerPocket = new int[maxPocketCount];
     public int ballsKnockedOff;
+    public int ballsKnockedByPlayer;
+    public int ballsKnockedByGhost;
     public int bulletCollisions;
     public long timeTaken;
     public int currentLevel;
@@ -43,7 +45,7 @@ public class AnalyticsManager : MonoBehaviour
         ld.timeUpdated = System.DateTimeOffset.Now.ToUnixTimeSeconds();
         ld.timeTaken = ld.timeUpdated - ld.timeStarted;
         string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(ld);
-        string url = $"{DatabaseURL}analytics_v4/{ld.levelSessionId}.json";
+        string url = $"{DatabaseURL}analytics_v5/{ld.levelSessionId}.json";
         StartCoroutine(PushDataCoroutine(url, jsonPayload));
     }
 
@@ -63,10 +65,10 @@ public class AnalyticsManager : MonoBehaviour
         {
             Debug.LogError(request.error);
         }
-        // else
-        // {
-        //     Debug.Log("Analytics logged successfully");
-        //     Debug.Log(jsonPayload);
-        // }
+        else
+        {
+            Debug.Log("Analytics logged successfully");
+            Debug.Log(jsonPayload);
+        }
     }
 }
