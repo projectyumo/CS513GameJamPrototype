@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
     public GameObject tutorial;
     public TextMeshProUGUI ghostPlayerTutorialText;
     public TextMeshProUGUI barrierTutorialText;
+    public TextMeshProUGUI ReduceGhostBulletSizeText;
 
     public string levelName;
 
@@ -55,7 +56,12 @@ public class LevelManager : MonoBehaviour
         {
             barrierTutorialText = GameObject.FindGameObjectWithTag("BarrierTutorialText").GetComponent<TextMeshProUGUI>();
         }
-        
+
+        if (GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText"))
+        {
+            ReduceGhostBulletSizeText = GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText").GetComponent<TextMeshProUGUI>();
+        }
+
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -85,6 +91,11 @@ public class LevelManager : MonoBehaviour
         if (barrierTutorialText != null)
         {
             ShowBarrierTutorialText();
+        }
+
+        if (ReduceGhostBulletSizeText != null)
+        {
+            ShowReduceGhostBulletSizeText();
         }
 
         SetFeatureFlags();
@@ -269,4 +280,19 @@ public class LevelManager : MonoBehaviour
     {
         barrierTutorialText.gameObject.SetActive(false);
     }
+
+    public void ShowReduceGhostBulletSizeText()
+    {
+        if (ghostPlayerTutorialText != null)
+        {
+            ghostPlayerTutorialText.gameObject.SetActive(true);
+            Invoke("HideGhostPlayerTutorialText", 5);
+        }
+    }
+
+    private void HideReduceGhostBulletSizeTextt()
+    {
+        ghostPlayerTutorialText.gameObject.SetActive(false);
+    }
+
 }

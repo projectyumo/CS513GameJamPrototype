@@ -13,6 +13,7 @@ public class GunController : MonoBehaviour
     private PlayerController _playerController;
     private int destroyTime = 5;
 
+    public bool PowerUp;
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
 
@@ -333,6 +334,11 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
+            if (PowerUp)
+            {
+                bullet.transform.localScale *= 0.5f;
+                PowerUp = false;
+            }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -507,6 +513,18 @@ public class GunController : MonoBehaviour
         positions[i] = trajectory[i];
       }
       lr.SetPositions(positions);
+    }
+    
+    public void ReduceGhostBulletSize()
+    {
+        UnityEngine.Debug.Log("Reduce size.");
+        if (levelManager.currentLevel == 9)
+        {
+            PowerUp = true;
+            levelManager.BulletCountDown();
+            _analyticsManager.ld.powerup++;
+        }
+
     }
 
     private class ShotDetails
