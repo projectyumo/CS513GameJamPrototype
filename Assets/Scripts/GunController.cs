@@ -13,7 +13,6 @@ public class GunController : MonoBehaviour
     private PlayerController _playerController;
     private int destroyTime = 5;
 
-    public bool PowerUp;
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
 
@@ -28,10 +27,10 @@ public class GunController : MonoBehaviour
 
     // Store the colliders of all the glass shelves
     private List<Collider2D> _glassShelfColliders = new List<Collider2D>();
-    
+
     // Store the colliders of all the ghost balls
     private List<Collider2D> _ghostBallColliders = new List<Collider2D>();
-    
+
     // Store the colliders of all the regular balls
     private List<Collider2D> _ballColliders = new List<Collider2D>();
 
@@ -44,7 +43,7 @@ public class GunController : MonoBehaviour
     private float currentCharge;
     private string spritePath = "Assets/Icons/aim_pointer.png";
     private int numTrajectoryPoints = 50;
-    private bool showTrajectory;
+    private bool showTrajectory = false;
     private bool isChargeIncreasing = true;
     private bool isFirstGhostPlayer = true;
 
@@ -88,13 +87,13 @@ public class GunController : MonoBehaviour
         {
             _glassShelfColliders.Add(glassShelf.GetComponent<Collider2D>());
         }
-        
+
         // Get all the ghost ball colliders
         foreach (GameObject ghostBall in GameObject.FindGameObjectsWithTag("GhostBall"))
         {
             _ghostBallColliders.Add(ghostBall.GetComponent<Collider2D>());
         }
-        
+
         // Get all the regular ball colliders
         foreach (GameObject ball in GameObject.FindGameObjectsWithTag("Ball"))
         {
@@ -128,7 +127,7 @@ public class GunController : MonoBehaviour
             ghostPlayer.transform.rotation = transform.rotation;
         }
 
-        if (showTrajectory) DisplayTrajectory();
+        if (showTrajectory && _playerController.GetPlayerMovement()) DisplayTrajectory();
 
         if (levelManager.bulletCount == 0)
         {
@@ -136,19 +135,21 @@ public class GunController : MonoBehaviour
         }
 
         // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
-        if (showTrajectory && Input.GetKeyDown(KeyCode.Space)) {
+        // TODO: Tracking whether current player is ghost vs player is a hack...
+        if (showTrajectory && Input.GetKeyDown(KeyCode.Space) && _playerController.GetPlayerMovement() && !transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy) {
             useCurvedTrajectory = !useCurvedTrajectory;
-
-            // Speed changed for projectile shot to improve efficacy of mechanic
-            // Loads sprites for user knowledge of which shot they're on
-            if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
-              maxBulletSpeed = 30f;
-              parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
-            } else {
-              maxBulletSpeed = 35f;
-              parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
+            if (parentSpriteRenderer!=null){
+              // Speed changed for projectile shot to improve efficacy of mechanic
+              // Loads sprites for user knowledge of which shot they're on
+              if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
+                maxBulletSpeed = 30f;
+                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+              } else{
+                maxBulletSpeed = 35f;
+                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
+              }
+              parentSpriteRenderer.size = new Vector2(1f, 1f);
             }
-            parentSpriteRenderer.size = new Vector2(1f, 1f);
         }
 
         // While mouse is being held down, shot will charge
@@ -178,7 +179,7 @@ public class GunController : MonoBehaviour
             if (bulletSpeed >= minBulletSpeed)
             {
                 Shoot();
-
+                lr.positionCount = 0;
                 if (levelManager.featureFlags.projectile)
                 {
                     // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
@@ -334,11 +335,6 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (PowerUp)
-            {
-                bullet.transform.localScale *= 0.5f;
-                PowerUp = false;
-            }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -350,7 +346,7 @@ public class GunController : MonoBehaviour
             {
                 if (ghostBallCollider)
                 {
-                    Physics2D.IgnoreCollision(bulletCollider, ghostBallCollider, true);   
+                    Physics2D.IgnoreCollision(bulletCollider, ghostBallCollider, true);
                 }
             }
         }
@@ -378,7 +374,7 @@ public class GunController : MonoBehaviour
             // Destroy ghost player
             Destroy(go);
         }
-        
+
         // Log Shot data analytics
         ShotData shotData = new ShotData(
             isGhost,
@@ -432,6 +428,8 @@ public class GunController : MonoBehaviour
             playerObj.GetComponent<SpriteRenderer>().color = Color.white;
             _playerController.SetPlayerMovement(true);
         }
+
+        useCurvedTrajectory = false;
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
@@ -513,18 +511,6 @@ public class GunController : MonoBehaviour
         positions[i] = trajectory[i];
       }
       lr.SetPositions(positions);
-    }
-    
-    public void ReduceGhostBulletSize()
-    {
-        UnityEngine.Debug.Log("Reduce size.");
-        if (levelManager.currentLevel == 9)
-        {
-            PowerUp = true;
-            levelManager.BulletCountDown();
-            _analyticsManager.ld.powerup++;
-        }
-
     }
 
     private class ShotDetails
