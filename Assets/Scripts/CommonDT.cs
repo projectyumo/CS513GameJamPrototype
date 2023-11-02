@@ -6,6 +6,7 @@ public enum LevelState
 }
 public struct ShotData
 {
+    public bool IsGhost;
     public float PositionX;
     public float PositionY;
     public float PositionZ;
@@ -14,8 +15,9 @@ public struct ShotData
     public float VelocityX;
     public float VelocityY;
 
-    public ShotData(float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY)
+    public ShotData(bool isGhost, float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY)
     {
+        IsGhost = isGhost;
         PositionX = positionX;
         PositionY = positionY;
         PositionZ = positionZ;
