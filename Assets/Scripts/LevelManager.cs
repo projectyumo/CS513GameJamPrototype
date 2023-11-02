@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     public GameManager gameManager;
     public GameObject tutorial;
     public TextMeshProUGUI ghostPlayerTutorialText;
+    public TextMeshProUGUI barrierTutorialText;
 
     public string levelName;
 
@@ -50,7 +51,11 @@ public class LevelManager : MonoBehaviour
         {
             ghostPlayerTutorialText = GameObject.FindGameObjectWithTag("GhostPlayerTutorialText").GetComponent<TextMeshProUGUI>();
         }
-
+        if (GameObject.FindGameObjectWithTag("BarrierTutorialText"))
+        {
+            barrierTutorialText = GameObject.FindGameObjectWithTag("BarrierTutorialText").GetComponent<TextMeshProUGUI>();
+        }
+        
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -77,6 +82,10 @@ public class LevelManager : MonoBehaviour
         {
             ghostPlayerTutorialText.gameObject.SetActive(false);
         }
+        if (barrierTutorialText != null)
+        {
+            ShowBarrierTutorialText();
+        }
 
         SetFeatureFlags();
     }
@@ -98,7 +107,7 @@ public class LevelManager : MonoBehaviour
             // Core mechanic
             featureFlags.coreMechanic = true;
         }
-        if (currentLevel == 8 || currentLevel == 9)
+        if (currentLevel > 9)
         {
             featureFlags.projectile = true;
             featureFlags.coreMechanic = true;
@@ -245,5 +254,19 @@ public class LevelManager : MonoBehaviour
     private void HideGhostPlayerTutorialText()
     {
         ghostPlayerTutorialText.gameObject.SetActive(false);
+    }
+    
+    private void ShowBarrierTutorialText()
+    {
+        if (barrierTutorialText != null)
+        {
+            barrierTutorialText.gameObject.SetActive(true);
+            Invoke("HideBarrierTutorialText", 5);
+        }
+    }
+
+    private void HideBarrierTutorialText()
+    {
+        barrierTutorialText.gameObject.SetActive(false);
     }
 }

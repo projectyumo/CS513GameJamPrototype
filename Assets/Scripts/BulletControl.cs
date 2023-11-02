@@ -58,7 +58,7 @@ public class BulletControl : MonoBehaviour
         activeBulletCount--;
 
         // Save position of the bullet when it is destroyed for the echo shot player
-        if (gameObject.name == "Bullet(Clone)")
+        if (gameObject != null && gameObject.name == "Bullet(Clone)")
         {
             _gunController.SaveBulletPosition(gameObject.transform.position);
         }
