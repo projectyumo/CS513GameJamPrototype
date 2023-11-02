@@ -8,6 +8,8 @@ public class BulletControl : MonoBehaviour
     // Track active bullets count
     public static int activeBulletCount;
 
+    public bool noDestroy = false;
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -19,7 +21,8 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
-        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost"){
+        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost")
+        {
             Destroy(gameObject);
         }
     }

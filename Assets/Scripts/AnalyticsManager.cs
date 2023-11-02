@@ -25,6 +25,7 @@ public class LevelData
     public long timeStarted;
     public long timeUpdated;
     public ShotData[] shots = new ShotData[maxShotCount];
+    public int powerup;
 }
 
 public class AnalyticsManager : MonoBehaviour
