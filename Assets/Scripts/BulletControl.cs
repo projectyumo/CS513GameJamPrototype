@@ -52,6 +52,8 @@ public class BulletControl : MonoBehaviour
 
             case "GhostWall":
                 if (thisName == "Bullet(Clone)")
+                    _analyticsManager.ld.ghostWallContact++;
+                    _analyticsManager.LogAnalytics();
                     Destroy(gameObject);
                 break;
 
