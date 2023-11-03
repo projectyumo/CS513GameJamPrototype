@@ -8,7 +8,10 @@ public class LevelData
     public string gameSessionId;
     public string levelSessionId;
     public int shotsTaken;
+    // Score analytics
     public int[] ballsPerPocket = new int[maxPocketCount];
+    public int totalScore;
+    public int levelScore;
     // Balls knocked analytics
     public int ballsKnockedOff;
     public int ballsKnockedByPlayer;
@@ -75,8 +78,8 @@ public class AnalyticsManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Analytics logged successfully");
-            Debug.Log(jsonPayload);
+            // Debug.Log("Analytics logged successfully");
+            // Debug.Log(jsonPayload);
         }
     }
 }

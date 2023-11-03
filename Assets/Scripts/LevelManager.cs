@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
         bulletCountText.text = remainingShotsText + bulletCount.ToString();
-        pointText.text = scoreText + totalPoints.ToString();
+        pointText.text = scoreText + gameManager.totalScore.ToString();
         if (currentLevel == 0)
         {
             levelText.text = currentLevelText + "Tutorial";
@@ -143,9 +143,12 @@ public class LevelManager : MonoBehaviour
 
     public void AddPoints(int points, int pocketNumber)
     {
+        gameManager.totalScore += points;
         totalPoints += points;
-        pointText.text = scoreText + totalPoints.ToString();
+        pointText.text = scoreText + gameManager.totalScore.ToString();
         _analyticsManager.ld.ballsPerPocket[pocketNumber - 1]++;
+        _analyticsManager.ld.totalScore = gameManager.totalScore;
+        _analyticsManager.ld.levelScore = totalPoints;
         _analyticsManager.LogAnalytics();
     }
 

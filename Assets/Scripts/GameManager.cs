@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     // Unique ID for game session
     private readonly string _gameSessionId = System.Guid.NewGuid().ToString();
     public string mainMenuSceneName = "MainMenu";
+    public int totalScore;
 
     // On Awake, set up the Singleton pattern
     private void Awake()
