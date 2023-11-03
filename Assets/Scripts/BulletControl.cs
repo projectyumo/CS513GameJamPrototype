@@ -38,11 +38,11 @@ public class BulletControl : MonoBehaviour
         {
             case "Ball":
                 CaptureBallKnockedAnalytics(thisName);
-                Destroy(gameObject);
+                // Destroy(gameObject);
                 break;
             case "GhostBall":
                 CaptureBallKnockedAnalytics(thisName);
-                Destroy(gameObject);
+                // Destroy(gameObject);
                 break;
             
             case "Ground":
@@ -52,9 +52,12 @@ public class BulletControl : MonoBehaviour
 
             case "GhostWall":
                 if (thisName == "Bullet(Clone)")
+                {
                     _analyticsManager.ld.ghostWallContact++;
                     _analyticsManager.LogAnalytics();
                     Destroy(gameObject);
+                }
+
                 break;
 
             case "Barrier":
