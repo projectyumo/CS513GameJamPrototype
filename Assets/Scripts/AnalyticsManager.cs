@@ -16,6 +16,8 @@ public class LevelData
     // Barrier interaction analytics
     public int barrierPlayerCollisions;
     public int barrierGhostCollisions;
+    // Ghost wall analytics
+    public int ghostWallContact;
     
     public int bulletCollisions;
     public long timeTaken;
