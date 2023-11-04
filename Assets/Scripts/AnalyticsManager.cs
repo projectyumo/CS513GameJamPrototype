@@ -21,6 +21,9 @@ public class LevelData
     public int barrierGhostCollisions;
     // Ghost wall analytics
     public int ghostWallContact;
+    // Glass shelf analytics
+    public int glassShelfPassthroughs;
+    public int glassShelfCollisions;
     
     public int bulletCollisions;
     public long timeTaken;
@@ -76,10 +79,10 @@ public class AnalyticsManager : MonoBehaviour
         {
             Debug.LogError(request.error);
         }
-        else
-        {
-            // Debug.Log("Analytics logged successfully");
-            // Debug.Log(jsonPayload);
-        }
+        // else
+        // {
+        //     Debug.Log("Analytics logged successfully");
+        //     Debug.Log(jsonPayload);
+        // }
     }
 }

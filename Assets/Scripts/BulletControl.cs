@@ -4,7 +4,9 @@ public class BulletControl : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
     private GunController _gunController;
+
     public int minVelocity = 4;
+
     // Track active bullets count
     public static int activeBulletCount;
 
@@ -21,7 +23,7 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
-        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name!="idleGhost")
+        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name != "idleGhost")
         {
             Destroy(gameObject);
         }
@@ -44,7 +46,7 @@ public class BulletControl : MonoBehaviour
                 CaptureBallKnockedAnalytics(thisName);
                 // Destroy(gameObject);
                 break;
-            
+
             case "Ground":
             case "Pocket":
                 Destroy(gameObject);
@@ -75,7 +77,7 @@ public class BulletControl : MonoBehaviour
             _analyticsManager.LogAnalytics();
         }
     }
-    
+
     // Decrement activeBulletCount when the bullet is destroyed
     void OnDestroy()
     {
@@ -84,7 +86,10 @@ public class BulletControl : MonoBehaviour
         // Save position of the bullet when it is destroyed for the echo shot player
         if (gameObject != null && gameObject.name == "Bullet(Clone)")
         {
-            _gunController.SaveBulletPosition(gameObject.transform.position);
+            if (_gunController != null && gameObject != null)
+            {
+                _gunController.SaveBulletPosition(gameObject.transform.position);
+            }
         }
     }
 
@@ -101,7 +106,7 @@ public class BulletControl : MonoBehaviour
                 _analyticsManager.ld.ballsKnockedByGhost++;
                 break;
         }
-        
+
         _analyticsManager.LogAnalytics();
     }
 
@@ -118,7 +123,7 @@ public class BulletControl : MonoBehaviour
                 _analyticsManager.ld.barrierGhostCollisions++;
                 break;
         }
-        
+
         _analyticsManager.LogAnalytics();
     }
 }
