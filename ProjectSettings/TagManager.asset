@@ -19,6 +19,8 @@ TagManager:
   - Barrier
   - BarrierTutorialText
   - ReduceGhostBulletSizeText
+  - GhostBullet
+  - Bullet
   layers:
   - Default
   - TransparentFX
