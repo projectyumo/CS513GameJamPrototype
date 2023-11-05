@@ -9,14 +9,9 @@ public class LevelData
     public string levelSessionId;
     public int shotsTaken;
     public int[] ballsPerPocket = new int[maxPocketCount];
-    // Balls knocked analytics
     public int ballsKnockedOff;
     public int ballsKnockedByPlayer;
     public int ballsKnockedByGhost;
-    // Barrier interaction analytics
-    public int barrierPlayerCollisions;
-    public int barrierGhostCollisions;
-    
     public int bulletCollisions;
     public long timeTaken;
     public int currentLevel;
@@ -25,7 +20,6 @@ public class LevelData
     public long timeStarted;
     public long timeUpdated;
     public ShotData[] shots = new ShotData[maxShotCount];
-    public int powerup;
 }
 
 public class AnalyticsManager : MonoBehaviour

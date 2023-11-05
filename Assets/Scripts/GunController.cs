@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class GunController : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class GunController : MonoBehaviour
     private bool isChargeIncreasing = true;
     private bool isFirstGhostPlayer = true;
 
+    private bool dragShot = false;
     private bool useCurvedTrajectory;
     private SpriteRenderer parentSpriteRenderer;
 
@@ -63,13 +65,10 @@ public class GunController : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
+        // if (levelManager.featureFlags.projectile)
+        // {}
+        StartCoroutine(InitializeSpriteRenderer());
 
-        if (levelManager.featureFlags.projectile)
-        {
-            // Sprite renderer to toggle projectile shot.
-            parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
-            parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
-        }
 
         rb = GetComponent<Rigidbody2D>();
         lr = GetComponent<LineRenderer>();
@@ -110,8 +109,24 @@ public class GunController : MonoBehaviour
 
     }
 
+    private IEnumerator InitializeSpriteRenderer()
+    {
+        // Wait until transform.parent and its SpriteRenderer component are not null
+        while (transform.parent == null || transform.parent.GetComponent<SpriteRenderer>() == null)
+        {
+            yield return null;  // Wait for next frame
+        }
+
+        parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+        // Sprite renderer to toggle projectile shot.
+        parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+
+        // Any other code you want to run after initializing parentSpriteRenderer goes here
+    }
+
     void Update()
     {
+
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
 
@@ -127,7 +142,7 @@ public class GunController : MonoBehaviour
             ghostPlayer.transform.rotation = transform.rotation;
         }
 
-        if (showTrajectory && _playerController.GetPlayerMovement()) DisplayTrajectory();
+        if (showTrajectory && _playerController.GetPlayerMovement() && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite") DisplayTrajectory();
 
         if (levelManager.bulletCount == 0)
         {
@@ -138,14 +153,15 @@ public class GunController : MonoBehaviour
         // TODO: Tracking whether current player is ghost vs player is a hack...
         if (showTrajectory && Input.GetKeyDown(KeyCode.Space) && _playerController.GetPlayerMovement() && !transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy) {
             useCurvedTrajectory = !useCurvedTrajectory;
+            lr.positionCount = 0;
             if (parentSpriteRenderer!=null){
               // Speed changed for projectile shot to improve efficacy of mechanic
               // Loads sprites for user knowledge of which shot they're on
               if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
-                maxBulletSpeed = 30f;
+                maxBulletSpeed = 40f;
                 parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
               } else{
-                maxBulletSpeed = 35f;
+                maxBulletSpeed = 45f;
                 parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
               }
               parentSpriteRenderer.size = new Vector2(1f, 1f);
@@ -155,9 +171,21 @@ public class GunController : MonoBehaviour
         // While mouse is being held down, shot will charge
         if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
         {
+            Debug.Log("Show Trajectory: " + showTrajectory);
+            Debug.Log("parentSpriteRenderer: " + parentSpriteRenderer);
+            if (parentSpriteRenderer != null){Debug.Log("parentSpriteRenderer.name: " + parentSpriteRenderer.sprite.name);}
+
             // Set Charge
             //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
-            SetCharge();
+            if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite") {
+              // SetCharge();
+              SetChargeCoreAlternative();
+              Debug.Log("Bullet Speed CORE ALT DOWN: " + bulletSpeed);
+            } else {
+              Debug.Log("Bullet Speed ALT DOWN: " + bulletSpeed);
+              SetChargeAlternative();
+            }
+
             SetSpritePathOnCharge();
             if (_isPlayer)
             {
@@ -168,12 +196,22 @@ public class GunController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && currentCharge > 0f)
         {
+            if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite") {
+              // SetCharge();
+              SetChargeCoreAlternative();
+              Debug.Log("Bullet Speed CORE ALT UP: " + bulletSpeed);
+            } else {
+              Debug.Log("Bullet Speed ALT UP: " + bulletSpeed);
+              SetChargeAlternative();
+            }
+
+            // bulletSpeed = maxBulletSpeed * currentCharge / maxCharge;
+            // bulletSpeed = Mathf.Max(bulletSpeed, 0);
+            // currentCharge = 0f;
+            // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
+
             // Don't want players to waste shot because they didn't know they needed to charge it
             // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
-            bulletSpeed = maxBulletSpeed * currentCharge / maxCharge;
-            bulletSpeed = Mathf.Max(bulletSpeed, 0);
-            currentCharge = 0f;
-            spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
 
             // Shoot bullet if it is charged enough
             if (bulletSpeed >= minBulletSpeed)
@@ -215,6 +253,25 @@ public class GunController : MonoBehaviour
         currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
         bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
         bulletSpeed = Mathf.Max(bulletSpeed, 0);
+    }
+
+    void SetChargeCoreAlternative()
+    {
+        //TODO (NOV4): Despite simplicity, maintaining this setup so we can change back based on Beta feedback
+        currentCharge = maxCharge;
+        bulletSpeed = maxBulletSpeed;
+    }
+
+    void SetChargeAlternative()
+    {
+      //TODO: CHECK MAX
+      Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+      difference.z = 0;
+      currentCharge = maxCharge*difference.magnitude/15f;
+      currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+
+      bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+      bulletSpeed = Mathf.Max(bulletSpeed, 0);
     }
 
     void SetSpritePathOnCharge()
