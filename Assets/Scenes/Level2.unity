@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7825013210250792475, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
       propertyPath: m_Name
-      value: GlassShelf1 (1)
+      value: GlassShelf3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
@@ -1872,7 +1872,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 76.8, y: -211.6}
+  m_AnchoredPosition: {x: 15.3, y: -349.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1576372016
@@ -1895,7 +1895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Only ghosts may pass through the glass
+  m_text: Only ghosts may pass through glass
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2140,8 +2140,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2328165373480419019, guid: 806005a1793c64069a942c1c0da6bf9f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.2706647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2328165373480419019, guid: 806005a1793c64069a942c1c0da6bf9f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.61
+      value: -19.6462
       objectReference: {fileID: 0}
     - target: {fileID: 2328165373480419019, guid: 806005a1793c64069a942c1c0da6bf9f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2282,8 +2286,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2241513034732588004, guid: c75c9485e1df04b5b80be4023df22523, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 35.838436
+      objectReference: {fileID: 0}
+    - target: {fileID: 2241513034732588004, guid: c75c9485e1df04b5b80be4023df22523, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4
+      value: 0.3638
       objectReference: {fileID: 0}
     - target: {fileID: 2241513034732588004, guid: c75c9485e1df04b5b80be4023df22523, type: 3}
       propertyPath: m_LocalPosition.y
