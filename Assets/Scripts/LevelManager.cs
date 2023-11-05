@@ -118,7 +118,7 @@ public class LevelManager : MonoBehaviour
             // Core mechanic
             featureFlags.coreMechanic = true;
         }
-        if (currentLevel > 9)
+        if (currentLevel > 11)
         {
             featureFlags.projectile = true;
             featureFlags.coreMechanic = true;
