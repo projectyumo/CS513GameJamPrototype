@@ -788,14 +788,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 529396274609735746, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -18.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 529396274609735746, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 12.6
-      objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834016, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
       propertyPath: m_Name
       value: Tutorial
@@ -843,34 +835,6 @@ PrefabInstance:
     - target: {fileID: 1557904435784834017, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1557904437404788085, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -9.5999975
-      objectReference: {fileID: 0}
-    - target: {fileID: 1557904437404788085, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.5259013
-      objectReference: {fileID: 0}
-    - target: {fileID: 2085782385400623972, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -390.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2085782385400623972, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 73.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878155178243304775, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -30.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 5676828055057200992, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 73.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5676828055057200992, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 189
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa54c7524152a419bb044b9f67c538fd, type: 3}
@@ -1453,6 +1417,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   tutorial: {fileID: 0}
   ghostPlayerTutorialText: {fileID: 0}
+  barrierTutorialText: {fileID: 0}
+  ReduceGhostBulletSizeText: {fileID: 0}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971
