@@ -67,9 +67,16 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
-        bulletCountText.text = bulletCount.ToString();
+        bulletCountText.text = remainingShotsText + bulletCount.ToString();
         pointText.text = gameManager.totalScore.ToString();
-        levelText.text = currentLevel.ToString();
+        if (currentLevel == 0)
+        {
+            levelText.text = currentLevelText + "Tutorial";
+        }
+        else
+        {
+            levelText.text = currentLevelText + currentLevel.ToString();
+        }
 
         tutorial = GameObject.FindGameObjectWithTag("Tutorial");
         if (tutorial != null && currentLevel != 0)
@@ -121,14 +128,14 @@ public class LevelManager : MonoBehaviour
     public void BulletCountDown()
     {
         bulletCount--;
-        string text;
+        string text = remainingShotsText;
         if (bulletCount < 0)
         {
-            text = "0";
+            text = remainingShotsText + "0";
         }
         else
         {
-            text = bulletCount.ToString();
+            text += bulletCount.ToString();
         }
 
         bulletCountText.text = text;
@@ -230,7 +237,27 @@ public class LevelManager : MonoBehaviour
     {
         _analyticsManager.ld.levelState = LevelState.InProgress;
         _analyticsManager.LogAnalytics();
+        DestroyAllBullets();
         gameManager.RestartCurrentScene();
+    }
+
+    private void DestroyAllBullets()
+    {
+        // Find all active bullet instances in the scene
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+        // Destroy each bullet instance
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+
+        GameObject[] ghostBullets = GameObject.FindGameObjectsWithTag("GhostBullet");
+        // Destroy each bullet instance
+        foreach (var ghostBullet in ghostBullets)
+        {
+            Destroy(ghostBullet);
+        }
     }
 
     public void ShowTutorial()
@@ -262,7 +289,7 @@ public class LevelManager : MonoBehaviour
     {
         ghostPlayerTutorialText.gameObject.SetActive(false);
     }
-    
+
     private void ShowBarrierTutorialText()
     {
         if (barrierTutorialText != null)
