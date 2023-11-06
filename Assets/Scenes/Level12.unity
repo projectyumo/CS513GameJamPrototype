@@ -151,7 +151,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1067320448}
   - {fileID: 313745184}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -1015,11 +1014,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4537354702702074398, guid: 0b22a3c755b334aa9b26f480a48a1722, type: 3}
   m_PrefabInstance: {fileID: 1055094032}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1067320448 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
-  m_PrefabInstance: {fileID: 1644224120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1113648969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,7 +1261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460567127284601890, guid: 30212ceea624743858d068f3aa81d5d8, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8460567127284601890, guid: 30212ceea624743858d068f3aa81d5d8, type: 3}
       propertyPath: m_LocalScale.x
@@ -1320,7 +1314,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 45129745}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1557904435784834016, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_Name
@@ -1328,23 +1322,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834016, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: CurvedShotTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6213201
+      value: 0.53456914
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.36
+      value: 17.53
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.163674
+      value: -10.159706
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_LocalRotation.w
