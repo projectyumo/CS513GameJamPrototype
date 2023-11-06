@@ -134,6 +134,13 @@ public class LevelManager : MonoBehaviour
         bulletCountText.text = text;
     }
 
+    public void BulletCountUp()
+    {
+        bulletCount++;
+        string text = bulletCount.ToString();;
+        bulletCountText.text = text;
+    }
+
     public void AddPoints(int points, int pocketNumber)
     {
         gameManager.totalScore += points;
