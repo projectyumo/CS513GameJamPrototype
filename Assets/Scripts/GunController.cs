@@ -193,9 +193,11 @@ public class GunController : MonoBehaviour
               if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
                 maxBulletSpeed = 30f;
                 parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+                levelManager.BulletCountUp();
               } else{
                 maxBulletSpeed = 35f;
                 parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
+                levelManager.BulletCountDown();
               }
               parentSpriteRenderer.size = new Vector2(1f, 1f);
             }
