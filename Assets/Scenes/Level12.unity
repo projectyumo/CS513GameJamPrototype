@@ -829,11 +829,11 @@ PrefabInstance:
     - target: {fileID: 2917009440281914557, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1113648970}
     - target: {fileID: 2917009440281914557, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1113648970}
     - target: {fileID: 2917009440281914557, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowTutorial
@@ -845,7 +845,7 @@ PrefabInstance:
     - target: {fileID: 6808012793953778675, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1113648970}
     - target: {fileID: 6808012793953778675, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartCurrentLevel
@@ -941,7 +941,7 @@ PrefabInstance:
     - target: {fileID: 8676854115975855741, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1113648970}
     - target: {fileID: 8676854115975855741, guid: 3362ab90921ca40dfa43c58abda4e298, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadMainMenuScene
