@@ -120,7 +120,7 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
         {
             powerUpButton.SetActive(false);
 
@@ -140,7 +140,7 @@ public class GunController : MonoBehaviour
         CheckMouseHover();
 
 
-        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
         {
             if (isGhostActive == true)
             {
@@ -453,7 +453,7 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
+            if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
             {
 
                 if (powerUp)
@@ -657,7 +657,7 @@ public class GunController : MonoBehaviour
     public void ReduceGhostBulletSize()
     {
         
-        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
         {
             PowerUpCount++;
             Debug.Log("Power Up After increase: " + PowerUpCount);
