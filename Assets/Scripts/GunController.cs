@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics;
 //using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
+    public Text ShowBooleanResult;
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
     public GameObject playerObj;
-    
+    bool IncreaseGhost = true;
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
@@ -66,7 +68,7 @@ public class GunController : MonoBehaviour
     public bool isGhostActive = false;
     public bool powerUp;
     public GameObject powerUpButton;
-
+    Vector3 OrginalGhost;
     public int PowerUpCount = 0;
 
     void Start()
@@ -158,6 +160,7 @@ public class GunController : MonoBehaviour
 
 
                 powerUpButton.SetActive(false);
+                PowerUpCount = 0;
             }
         }
         
@@ -464,6 +467,8 @@ public class GunController : MonoBehaviour
                     { 
                         bullet.transform.localScale /= 0.5f;
                     }
+
+                    Debug.Log("Power Up After : " + PowerUpCount);
                     powerUp = false;
                 }
             }
@@ -651,19 +656,26 @@ public class GunController : MonoBehaviour
 
     public void ReduceGhostBulletSize()
     {
-        PowerUpCount++;
+        
         if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
         {
+            PowerUpCount++;
+            Debug.Log("Power Up After increase: " + PowerUpCount);
             powerUp = true;
             if (PowerUpCount == 1)
             {
+                PowerUpCount = 1;
                 levelManager.BulletCountDown();
+                Debug.Log("Decrease the Ghost");
+                IncreaseGhost = false;
             }
-            else if (PowerUpCount == 2)
+            if (PowerUpCount == 2)
             {
                 levelManager.BulletCountUp();
+                Debug.Log("Set back to the same size");
+                IncreaseGhost = true;
                 PowerUpCount = 0;
-            }
+            } 
             _analyticsManager.ld.powerup++;
         }
     }
