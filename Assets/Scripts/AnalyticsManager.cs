@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
 using static GameConstants;
 
 public class LevelData
@@ -54,15 +56,33 @@ public class AnalyticsManager : MonoBehaviour
     // Method to log analytics to Firebase Realtime Database
     public void LogAnalytics()
     {
-        if (ld.gameSessionId == null || ld.levelSessionId == null)
-        {
-            Debug.LogWarning("Game session ID or level session ID is null");
-            return;
-        }
         ld.timeUpdated = System.DateTimeOffset.Now.ToUnixTimeSeconds();
         ld.timeTaken = ld.timeUpdated - ld.timeStarted;
         string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(ld);
         string url = $"{DatabaseURL}analytics_v5/{ld.levelSessionId}.json";
-        StartCoroutine(_gameManager.PushDataCoroutine(url, jsonPayload));
+        StartCoroutine(PushDataCoroutine(url, jsonPayload));
+    }
+
+    IEnumerator PushDataCoroutine(string url, string jsonPayload)
+    {
+        // Using PUT to overwrite data at the specified location or create it if not existent
+        using var request = new UnityWebRequest(url, "PUT");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        // else
+        // {
+        //     Debug.Log("Analytics logged successfully");
+        //     Debug.Log(jsonPayload);
+        // }
     }
 }

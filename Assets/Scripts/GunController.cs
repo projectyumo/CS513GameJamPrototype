@@ -130,7 +130,8 @@ public class GunController : MonoBehaviour
             ghostPlayer.transform.rotation = transform.rotation;
         }
 
-        if (showTrajectory && _playerController.GetPlayerMovement()) DisplayTrajectory();
+        // Only show trajectory for curved bullet.
+        if (showTrajectory && _playerController.GetPlayerMovement() && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite") DisplayTrajectory();
 
         if (levelManager.bulletCount == 0)
         {
@@ -141,6 +142,7 @@ public class GunController : MonoBehaviour
         // TODO: Tracking whether current player is ghost vs player is a hack...
         if (showTrajectory && Input.GetKeyDown(KeyCode.Space) && _playerController.GetPlayerMovement() && !transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy) {
             useCurvedTrajectory = !useCurvedTrajectory;
+            lr.positionCount = 0; // Reset Line renderer
             if (parentSpriteRenderer!=null){
               // Speed changed for projectile shot to improve efficacy of mechanic
               // Loads sprites for user knowledge of which shot they're on
@@ -160,8 +162,10 @@ public class GunController : MonoBehaviour
         {
             // Set Charge
             //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
-            SetCharge();
+            // SetCharge();
+            HandleCharge();
             SetSpritePathOnCharge();
+
             if (_isPlayer)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
@@ -171,25 +175,43 @@ public class GunController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && currentCharge > 0f && canPerformAction)
         {
-            // Don't want players to waste shot because they didn't know they needed to charge it
-            // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
-            bulletSpeed = maxBulletSpeed * currentCharge / maxCharge;
-            bulletSpeed = Mathf.Max(bulletSpeed, 0);
-            currentCharge = 0f;
-            spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/aim_pointer");
+            // SetCharge();
+            HandleCharge();
+            Shoot();
+            ResetBulletTrajectory();
+
+            // Removing the idea of "If charged enough" bullet will always shoot at max
 
             // Shoot bullet if it is charged enough
-            if (bulletSpeed >= minBulletSpeed)
-            {
-                Shoot();
-                lr.positionCount = 0;
-                if (levelManager.featureFlags.projectile)
-                {
-                    // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
-                    parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
-                    useCurvedTrajectory = false;
-                }
-            }
+            // if (bulletSpeed >= minBulletSpeed)
+            // {
+            //     Shoot();
+            //     ResetBulletTrajectory();
+            // }
+        }
+    }
+
+    void HandleCharge()
+    {
+        if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite")
+        {
+            SetChargeCoreAlternative();
+        }
+        else
+        {
+            SetChargeAlternative();
+        }
+    }
+
+    // Once you shoot, immediately reset the trajectory based variables.
+    void ResetBulletTrajectory()
+    {
+        lr.positionCount = 0;
+        if (levelManager.featureFlags.projectile)
+        {
+            // Reset curved trajectory so that player doesn't accidentally use it on ghost bullet
+            parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+            useCurvedTrajectory = false;
         }
     }
 
@@ -248,6 +270,26 @@ public class GunController : MonoBehaviour
         bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
         bulletSpeed = Mathf.Max(bulletSpeed, 0);
     }
+
+    void SetChargeCoreAlternative()
+    {
+        //TODO (NOV4): Despite simplicity, maintaining this setup so we can change back based on Beta feedback
+        currentCharge = maxCharge;
+        bulletSpeed = maxBulletSpeed;
+    }
+
+    void SetChargeAlternative()
+    {
+        //TODO: CHECK MAX
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        difference.z = 0;
+        currentCharge = maxCharge*difference.magnitude/15f;
+        currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+
+        bulletSpeed = maxBulletSpeed*currentCharge/maxCharge;
+        bulletSpeed = Mathf.Max(bulletSpeed, 0);
+    }
+
 
     void SetSpritePathOnCharge()
     {
