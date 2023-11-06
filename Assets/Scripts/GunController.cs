@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -14,8 +12,6 @@ public class GunController : MonoBehaviour
     public LevelManager levelManager;
     private PlayerController _playerController;
     private int destroyTime = 5;
-
-    public bool powerUp;
 
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
@@ -60,14 +56,7 @@ public class GunController : MonoBehaviour
     public LayerMask collisionMask; // Layer mask to detect ground or other objects to bounce off
     public int maxBounces = 3;
 
-<<<<<<< Updated upstream
     public bool canPerformAction = true;
-=======
-
-    public GameObject powerUpButton;
-    public Text text;
-    public bool isGhostActive = false;
->>>>>>> Stashed changes
 
     void Start()
     {
@@ -121,50 +110,11 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
-        {
-            powerUpButton.SetActive(false);
-        }
-        if (levelManager.currentLevel == 10)
-        {
-            text.gameObject.SetActive(false);
-        }
     }
-
-    IEnumerator settofalse()
-    {
-        yield return new WaitForSeconds(1);
-        isGhostActive = false;
-    }
-
 
     void Update()
     {
-<<<<<<< Updated upstream
         CheckMouseHover();
-=======
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
-        {
-            if (isGhostActive == true)
-            {
-                powerUpButton.SetActive(true);
-                if (levelManager.currentLevel == 10)
-                {
-                    text.gameObject.SetActive(true);
-                }
-            }
-
-            else
-            {
-                if (levelManager.currentLevel == 10)
-                {
-                    text.gameObject.SetActive(false);
-                }
-
-                powerUpButton.SetActive(false);
-            }
-        }
->>>>>>> Stashed changes
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
 
@@ -342,7 +292,6 @@ public class GunController : MonoBehaviour
 
     void CreateGhostPlayer()
     {
-        isGhostActive = true;
         // Get previous bullet disappear position
         Vector3 prevShotPosition = prevBulletPositions.Dequeue();
         // Instantiate ghost player with previous shot disappear position
@@ -418,14 +367,6 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
-            {
-                if (powerUp)
-                {
-                    bullet.transform.localScale *= 0.5f;
-                    powerUp = false;
-                }
-            }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -602,16 +543,6 @@ public class GunController : MonoBehaviour
         positions[i] = trajectory[i];
       }
       lr.SetPositions(positions);
-    }
-
-    public void ReduceGhostBulletSize()
-    {
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
-        {
-            powerUp = true;
-            levelManager.BulletCountDown();
-            _analyticsManager.ld.powerup++;
-        }
     }
 
     private class ShotDetails
