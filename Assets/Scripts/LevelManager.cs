@@ -69,7 +69,8 @@ public class LevelManager : MonoBehaviour
         }
 
         levelName = SceneManager.GetActiveScene().name;
-        currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
+        // currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
@@ -122,7 +123,7 @@ public class LevelManager : MonoBehaviour
             // Core mechanic
             featureFlags.coreMechanic = true;
         }
-        if (currentLevel > 10)
+        if (currentLevel > 11)
         {
             featureFlags.projectile = true;
             featureFlags.coreMechanic = true;
