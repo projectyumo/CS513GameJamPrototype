@@ -506,6 +506,9 @@ public class GunController : MonoBehaviour
             shotDetail.Velocity.x,
             shotDetail.Velocity.y
         );
+        if (useCurvedTrajectory){
+          _analyticsManager.ld.curvedShotsTaken++;
+        }
         _analyticsManager.ld.shotsTaken++;
         _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
         _analyticsManager.LogAnalytics();
