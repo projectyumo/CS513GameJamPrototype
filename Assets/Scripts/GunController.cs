@@ -56,6 +56,8 @@ public class GunController : MonoBehaviour
     public LayerMask collisionMask; // Layer mask to detect ground or other objects to bounce off
     public int maxBounces = 3;
 
+    public bool canPerformAction = true;
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -112,6 +114,7 @@ public class GunController : MonoBehaviour
 
     void Update()
     {
+        CheckMouseHover();
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
 
@@ -153,7 +156,7 @@ public class GunController : MonoBehaviour
         }
 
         // While mouse is being held down, shot will charge
-        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
+        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null) && canPerformAction)
         {
             // Set Charge
             //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
@@ -166,7 +169,7 @@ public class GunController : MonoBehaviour
 
             // When mouse is released, and there is charge
         }
-        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f)
+        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f && canPerformAction)
         {
             // Don't want players to waste shot because they didn't know they needed to charge it
             // Let bullets shoot at slightly above the destroy speed to make sure blanks aren't shot.
@@ -189,6 +192,35 @@ public class GunController : MonoBehaviour
             }
         }
     }
+
+    private void CheckMouseHover()
+    {
+        // Convert mouse position to world point
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);  // A zero direction means it will only check the exact point
+
+        // For debugging: Draw a line in the Scene view from the camera to the mouse position
+        // Debug.DrawLine(Camera.main.transform.position, mousePosition, Color.red, 1.0f);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.CompareTag("Ceiling"))
+            {
+                // Debug.Log("Hit the ceiling!");  // Log a message when the ceiling is hit
+                canPerformAction = false;
+            }
+            else
+            {
+                canPerformAction = true;
+            }
+        }
+        else
+        {
+            canPerformAction = true;
+        }
+    }
+
+
 
     void SetCharge()
     {
