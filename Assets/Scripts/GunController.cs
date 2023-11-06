@@ -232,13 +232,13 @@ public class GunController : MonoBehaviour
 
     void HandleCharge()
     {
-        if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite")
+        if (showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite")
         {
-            SetChargeCoreAlternative();
+            SetChargeAlternative();
         }
         else
         {
-            SetChargeAlternative();
+            SetChargeCoreAlternative();
         }
     }
 
