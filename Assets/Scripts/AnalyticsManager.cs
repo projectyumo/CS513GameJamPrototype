@@ -22,7 +22,7 @@ public class LevelData
     // Glass shelf analytics
     public int glassShelfPassthroughs;
     public int glassShelfCollisions;
-    
+
     public int bulletCollisions;
     public long timeTaken;
     public int currentLevel;
@@ -32,15 +32,19 @@ public class LevelData
     public long timeUpdated;
     public ShotData[] shots = new ShotData[maxShotCount];
     public int powerup;
+
+    public int curvedShotsTaken;
+    // public int curvedShotsUtilizedByPlayer;
+    // public int curvedShotsUtilizedByGhost;
 }
 
 public class AnalyticsManager : MonoBehaviour
 {
     private GameManager _gameManager;
-    public LevelData ld; 
+    public LevelData ld;
 
     private const string DatabaseURL = "https://lastcallstudios-c8991-default-rtdb.firebaseio.com/";
-    
+
     void Start()
     {
         ld = new LevelData();
