@@ -48,6 +48,9 @@ public class BulletControl : MonoBehaviour
                 break;
 
             case "Ground":
+                // Destroy(gameObject);
+                break;
+
             case "Pocket":
                 Destroy(gameObject);
                 break;
