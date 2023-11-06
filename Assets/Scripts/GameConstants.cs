@@ -6,6 +6,4 @@ public static class GameConstants
     
     static public readonly string winText = "Level Cleared!";
     static public readonly string loseText = "You Lose!";
-    static public readonly string remainingShotsText = "Remaining shots: ";
-    static public readonly string currentLevelText = "Level: ";
 }

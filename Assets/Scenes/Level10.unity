@@ -1210,6 +1210,7 @@ MonoBehaviour:
   tutorial: {fileID: 0}
   ghostPlayerTutorialText: {fileID: 0}
   barrierTutorialText: {fileID: 0}
+  ReduceGhostBulletSizeText: {fileID: 0}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971
