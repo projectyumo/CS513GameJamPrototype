@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class GunController : MonoBehaviour
     public GameObject bulletObj;
     public GameObject ghostBulletObj;
     public GameObject playerObj;
-
+    
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer spriteRenderer;
     public LevelManager levelManager;
@@ -66,6 +67,8 @@ public class GunController : MonoBehaviour
     public bool powerUp;
     public GameObject powerUpButton;
 
+    public int PowerUpCount = 0;
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -115,12 +118,11 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
         {
             powerUpButton.SetActive(false);
-        }
-        if (levelManager.currentLevel == 10)
-        {
+
+
             text.gameObject.SetActive(false);
         }
     }
@@ -135,28 +137,30 @@ public class GunController : MonoBehaviour
     {
         CheckMouseHover();
 
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+
+        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
         {
             if (isGhostActive == true)
             {
+
                 powerUpButton.SetActive(true);
-                if (levelManager.currentLevel == 10)
-                {
-                    text.gameObject.SetActive(true);
-                }
+
+
+                text.gameObject.SetActive(true);
+
 
             }
 
             else
             {
-                if (levelManager.currentLevel == 10)
-                {
-                    text.gameObject.SetActive(false);
-                }
+
+                text.gameObject.SetActive(false);
+
 
                 powerUpButton.SetActive(false);
             }
         }
+        
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
 
@@ -376,7 +380,7 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
-
+        
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
         ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
@@ -446,12 +450,20 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+            if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
             {
 
                 if (powerUp)
                 {
-                    bullet.transform.localScale *= 0.5f;
+                    
+                    if (PowerUpCount == 1)
+                    { 
+                        bullet.transform.localScale *= 0.5f;
+                    }
+                    else if (PowerUpCount == 2)
+                    { 
+                        bullet.transform.localScale /= 0.5f;
+                    }
                     powerUp = false;
                 }
             }
@@ -529,6 +541,7 @@ public class GunController : MonoBehaviour
             // Visual indication that its not player's turn
             playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
             _playerController.SetPlayerMovement(false);
+            isGhostActive = false;
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -638,10 +651,19 @@ public class GunController : MonoBehaviour
 
     public void ReduceGhostBulletSize()
     {
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        PowerUpCount++;
+        if (levelManager.currentLevel == 9 || levelManager.currentLevel == 10)
         {
             powerUp = true;
-            levelManager.BulletCountDown();
+            if (PowerUpCount == 1)
+            {
+                levelManager.BulletCountDown();
+            }
+            else if (PowerUpCount == 2)
+            {
+                levelManager.BulletCountUp();
+                PowerUpCount = 0;
+            }
             _analyticsManager.ld.powerup++;
         }
     }
