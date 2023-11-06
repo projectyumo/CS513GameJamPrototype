@@ -67,16 +67,9 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
-        bulletCountText.text = remainingShotsText + bulletCount.ToString();
+        bulletCountText.text = bulletCount.ToString();
         pointText.text = gameManager.totalScore.ToString();
-        if (currentLevel == 0)
-        {
-            levelText.text = currentLevelText + "Tutorial";
-        }
-        else
-        {
-            levelText.text = currentLevelText + currentLevel.ToString();
-        }
+        levelText.text = currentLevel.ToString();
 
         tutorial = GameObject.FindGameObjectWithTag("Tutorial");
         if (tutorial != null && currentLevel != 0)
@@ -128,14 +121,14 @@ public class LevelManager : MonoBehaviour
     public void BulletCountDown()
     {
         bulletCount--;
-        string text = remainingShotsText;
+        string text;
         if (bulletCount < 0)
         {
-            text = remainingShotsText + "0";
+            text = "0";
         }
         else
         {
-            text += bulletCount.ToString();
+            text = bulletCount.ToString();
         }
 
         bulletCountText.text = text;
