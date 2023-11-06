@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI ghostPlayerTutorialText;
     public TextMeshProUGUI barrierTutorialText;
     public TextMeshProUGUI ReduceGhostBulletSizeText;
+    public GameObject curvedShotTutorial;
 
     public string levelName;
 
@@ -62,6 +63,11 @@ public class LevelManager : MonoBehaviour
             ReduceGhostBulletSizeText = GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText").GetComponent<TextMeshProUGUI>();
         }
 
+        if (GameObject.FindGameObjectWithTag("CurvedShotTutorial"))
+        {
+            curvedShotTutorial = GameObject.FindGameObjectWithTag("CurvedShotTutorial");
+        }
+
         levelName = SceneManager.GetActiveScene().name;
         currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
@@ -91,6 +97,11 @@ public class LevelManager : MonoBehaviour
             ShowReduceGhostBulletSizeText();
         }
 
+        if (curvedShotTutorial != null)
+        {
+            ShowCurvedShotTutorial();
+        }
+
         SetFeatureFlags();
     }
 
@@ -111,7 +122,7 @@ public class LevelManager : MonoBehaviour
             // Core mechanic
             featureFlags.coreMechanic = true;
         }
-        if (currentLevel > 11)
+        if (currentLevel > 10)
         {
             featureFlags.projectile = true;
             featureFlags.coreMechanic = true;
@@ -285,9 +296,24 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void ShowCurvedShotTutorial()
+    {
+        if (curvedShotTutorial != null)
+        {
+            curvedShotTutorial.gameObject.SetActive(true);
+            Invoke("HideCurvedShotTutorial", 5);
+        }
+    }
+
+
     private void HideGhostPlayerTutorialText()
     {
         ghostPlayerTutorialText.gameObject.SetActive(false);
+    }
+
+    private void HideCurvedShotTutorial()
+    {
+        curvedShotTutorial.gameObject.SetActive(false);
     }
 
     private void ShowBarrierTutorialText()

@@ -21,6 +21,8 @@ TagManager:
   - ReduceGhostBulletSizeText
   - GhostBullet
   - Bullet
+  - Ceiling
+  - CurvedShotTutorial
   layers:
   - Default
   - TransparentFX
