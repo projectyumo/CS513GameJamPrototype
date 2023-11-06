@@ -50,7 +50,6 @@ MonoBehaviour:
   ghostBulletObj: {fileID: 6898575357446847441, guid: bddaafac82c194adbbe5a938d985b9d3, type: 3}
   playerObj: {fileID: 634814178605008630}
   levelManager: {fileID: 0}
-  ghostPlayerColor: {r: 0.572549, g: 0.7764707, b: 0.7764707, a: 0.7}
   minBulletSpeed: 10
   maxBulletSpeed: 30
   bounciness: 0.75
@@ -58,6 +57,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 608
   maxBounces: 3
+  canPerformAction: 1
+  ceilingLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!120 &6189144864290600310
 LineRenderer:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ TagManager:
   - GhostBall
   - Barrier
   - BarrierTutorialText
+  - Ceiling
+  - Restart
+  - Bullet
   layers:
   - Default
   - TransparentFX

@@ -58,6 +58,12 @@ public class GunController : MonoBehaviour
     public LayerMask collisionMask; // Layer mask to detect ground or other objects to bounce off
     public int maxBounces = 3;
 
+    // Variable will track if player is hovered over menu items to prevent null references and
+    // memory leaks.
+    public bool canPerformAction = true;
+    public LayerMask ceilingLayer; // Set this in the inspector to the layer of the Ceiling GameObject.
+
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -66,7 +72,11 @@ public class GunController : MonoBehaviour
         Transform gun = this.transform.Find("Gun");
         spriteRenderer = gun.GetComponent<SpriteRenderer>();
         // if (levelManager.featureFlags.projectile)
-        // {}
+        // {
+        //   parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+        //   // Sprite renderer to toggle projectile shot.
+        //   parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+        // }
         StartCoroutine(InitializeSpriteRenderer());
 
 
@@ -126,6 +136,14 @@ public class GunController : MonoBehaviour
 
     void Update()
     {
+        CheckMouseHover();
+        Debug.Log("PERFORM ACTION? " + canPerformAction);
+        if (levelManager.featureFlags.projectile)
+        {
+          parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+          // Sprite renderer to toggle projectile shot.
+          parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
+        }
 
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
@@ -169,20 +187,16 @@ public class GunController : MonoBehaviour
         }
 
         // While mouse is being held down, shot will charge
-        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null))
+        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null) && canPerformAction)
         {
-            Debug.Log("Show Trajectory: " + showTrajectory);
-            Debug.Log("parentSpriteRenderer: " + parentSpriteRenderer);
-            if (parentSpriteRenderer != null){Debug.Log("parentSpriteRenderer.name: " + parentSpriteRenderer.sprite.name);}
+            // if (parentSpriteRenderer != null){Debug.Log("parentSpriteRenderer.name: " + parentSpriteRenderer.sprite.name);}
 
             // Set Charge
             //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
             if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite") {
               // SetCharge();
               SetChargeCoreAlternative();
-              Debug.Log("Bullet Speed CORE ALT DOWN: " + bulletSpeed);
             } else {
-              Debug.Log("Bullet Speed ALT DOWN: " + bulletSpeed);
               SetChargeAlternative();
             }
 
@@ -194,14 +208,12 @@ public class GunController : MonoBehaviour
 
             // When mouse is released, and there is charge
         }
-        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f)
+        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f && canPerformAction)
         {
             if (!showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name != "curved-shot-sprite") {
               // SetCharge();
               SetChargeCoreAlternative();
-              Debug.Log("Bullet Speed CORE ALT UP: " + bulletSpeed);
             } else {
-              Debug.Log("Bullet Speed ALT UP: " + bulletSpeed);
               SetChargeAlternative();
             }
 
@@ -227,6 +239,34 @@ public class GunController : MonoBehaviour
             }
         }
     }
+
+    private void CheckMouseHover()
+    {
+        // Convert mouse position to world point
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);  // A zero direction means it will only check the exact point
+
+        // For debugging: Draw a line in the Scene view from the camera to the mouse position
+        // Debug.DrawLine(Camera.main.transform.position, mousePosition, Color.red, 1.0f);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.CompareTag("Ceiling"))
+            {
+                // Debug.Log("Hit the ceiling!");  // Log a message when the ceiling is hit
+                canPerformAction = false;
+            }
+            else
+            {
+                canPerformAction = true;
+            }
+        }
+        else
+        {
+            canPerformAction = true;
+        }
+    }
+
 
     void SetCharge()
     {

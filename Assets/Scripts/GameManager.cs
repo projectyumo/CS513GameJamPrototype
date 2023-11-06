@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     // Singleton instance
     public static GameManager instance;
-    
+
     // Unique ID for game session
     private readonly string _gameSessionId = System.Guid.NewGuid().ToString();
     public string mainMenuSceneName = "MainMenu";
@@ -46,20 +46,54 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
-    
+
     public void LoadMainMenuScene()
     {
         SceneManager.LoadScene(mainMenuSceneName);
     }
-    
+
     public void RestartCurrentScene()
     {
+        DestroyAllItems();
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
-    
+
     public string GetGameSessionId()
     {
         return _gameSessionId;
+    }
+
+    private void DestroyAllItems()
+    {
+        // Find all active bullet instances in the scene
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+        // Find all active bullet instances in the scene
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+
+        // Destroy each bullet instance
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+
+        // Destroy each ball instance
+        foreach (var ball in balls)
+        {
+            Destroy(ball);
+        }
+    }
+
+    private void DestroyAllBullets()
+    {
+        // Find all active bullet instances in the scene
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+        // Destroy each bullet instance
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet);
+        }
     }
 }
