@@ -1052,8 +1052,12 @@ MonoBehaviour:
   gameOverText: {fileID: 1574118794}
   bulletCountText: {fileID: 1690327258}
   pointText: {fileID: 758507035}
+  levelText: {fileID: 0}
   gameManager: {fileID: 0}
   tutorial: {fileID: 0}
+  ghostPlayerTutorialText: {fileID: 0}
+  barrierTutorialText: {fileID: 0}
+  ReduceGhostBulletSizeText: {fileID: 0}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971
@@ -1155,7 +1159,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1920, y: 1200}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
