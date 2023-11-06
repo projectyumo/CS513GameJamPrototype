@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -58,6 +60,12 @@ public class GunController : MonoBehaviour
 
     public bool canPerformAction = true;
 
+    //Reduce Ghost Bullet Size
+    public Text text;
+    public bool isGhostActive = false;
+    public bool powerUp;
+    public GameObject powerUpButton;
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
@@ -110,11 +118,48 @@ public class GunController : MonoBehaviour
             }
         }
 
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        {
+            powerUpButton.SetActive(false);
+        }
+        if (levelManager.currentLevel == 10)
+        {
+            text.gameObject.SetActive(false);
+        }
+    }
+
+    IEnumerator settofalse()
+    {
+        yield return new WaitForSeconds(15);
+        isGhostActive = false;
     }
 
     void Update()
     {
         CheckMouseHover();
+
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        {
+            if (isGhostActive == true)
+            {
+                powerUpButton.SetActive(true);
+                if (levelManager.currentLevel == 10)
+                {
+                    text.gameObject.SetActive(true);
+                }
+
+            }
+
+            else
+            {
+                if (levelManager.currentLevel == 10)
+                {
+                    text.gameObject.SetActive(false);
+                }
+
+                powerUpButton.SetActive(false);
+            }
+        }
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
 
@@ -292,6 +337,7 @@ public class GunController : MonoBehaviour
 
     void CreateGhostPlayer()
     {
+        isGhostActive = true;
         // Get previous bullet disappear position
         Vector3 prevShotPosition = prevBulletPositions.Dequeue();
         // Instantiate ghost player with previous shot disappear position
@@ -367,6 +413,15 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
+            if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+            {
+
+                if (powerUp)
+                {
+                    bullet.transform.localScale *= 0.5f;
+                    powerUp = false;
+                }
+            }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -543,6 +598,16 @@ public class GunController : MonoBehaviour
         positions[i] = trajectory[i];
       }
       lr.SetPositions(positions);
+    }
+
+    public void ReduceGhostBulletSize()
+    {
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        {
+            powerUp = true;
+            levelManager.BulletCountDown();
+            _analyticsManager.ld.powerup++;
+        }
     }
 
     private class ShotDetails
