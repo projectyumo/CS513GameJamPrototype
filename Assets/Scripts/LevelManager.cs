@@ -69,8 +69,7 @@ public class LevelManager : MonoBehaviour
         }
 
         levelName = SceneManager.GetActiveScene().name;
-        // currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
-        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
