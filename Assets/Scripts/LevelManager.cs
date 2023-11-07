@@ -296,7 +296,7 @@ public class LevelManager : MonoBehaviour
         if (ghostPlayerTutorialText != null)
         {
             ghostPlayerTutorialText.gameObject.SetActive(true);
-            Invoke("HideGhostPlayerTutorialText", 5);
+            // Invoke("HideGhostPlayerTutorialText", 5);
         }
     }
 
@@ -305,7 +305,7 @@ public class LevelManager : MonoBehaviour
         if (curvedShotTutorial != null)
         {
             curvedShotTutorial.gameObject.SetActive(true);
-            Invoke("HideCurvedShotTutorial", 5);
+            // Invoke("HideCurvedShotTutorial", 5);
         }
     }
 
