@@ -12,6 +12,6 @@ public class MainMenuController : MonoBehaviour
 
     public void LoadLevel(int level)
     {
-        gameManager.LoadSceneByName("Level" + level);
+        gameManager.LoadLevel(level);
     }
 }
