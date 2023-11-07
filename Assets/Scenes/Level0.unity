@@ -952,7 +952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletCount: 5
   totalPoints: 0
-  pocketPoints: 0a0000000100000005000000
+  pocketPoints: 0a000000
   gameOverText: {fileID: 1574118794}
   bulletCountText: {fileID: 1690327258}
   pointText: {fileID: 758507035}
@@ -962,6 +962,7 @@ MonoBehaviour:
   ghostPlayerTutorialText: {fileID: 0}
   barrierTutorialText: {fileID: 0}
   ReduceGhostBulletSizeText: {fileID: 0}
+  curvedShotTutorial: {fileID: 0}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971
