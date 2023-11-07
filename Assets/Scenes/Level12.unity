@@ -1325,6 +1325,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 692239237935124551, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c1a3b061e24d34bdeb1226731a14a501, type: 3}
     - target: {fileID: 1557904435784834016, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_Name
       value: TutorialCurvedShot
@@ -1385,13 +1389,87 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -23.27
       objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.46489918
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.46489918
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.46489918
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037577995762613806, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324780015579232618, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2567087b4d35a4ebe960642c15e227b4, type: 3}
+    - target: {fileID: 5436446210338827347, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.96576744
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436446210338827347, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.96576744
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436446210338827347, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.96576744
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482217834527227801, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_text
+      value: 'Press SPACEBAR to TOGGLE curved shot.
+
+
+        AIM: Click + Drag
+
+        SHOOT:
+        Release'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717502853388223781, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 494b4b2ded0e34eedaa5f29717b0af22, type: 3}
+    - target: {fileID: 8281842505191483085, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_Name
+      value: mouseClickIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397258305616777726, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
+      propertyPath: m_Name
+      value: holdIcon
+      objectReference: {fileID: 0}
     - target: {fileID: 8790928771910955192, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -329
       objectReference: {fileID: 0}
     - target: {fileID: 8790928771910955192, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 173
+      value: 145.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
