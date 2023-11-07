@@ -92,11 +92,6 @@ public class LevelManager : MonoBehaviour
             ShowBarrierTutorialText();
         }
 
-        if (ReduceGhostBulletSizeText != null)
-        {
-            ShowReduceGhostBulletSizeText();
-        }
-
         if (curvedShotTutorial != null)
         {
             ShowCurvedShotTutorial();
@@ -336,16 +331,16 @@ public class LevelManager : MonoBehaviour
 
     public void ShowReduceGhostBulletSizeText()
     {
-        if (ghostPlayerTutorialText != null)
+        if (ReduceGhostBulletSizeText != null)
         {
-            ghostPlayerTutorialText.gameObject.SetActive(true);
-            Invoke("HideGhostPlayerTutorialText", 5);
+            ReduceGhostBulletSizeText.gameObject.SetActive(true);
+            Invoke("HideReduceGhostBulletSizeText", 5);
         }
     }
 
-    private void HideReduceGhostBulletSizeTextt()
+    private void HideReduceGhostBulletSizeText()
     {
-        ghostPlayerTutorialText.gameObject.SetActive(false);
+        ReduceGhostBulletSizeText.gameObject.SetActive(false);
     }
 
 }

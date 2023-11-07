@@ -64,12 +64,13 @@ public class GunController : MonoBehaviour
     public bool canPerformAction = true;
 
     //Reduce Ghost Bullet Size
-    public Text text;
+    
     public bool isGhostActive = false;
     public bool powerUp;
     public GameObject powerUpButton;
     Vector3 OrginalGhost;
     public int PowerUpCount = 0;
+    private GameObject latestGhost;
 
     void Start()
     {
@@ -119,12 +120,15 @@ public class GunController : MonoBehaviour
                 Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
             }
         }
+<<<<<<< Updated upstream
 
         if (levelManager.featureFlags.shrinkPowerup)
         {
             powerUpButton.SetActive(false);
             text.gameObject.SetActive(false);
         }
+=======
+>>>>>>> Stashed changes
     }
 
     IEnumerator settofalse()
@@ -135,6 +139,7 @@ public class GunController : MonoBehaviour
 
     void LateUpdate()
     {
+<<<<<<< Updated upstream
         if (levelManager.featureFlags.shrinkPowerup)
         {
             if (isGhostActive == true)
@@ -155,6 +160,12 @@ public class GunController : MonoBehaviour
     {
         CheckMouseHover();
 
+=======
+        CheckMouseHover();
+
+        
+        
+>>>>>>> Stashed changes
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
         }
@@ -374,6 +385,7 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
+        latestGhost = ghostPlayer;
         
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
@@ -389,6 +401,14 @@ public class GunController : MonoBehaviour
 
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
+
+        
+        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        {
+            levelManager.ShowReduceGhostBulletSizeText();
+            levelManager.ReduceGhostBulletSizeText.gameObject.SetActive(true);
+            powerUpButton.SetActive(true);
+        }
     }
 
     public void SaveBulletPosition(Vector3 bulletPosition)
@@ -408,7 +428,10 @@ public class GunController : MonoBehaviour
 
                     isFirstGhostPlayer = false;
                 }
+
             }
+
+            
         }
     }
 
@@ -451,12 +474,17 @@ public class GunController : MonoBehaviour
                     if (PowerUpCount == 1)
                     { 
                         bullet.transform.localScale *= 0.5f;
+                        latestGhost.transform.localScale *= 0.5f;
                     }
                     else if (PowerUpCount == 2)
                     { 
                         bullet.transform.localScale /= 0.5f;
+                        latestGhost.transform.localScale /= 0.5f;
                     }
+<<<<<<< Updated upstream
                     Debug.Log("Power Up After : " + PowerUpCount);
+=======
+>>>>>>> Stashed changes
                     powerUp = false;
                 }
             }
@@ -544,6 +572,8 @@ public class GunController : MonoBehaviour
             if (ghostPlayers.Count > 0)
             {
                 ShootBullet(true);
+                powerUpButton.SetActive(false);
+                PowerUpCount = 0;
                 _isPlayer = true;
                 // Visual indication that its player's turn
                 playerObj.GetComponent<SpriteRenderer>().color = Color.white;
@@ -648,7 +678,7 @@ public class GunController : MonoBehaviour
         if (levelManager.featureFlags.shrinkPowerup)
         {
             PowerUpCount++;
-            Debug.Log("Power Up After increase: " + PowerUpCount);
+            
             powerUp = true;
             GameObject ghostPlayer;
             try
@@ -663,23 +693,34 @@ public class GunController : MonoBehaviour
             if (PowerUpCount == 1)
             {
                 PowerUpCount = 1;
+                latestGhost.transform.localScale *= 0.5f;
                 levelManager.BulletCountDown();
+<<<<<<< Updated upstream
                 ghostPlayer.transform.localScale *= 0.5f;
                 Debug.Log("Decrease the Ghost");
                 IncreaseGhost = false;
+=======
+                
+>>>>>>> Stashed changes
             }
             if (PowerUpCount == 2)
             {
                 levelManager.BulletCountUp();
+<<<<<<< Updated upstream
                 ghostPlayer.transform.localScale /= 0.5f;
                 Debug.Log("Set back to the same size");
                 IncreaseGhost = true;
+=======
+                latestGhost.transform.localScale /= 0.5f;
+                
+>>>>>>> Stashed changes
                 PowerUpCount = 0;
             } 
             _analyticsManager.ld.powerup++;
         }
     }
 
+ 
     private class ShotDetails
     {
         public Vector3 Position;
