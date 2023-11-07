@@ -43,7 +43,7 @@ public class BulletControl : MonoBehaviour
                 // Destroy(gameObject);
                 break;
             case "GhostBall":
-                CaptureBallKnockedAnalytics(thisName);
+                GhostBallCollisionAnalytics(thisName);
                 // Destroy(gameObject);
                 break;
 
@@ -111,6 +111,25 @@ public class BulletControl : MonoBehaviour
         }
 
         _analyticsManager.LogAnalytics();
+    }
+
+    void GhostBallCollisionAnalytics(string thisName)
+    {
+        switch (thisName)
+        {
+            case "Bullet(Clone)":
+                _analyticsManager.ld.ballsKnockedByPlayer++;
+                _analyticsManager.ld.ghostBallPlayerCollisions++;
+                Debug.Log("Balls Hit by Player: " + _analyticsManager.ld.ballsKnockedByPlayer);
+                Debug.Log("Ghost Balls hit by Cue: " + _analyticsManager.ld.ghostBallPlayerCollisions);
+                break;
+            case "activeGhost":
+                _analyticsManager.ld.ballsKnockedByGhost++;
+                _analyticsManager.ld.ghostBallGhostCollisions++;
+                Debug.Log("Balls Hit by Ghosts: " + _analyticsManager.ld.ballsKnockedByGhost);
+                Debug.Log("Ghost Balls hit by Ghosts: " + _analyticsManager.ld.ghostBallGhostCollisions);
+                break;
+        }
     }
 
     // This analytic will help us understand how often players are targeting or accidentally hitting the Barrier.
