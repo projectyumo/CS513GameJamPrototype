@@ -120,52 +120,15 @@ public class GunController : MonoBehaviour
                 Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
             }
         }
-<<<<<<< Updated upstream
 
-        if (levelManager.featureFlags.shrinkPowerup)
-        {
-            powerUpButton.SetActive(false);
-            text.gameObject.SetActive(false);
-        }
-=======
->>>>>>> Stashed changes
     }
 
-    IEnumerator settofalse()
-    {
-        yield return new WaitForSeconds(15);
-        isGhostActive = false;
-    }
-
-    void LateUpdate()
-    {
-<<<<<<< Updated upstream
-        if (levelManager.featureFlags.shrinkPowerup)
-        {
-            if (isGhostActive == true)
-            {
-                powerUpButton.SetActive(true);
-                text.gameObject.SetActive(true);
-            }
-            else
-            {
-                text.gameObject.SetActive(false);
-                powerUpButton.SetActive(false);
-                PowerUpCount = 0;
-            }
-        }
-    }
+   
 
     void Update()
     {
         CheckMouseHover();
 
-=======
-        CheckMouseHover();
-
-        
-        
->>>>>>> Stashed changes
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
         }
@@ -379,7 +342,7 @@ public class GunController : MonoBehaviour
 
     void CreateGhostPlayer()
     {
-        isGhostActive = true;
+     
         // Get previous bullet disappear position
         Vector3 prevShotPosition = prevBulletPositions.Dequeue();
         // Instantiate ghost player with previous shot disappear position
@@ -474,17 +437,14 @@ public class GunController : MonoBehaviour
                     if (PowerUpCount == 1)
                     { 
                         bullet.transform.localScale *= 0.5f;
-                        latestGhost.transform.localScale *= 0.5f;
+                        
                     }
                     else if (PowerUpCount == 2)
                     { 
                         bullet.transform.localScale /= 0.5f;
-                        latestGhost.transform.localScale /= 0.5f;
+                       
                     }
-<<<<<<< Updated upstream
-                    Debug.Log("Power Up After : " + PowerUpCount);
-=======
->>>>>>> Stashed changes
+
                     powerUp = false;
                 }
             }
@@ -695,25 +655,14 @@ public class GunController : MonoBehaviour
                 PowerUpCount = 1;
                 latestGhost.transform.localScale *= 0.5f;
                 levelManager.BulletCountDown();
-<<<<<<< Updated upstream
-                ghostPlayer.transform.localScale *= 0.5f;
-                Debug.Log("Decrease the Ghost");
-                IncreaseGhost = false;
-=======
-                
->>>>>>> Stashed changes
             }
             if (PowerUpCount == 2)
             {
                 levelManager.BulletCountUp();
-<<<<<<< Updated upstream
-                ghostPlayer.transform.localScale /= 0.5f;
-                Debug.Log("Set back to the same size");
-                IncreaseGhost = true;
-=======
+
+
                 latestGhost.transform.localScale /= 0.5f;
                 
->>>>>>> Stashed changes
                 PowerUpCount = 0;
             } 
             _analyticsManager.ld.powerup++;
