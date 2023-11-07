@@ -2425,10 +2425,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Use the SHRINK power-up before taking a ghost shot
+  m_Text: 'Use SHRINK power-up before taking ghost shot
 
-    to reduce the
-    size of the ghost bullet!'
+    to reduce the size of
+    ghost!'
 --- !u!222 &1870333297
 CanvasRenderer:
   m_ObjectHideFlags: 0
