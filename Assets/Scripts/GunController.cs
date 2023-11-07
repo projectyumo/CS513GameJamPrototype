@@ -120,11 +120,9 @@ public class GunController : MonoBehaviour
             }
         }
 
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        if (levelManager.featureFlags.shrinkPowerup)
         {
             powerUpButton.SetActive(false);
-
-
             text.gameObject.SetActive(false);
         }
     }
@@ -135,39 +133,32 @@ public class GunController : MonoBehaviour
         isGhostActive = false;
     }
 
-    void Update()
+    void LateUpdate()
     {
-        CheckMouseHover();
-
-
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        if (levelManager.featureFlags.shrinkPowerup)
         {
             if (isGhostActive == true)
             {
-
                 powerUpButton.SetActive(true);
-
-
                 text.gameObject.SetActive(true);
-
-
             }
-
             else
             {
-
                 text.gameObject.SetActive(false);
-
-
                 powerUpButton.SetActive(false);
                 PowerUpCount = 0;
             }
         }
-        
+    }
+
+    void Update()
+    {
+        CheckMouseHover();
+
         if (levelManager.featureFlags.projectile){
           showTrajectory = true;
-
         }
+
         // Get mouse rotation input
         if (_isPlayer)
         {
@@ -453,12 +444,10 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+            if (levelManager.featureFlags.shrinkPowerup)
             {
-
                 if (powerUp)
                 {
-                    
                     if (PowerUpCount == 1)
                     { 
                         bullet.transform.localScale *= 0.5f;
@@ -467,7 +456,6 @@ public class GunController : MonoBehaviour
                     { 
                         bullet.transform.localScale /= 0.5f;
                     }
-
                     Debug.Log("Power Up After : " + PowerUpCount);
                     powerUp = false;
                 }
@@ -657,21 +645,33 @@ public class GunController : MonoBehaviour
     public void ReduceGhostBulletSize()
     {
         
-        if (levelManager.currentLevel == 10 || levelManager.currentLevel == 11)
+        if (levelManager.featureFlags.shrinkPowerup)
         {
             PowerUpCount++;
             Debug.Log("Power Up After increase: " + PowerUpCount);
             powerUp = true;
+            GameObject ghostPlayer;
+            try
+            {
+                ghostPlayer = ghostPlayers.Peek();
+            }
+            catch
+            {
+                ghostPlayer = null;
+                return;
+            }
             if (PowerUpCount == 1)
             {
                 PowerUpCount = 1;
                 levelManager.BulletCountDown();
+                ghostPlayer.transform.localScale *= 0.5f;
                 Debug.Log("Decrease the Ghost");
                 IncreaseGhost = false;
             }
             if (PowerUpCount == 2)
             {
                 levelManager.BulletCountUp();
+                ghostPlayer.transform.localScale /= 0.5f;
                 Debug.Log("Set back to the same size");
                 IncreaseGhost = true;
                 PowerUpCount = 0;

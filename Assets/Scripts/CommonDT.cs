@@ -33,10 +33,12 @@ public class FeatureFlags
 {
     public bool coreMechanic;
     public bool projectile;
+    public bool shrinkPowerup;
     
     public FeatureFlags()
     {
         coreMechanic = false;
         projectile = false;
+        shrinkPowerup = false;
     }
 }
