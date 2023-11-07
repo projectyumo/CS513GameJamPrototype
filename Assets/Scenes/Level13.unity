@@ -489,68 +489,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &569024123
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 743976448}
-    m_Modifications:
-    - target: {fileID: 5791511509217579591, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_Name
-      value: Pocket1Score
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eb8521d7a96a74244baad675653b1802, type: 3}
---- !u!4 &569024124 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8185722706853857403, guid: eb8521d7a96a74244baad675653b1802, type: 3}
-  m_PrefabInstance: {fileID: 569024123}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &651046480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -738,38 +676,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30212ceea624743858d068f3aa81d5d8, type: 3}
---- !u!1 &743976447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 743976448}
-  m_Layer: 0
-  m_Name: ScoresText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &743976448
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743976447}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.6807278, y: 5.859787, z: 1.5071678}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 569024124}
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &822339547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6830688996347687943, guid: ef378fe82419543e49d62e5b6f13e4e2, type: 3}
@@ -1043,7 +949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletCount: 7
   totalPoints: 0
-  pocketPoints: 0a0000000100000005000000
+  pocketPoints: 04000000
   gameOverText: {fileID: 0}
   bulletCountText: {fileID: 0}
   pointText: {fileID: 0}
@@ -1247,7 +1153,7 @@ RectTransform:
   - {fileID: 1700202109}
   - {fileID: 934010256}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

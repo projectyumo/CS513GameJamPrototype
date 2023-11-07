@@ -103,6 +103,33 @@ public class LevelManager : MonoBehaviour
         }
 
         SetFeatureFlags();
+        
+        // Loop through all the pockets and set the points for each pocket
+        for (int i = 0; i < maxPocketCount; i++)
+        {
+            string pocketName = "Pocket" + (i + 1);
+            GameObject pocket = GameObject.Find(pocketName);
+            if (pocket != null)
+            {
+                int points = GetPocketPoints(pocketName);
+                if (points > 5)
+                {
+                    points = 5;
+                }
+                Debug.Log(points);
+                // Get the sprite N-star-icon
+                Sprite starSprite = Resources.Load<Sprite>("Sprites/" + points + "-stars-icon");
+                // Create a new game object with the sprite
+                GameObject star = new GameObject("Star");
+                star.transform.parent = pocket.transform;
+                star.transform.localPosition = new Vector3(0f, 0f, -1f);
+                star.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+                SpriteRenderer sr = star.AddComponent<SpriteRenderer>();
+                sr.sprite = starSprite;
+                sr.sortingLayerName = "Pocket";
+                sr.sortingOrder = 1;
+            }
+        }
     }
 
     void Update()
