@@ -48,7 +48,6 @@ public class GunController : MonoBehaviour
     private float currentCharge;
     private string spritePath = "Assets/Icons/aim_pointer.png";
     private int numTrajectoryPoints = 50;
-    private bool showTrajectory = false;
     private bool isChargeIncreasing = true;
     private bool isFirstGhostPlayer = true;
 
@@ -90,7 +89,6 @@ public class GunController : MonoBehaviour
         Material mat = new Material(Shader.Find("Sprites/Default"));
         mat.mainTexture = tex;
         lr.material = mat;
-
         // Adjust tiling to make dashes appear along the length of the line
         lr.material.mainTextureScale = new Vector2(10, 1);
 
@@ -155,10 +153,6 @@ public class GunController : MonoBehaviour
     {
         CheckMouseHover();
 
-        if (levelManager.featureFlags.projectile){
-          showTrajectory = true;
-        }
-
         // Get mouse rotation input
         if (_isPlayer)
         {
@@ -170,67 +164,72 @@ public class GunController : MonoBehaviour
             ghostPlayer.transform.rotation = transform.rotation;
         }
 
-        // Only show trajectory for curved bullet.
-        if (showTrajectory && _playerController.GetPlayerMovement() && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite") DisplayTrajectory();
-
-
         if (levelManager.bulletCount == 0)
         {
             isLastBullet = true;
         }
 
-        // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
-        // TODO: Tracking whether current player is ghost vs player is a hack...
-        if (showTrajectory && Input.GetKeyDown(KeyCode.Space) && _playerController.GetPlayerMovement() && !transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy) {
-            useCurvedTrajectory = !useCurvedTrajectory;
-            lr.positionCount = 0; // Reset Line renderer
-
-            if (parentSpriteRenderer!=null){
-              // Speed changed for projectile shot to improve efficacy of mechanic
-              // Loads sprites for user knowledge of which shot they're on
-              if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
-                maxBulletSpeed = 30f;
-                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
-                levelManager.BulletCountUp();
-              } else{
-                maxBulletSpeed = 35f;
-                parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
-                levelManager.BulletCountDown();
-              }
-              parentSpriteRenderer.size = new Vector2(1f, 1f);
-            }
+        // CurvedShotMechanics
+        if (levelManager.featureFlags.projectile && _playerController.GetPlayerMovement() ){
+          // Only show trajectory for curved bullet.
+          if ( parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
+            DisplayTrajectory();
+          }
+          // Toggle between curved shot and straight shot only if the levelManager has enabled this feature.
+          // TODO: Tracking whether current player is ghost vs player is a hack...
+          if (Input.GetKeyDown(KeyCode.Space) && !transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy) {
+            ToggleCurvedShot();
+          }
         }
 
-        // While mouse is being held down, shot will charge
-        if (Input.GetMouseButton(0) && (GameObject.Find("Bullet(Clone)") == null) && canPerformAction)
-        {
-            // Set Charge
-            //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
-            // SetCharge();
-            HandleCharge();
-            SetSpritePathOnCharge();
+        if (canPerformAction){
+          // While mouse is being held down, shot will charge
+          if (Input.GetMouseButton(0) && (GameObject.FindGameObjectsWithTag("Bullet") != null))
+          {
+              // Set Charge
+              //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
+              // SetCharge();
+              HandleCharge();
+              SetSpritePathOnCharge();
 
-            if (_isPlayer)
-            {
-                spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
-            }
+              // When mouse is released, and there is charge
+          }
+          else if (Input.GetMouseButtonUp(0)) //&& currentCharge > 0f )
+          {
+              // SetCharge();
+              HandleCharge();
+              Shoot();
+              ResetBulletTrajectory();
 
-            // When mouse is released, and there is charge
+              // Removing the idea of "If charged enough" bullet will always shoot at max
+          }
         }
-        else if (Input.GetMouseButtonUp(0) && currentCharge > 0f && canPerformAction)
-        {
-            // SetCharge();
-            HandleCharge();
-            Shoot();
-            ResetBulletTrajectory();
 
-            // Removing the idea of "If charged enough" bullet will always shoot at max
+    }
+
+    void ToggleCurvedShot(){
+        useCurvedTrajectory = !useCurvedTrajectory;
+        lr.positionCount = 0; // Reset Line renderer
+
+        if (parentSpriteRenderer!=null){
+          // Speed changed for projectile shot to improve efficacy of mechanic
+          // Loads sprites for user knowledge of which shot they're on
+          if (parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
+            maxBulletSpeed = 30f;
+            parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
+            levelManager.BulletCountUp();
+          } else{
+            maxBulletSpeed = 35f;
+            parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
+            levelManager.BulletCountDown();
+          }
+          parentSpriteRenderer.size = new Vector2(1f, 1f);
         }
     }
 
     void HandleCharge()
     {
-        if (showTrajectory && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite")
+        if (levelManager.featureFlags.projectile && parentSpriteRenderer != null && parentSpriteRenderer.sprite.name == "curved-shot-sprite")
         {
             SetChargeAlternative();
         }
@@ -355,6 +354,11 @@ public class GunController : MonoBehaviour
         {
             spritePath = "Sprites/aim_pointer_charge_6";
         }
+
+        if (_isPlayer)
+        {
+            spriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
+        }
     }
 
     // Get mouse rotation input
@@ -374,7 +378,7 @@ public class GunController : MonoBehaviour
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
-        
+
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
         ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
@@ -449,11 +453,11 @@ public class GunController : MonoBehaviour
                 if (powerUp)
                 {
                     if (PowerUpCount == 1)
-                    { 
+                    {
                         bullet.transform.localScale *= 0.5f;
                     }
                     else if (PowerUpCount == 2)
-                    { 
+                    {
                         bullet.transform.localScale /= 0.5f;
                     }
                     Debug.Log("Power Up After : " + PowerUpCount);
@@ -644,7 +648,7 @@ public class GunController : MonoBehaviour
 
     public void ReduceGhostBulletSize()
     {
-        
+
         if (levelManager.featureFlags.shrinkPowerup)
         {
             PowerUpCount++;
@@ -675,7 +679,7 @@ public class GunController : MonoBehaviour
                 Debug.Log("Set back to the same size");
                 IncreaseGhost = true;
                 PowerUpCount = 0;
-            } 
+            }
             _analyticsManager.ld.powerup++;
         }
     }
