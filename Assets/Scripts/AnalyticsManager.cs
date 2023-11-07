@@ -18,6 +18,10 @@ public class LevelData
     public int barrierPlayerCollisions;
     public int barrierGhostCollisions;
     // Ghost wall analytics
+
+    public int ghostBallPlayerCollisions;
+    public int ghostBallGhostCollisions;
+    // Ghost ball "collision" analytics
     public int ghostWallContact;
     // Glass shelf analytics
     public int glassShelfPassthroughs;
