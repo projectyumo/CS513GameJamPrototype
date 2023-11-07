@@ -122,6 +122,10 @@ public class LevelManager : MonoBehaviour
             // Core mechanic
             featureFlags.coreMechanic = true;
         }
+        if (currentLevel is >= 10 and <= 11)
+        {
+            featureFlags.shrinkPowerup = true;
+        }
         if (currentLevel > 11)
         {
             featureFlags.projectile = true;
