@@ -120,14 +120,10 @@ public class BulletControl : MonoBehaviour
             case "Bullet(Clone)":
                 _analyticsManager.ld.ballsKnockedByPlayer++;
                 _analyticsManager.ld.ghostBallPlayerCollisions++;
-                Debug.Log("Balls Hit by Player: " + _analyticsManager.ld.ballsKnockedByPlayer);
-                Debug.Log("Ghost Balls hit by Cue: " + _analyticsManager.ld.ghostBallPlayerCollisions);
                 break;
             case "activeGhost":
                 _analyticsManager.ld.ballsKnockedByGhost++;
                 _analyticsManager.ld.ghostBallGhostCollisions++;
-                Debug.Log("Balls Hit by Ghosts: " + _analyticsManager.ld.ballsKnockedByGhost);
-                Debug.Log("Ghost Balls hit by Ghosts: " + _analyticsManager.ld.ghostBallGhostCollisions);
                 break;
         }
     }

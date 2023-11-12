@@ -116,7 +116,6 @@ public class LevelManager : MonoBehaviour
                 {
                     points = 5;
                 }
-                Debug.Log(points);
                 // Get the sprite N-star-icon
                 Sprite starSprite = Resources.Load<Sprite>("Sprites/" + points + "-stars-icon");
                 // Create a new game object with the sprite
