@@ -5,7 +5,7 @@ public class BallManager : MonoBehaviour
     public int ballCount;
     private AnalyticsManager _analyticsManager;
     private LevelManager _levelManager;
-    public int movingBallsCount = 0;
+    public int movingBallsCount;
     
     void Start()
     {

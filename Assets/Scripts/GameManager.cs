@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance
-    public static GameManager instance;
+    private static GameManager _instance;
     
     // Unique ID for game session
     private readonly string _gameSessionId = System.Guid.NewGuid().ToString();
@@ -16,9 +16,9 @@ public class GameManager : MonoBehaviour
     // On Awake, set up the Singleton pattern
     private void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject); // This object will persist across scenes
         }
         else
@@ -33,15 +33,7 @@ public class GameManager : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            // If there are no more scenes to load, loop back to the first scene (main menu)
-            SceneManager.LoadScene(0);
-        }
+        SceneManager.LoadScene(nextSceneIndex < SceneManager.sceneCountInBuildSettings ? nextSceneIndex : 0);
     }
 
     // Method to load a specific scene by name
