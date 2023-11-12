@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour
     public GameObject tutorial;
     public TextMeshProUGUI ghostPlayerTutorialText;
     public TextMeshProUGUI barrierTutorialText;
-    public TextMeshProUGUI ReduceGhostBulletSizeText;
+    public TextMeshProUGUI reduceGhostBulletSizeText;
     public GameObject curvedShotTutorial;
 
     public string levelName;
@@ -60,7 +60,7 @@ public class LevelManager : MonoBehaviour
 
         if (GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText"))
         {
-            ReduceGhostBulletSizeText = GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText").GetComponent<TextMeshProUGUI>();
+            reduceGhostBulletSizeText = GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText").GetComponent<TextMeshProUGUI>();
         }
 
         if (GameObject.FindGameObjectWithTag("CurvedShotTutorial"))
@@ -92,7 +92,7 @@ public class LevelManager : MonoBehaviour
             ShowBarrierTutorialText();
         }
 
-        if (ReduceGhostBulletSizeText != null)
+        if (reduceGhostBulletSizeText != null)
         {
             ShowReduceGhostBulletSizeText();
         }
@@ -136,7 +136,7 @@ public class LevelManager : MonoBehaviour
         // Lose case
         if (!_isGameOver && bulletCount == 0 && BulletControl.activeBulletCount == 0)
         {
-            Invoke("LoseCase", 1);
+            Invoke(nameof(LoseCase), 1);
         }
     }
 
@@ -162,15 +162,7 @@ public class LevelManager : MonoBehaviour
     public void BulletCountDown()
     {
         bulletCount--;
-        string text;
-        if (bulletCount < 0)
-        {
-            text = "0";
-        }
-        else
-        {
-            text = bulletCount.ToString();
-        }
+        var text = bulletCount < 0 ? "0" : bulletCount.ToString();
 
         bulletCountText.text = text;
     }
@@ -178,7 +170,7 @@ public class LevelManager : MonoBehaviour
     public void BulletCountUp()
     {
         bulletCount++;
-        string text = bulletCount.ToString();;
+        string text = bulletCount.ToString();
         bulletCountText.text = text;
     }
 
@@ -215,7 +207,7 @@ public class LevelManager : MonoBehaviour
         return pocketPoints[index];
     }
 
-    public void ShowGameOverText(string text)
+    private void ShowGameOverText(string text)
     {
         gameOverText.gameObject.SetActive(true);
         gameOverText.text = text;
@@ -226,8 +218,7 @@ public class LevelManager : MonoBehaviour
         // Destroy all active ghost players
         while (_gunController.ghostPlayers.Count > 0)
         {
-            GameObject ghostPlayer;
-            if (_gunController.ghostPlayers.TryDequeue(out ghostPlayer))
+            if (_gunController.ghostPlayers.TryDequeue(out var ghostPlayer))
             {
                 Destroy(ghostPlayer);
             }
@@ -249,7 +240,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.levelState = LevelState.Failed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(loseText);
-        Invoke("LoadMainMenuScene", winTextDisplayTime);
+        Invoke(nameof(LoadMainMenuScene), winTextDisplayTime);
     }
 
     public void WinCase()
@@ -259,7 +250,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.levelState = LevelState.Completed;
         _analyticsManager.LogAnalytics();
         ShowGameOverText(winText);
-        Invoke("LoadNextLevel", winTextDisplayTime);
+        Invoke(nameof(LoadNextLevel), winTextDisplayTime);
     }
 
     public void LoadNextLevel()
@@ -326,7 +317,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void ShowCurvedShotTutorial()
+    private void ShowCurvedShotTutorial()
     {
         if (curvedShotTutorial != null)
         {
@@ -351,7 +342,7 @@ public class LevelManager : MonoBehaviour
         if (barrierTutorialText != null)
         {
             barrierTutorialText.gameObject.SetActive(true);
-            Invoke("HideBarrierTutorialText", 5);
+            Invoke(nameof(HideBarrierTutorialText), 5);
         }
     }
 
@@ -360,16 +351,16 @@ public class LevelManager : MonoBehaviour
         barrierTutorialText.gameObject.SetActive(false);
     }
 
-    public void ShowReduceGhostBulletSizeText()
+    private void ShowReduceGhostBulletSizeText()
     {
         if (ghostPlayerTutorialText != null)
         {
             ghostPlayerTutorialText.gameObject.SetActive(true);
-            Invoke("HideGhostPlayerTutorialText", 5);
+            Invoke(nameof(HideGhostPlayerTutorialText), 5);
         }
     }
 
-    private void HideReduceGhostBulletSizeTextt()
+    private void HideReduceGhostBulletSizeText()
     {
         ghostPlayerTutorialText.gameObject.SetActive(false);
     }

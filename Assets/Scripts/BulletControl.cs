@@ -4,18 +4,20 @@ public class BulletControl : MonoBehaviour
 {
     private AnalyticsManager _analyticsManager;
     private GunController _gunController;
+    private Rigidbody2D _rb;
 
     public int minVelocity = 4;
 
     // Track active bullets count
     public static int activeBulletCount;
 
-    public bool noDestroy = false;
+    public bool noDestroy;
 
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         _gunController = FindObjectOfType<GunController>();
+        _rb = GetComponent<Rigidbody2D>();
 
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
@@ -23,7 +25,7 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
-        if (this.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && this.name != "idleGhost")
+        if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost")
         {
             Destroy(gameObject);
         }
@@ -126,6 +128,8 @@ public class BulletControl : MonoBehaviour
                 _analyticsManager.ld.ghostBallGhostCollisions++;
                 break;
         }
+        
+        _analyticsManager.LogAnalytics();
     }
 
     // This analytic will help us understand how often players are targeting or accidentally hitting the Barrier.
