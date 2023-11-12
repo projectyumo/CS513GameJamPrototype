@@ -1,17 +1,23 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     private float _horizontalInput;
     public float speed = 10.0f;
-    private float _playerWallOffset = 1.5f;
+    private readonly float _playerWallOffset = 1.5f;
     private bool _isMovementAllowed = true;
 
     public BoxCollider2D leftWall;
     public BoxCollider2D rightWall;
+    private float _leftBound;
+    private float _rightBound;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        _leftBound = leftWall.bounds.max.x + _playerWallOffset;
+        _rightBound = rightWall.bounds.min.x - _playerWallOffset;
+    }
+
     void Update()
     {
         if (_isMovementAllowed)
@@ -23,22 +29,10 @@ public class PlayerController : MonoBehaviour
     void PlayerMovement()
     {
         _horizontalInput = Input.GetAxis("Horizontal");
-
-        // Calculate the new position
-        float newPositionX = transform.position.x + (_horizontalInput * speed * Time.deltaTime);
-
-        // Check if the new position exceeds the bounds of the walls
-        if (newPositionX < leftWall.bounds.max.x + _playerWallOffset)
-        {
-            newPositionX = leftWall.bounds.max.x + _playerWallOffset;
-        }
-        else if (newPositionX > rightWall.bounds.min.x - _playerWallOffset)
-        {
-            newPositionX = rightWall.bounds.min.x - _playerWallOffset;
-        }
-
-        // Update the player's position
-        transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
+        Vector3 currentPosition = transform.position;
+        currentPosition.x += _horizontalInput * speed * Time.deltaTime;
+        currentPosition.x = Mathf.Clamp(currentPosition.x, _leftBound, _rightBound);
+        transform.position = currentPosition;
     }
 
     public void SetPlayerMovement(bool isAllowed)

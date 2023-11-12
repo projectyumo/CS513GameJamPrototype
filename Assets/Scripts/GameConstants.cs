@@ -1,9 +1,9 @@
 public static class GameConstants
 {
-    static public readonly int maxPocketCount = 10;
-    static public readonly int winTextDisplayTime = 3;
-    static public readonly int maxShotCount = 25; // Global max for analytics
+    public static readonly int maxPocketCount = 10;
+    public static readonly int winTextDisplayTime = 3;
+    public static readonly int maxShotCount = 25; // Global max for analytics
     
-    static public readonly string winText = "Level Cleared!";
-    static public readonly string loseText = "You Lose!";
+    public static readonly string winText = "Level Cleared!";
+    public static readonly string loseText = "You Lose!";
 }
