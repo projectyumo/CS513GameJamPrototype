@@ -51,6 +51,7 @@ public class GunController : MonoBehaviour
     private bool _isFirstGhostPlayer = true;
 
     private bool _useCurvedTrajectory;
+    private bool _useShrink;
     private SpriteRenderer _parentSpriteRenderer;
 
     Rigidbody2D _rb;
@@ -181,6 +182,14 @@ public class GunController : MonoBehaviour
           }
         }
 
+        if (levelManager.featureFlags.shrinkPowerup && _playerController.GetPlayerMovement())
+        {
+          if (Input.GetKeyDown(KeyCode.Space) && transform.parent.Find("SmilingGhostIcon").gameObject.activeInHierarchy)
+          {
+            ToggleShrinkShot();
+          }
+        }
+
         if (canPerformAction){
           // While mouse is being held down, shot will charge
           if (Input.GetMouseButton(0) && (GameObject.FindGameObjectsWithTag("Bullet") != null))
@@ -204,6 +213,20 @@ public class GunController : MonoBehaviour
           }
         }
 
+    }
+
+    void ToggleShrinkShot(){
+          _useShrink = !_useShrink;
+
+          if (_useShrink){
+            levelManager.BulletCountDown();
+            transform.parent.localScale *= 0.5f;
+          } else {
+            levelManager.BulletCountUp();
+            transform.parent.localScale /= 0.5f;
+          }
+
+          _analyticsManager.ld.powerup++;
     }
 
     void ToggleCurvedShot(){
@@ -443,24 +466,16 @@ public class GunController : MonoBehaviour
         GameObject bullet = Instantiate(bo, go.transform.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
+        Debug.Log("USE SHRINK ACTIVATED: " + _useShrink);
         // Ignore collision between ghost bullet and glass shelves
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
             if (levelManager.featureFlags.shrinkPowerup)
             {
-                if (powerUp)
+                if (_useShrink)
                 {
-                    if (powerUpCount == 1)
-                    {
-                        bullet.transform.localScale *= 0.5f;
-                    }
-                    else if (powerUpCount == 2)
-                    {
-                        bullet.transform.localScale /= 0.5f;
-                    }
-                    Debug.Log("Power Up After : " + powerUpCount);
-                    powerUp = false;
+                    bullet.transform.localScale *= 0.5f;
                 }
             }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
@@ -562,6 +577,7 @@ public class GunController : MonoBehaviour
         }
 
         _useCurvedTrajectory = false;
+        _useShrink = false;
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
