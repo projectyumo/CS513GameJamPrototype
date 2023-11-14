@@ -363,6 +363,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 634814178144148101, guid: fce74db3b09d7479c87139ae6785cb06, type: 3}
+      propertyPath: powerUpButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 634814178605008521, guid: fce74db3b09d7479c87139ae6785cb06, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -958,7 +962,7 @@ MonoBehaviour:
   tutorial: {fileID: 0}
   ghostPlayerTutorialText: {fileID: 0}
   barrierTutorialText: {fileID: 0}
-  ReduceGhostBulletSizeText: {fileID: 0}
+  reduceGhostBulletSizeText: {fileID: 0}
   curvedShotTutorial: {fileID: 0}
   levelName: 
   currentLevel: 0
