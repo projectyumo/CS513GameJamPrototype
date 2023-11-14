@@ -460,7 +460,6 @@ public class GunController : MonoBehaviour
                         bullet.transform.localScale /= 0.5f;
                     }
                     Debug.Log("Power Up After : " + powerUpCount);
-                    powerUp = false;
                 }
             }
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
@@ -503,6 +502,9 @@ public class GunController : MonoBehaviour
             Destroy(go);
         }
 
+        // Debug.Log("Use Shrink: " + powerUp);
+        // Debug.Log("Use Curved Trajectory: " + _useCurvedTrajectory);
+
         // Log Shot data analytics
         ShotData shotData = new ShotData(
             isGhost,
@@ -512,8 +514,11 @@ public class GunController : MonoBehaviour
             shotDetail.Direction.x,
             shotDetail.Direction.y,
             shotDetail.Velocity.x,
-            shotDetail.Velocity.y
+            shotDetail.Velocity.y,
+            powerUp,
+            _useCurvedTrajectory
         );
+
         if (_useCurvedTrajectory){
           _analyticsManager.ld.curvedShotsTaken++;
         }
@@ -562,6 +567,7 @@ public class GunController : MonoBehaviour
         }
 
         _useCurvedTrajectory = false;
+        powerUp = false;
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {

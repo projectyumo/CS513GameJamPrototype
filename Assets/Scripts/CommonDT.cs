@@ -14,8 +14,10 @@ public struct ShotData
     public float DirectionY;
     public float VelocityX;
     public float VelocityY;
+    public bool ShrinkShot;
+    public bool CurvedShot;
 
-    public ShotData(bool isGhost, float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY)
+    public ShotData(bool isGhost, float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY, bool shrinkShot, bool curvedShot)
     {
         IsGhost = isGhost;
         PositionX = positionX;
@@ -25,6 +27,8 @@ public struct ShotData
         DirectionY = directionY;
         VelocityX = velocityX;
         VelocityY = velocityY;
+        ShrinkShot = shrinkShot;
+        CurvedShot = curvedShot;
     }
 }
 
@@ -34,7 +38,7 @@ public class FeatureFlags
     public bool coreMechanic;
     public bool projectile;
     public bool shrinkPowerup;
-    
+
     public FeatureFlags()
     {
         coreMechanic = false;
