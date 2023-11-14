@@ -5,17 +5,20 @@ public class BallController : MonoBehaviour
     public LevelManager levelManager;
     public BallManager ballManager;
     private Rigidbody2D _rb;
+    private Vector3 _scale;
     private bool _isMoving;
     private readonly float _stationaryThreshold = 0.1f;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         ballManager = FindObjectOfType<BallManager>();
         levelManager = FindObjectOfType<LevelManager>();
         _rb = GetComponent<Rigidbody2D>();
+        _scale = transform.localScale;
+        _rb.mass /= _scale.x/2;
     }
-    
+
     void Update()
     {
         CheckMovement();
