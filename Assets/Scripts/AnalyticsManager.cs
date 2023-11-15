@@ -70,7 +70,7 @@ public class AnalyticsManager : MonoBehaviour
         ld.timeUpdated = System.DateTimeOffset.Now.ToUnixTimeSeconds();
         ld.timeTaken = ld.timeUpdated - ld.timeStarted;
         string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(ld);
-        string url = $"{DatabaseURL}analytics_v7/{ld.levelSessionId}.json";
+        string url = $"{DatabaseURL}analytics_v6/{ld.levelSessionId}.json";
         StartCoroutine(_gameManager.PushDataCoroutine(url, jsonPayload));
     }
 }
