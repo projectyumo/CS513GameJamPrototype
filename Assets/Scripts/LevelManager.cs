@@ -223,8 +223,10 @@ public class LevelManager : MonoBehaviour
                 Destroy(ghostPlayer);
             }
         }
-
-        Destroy(_playerController.gameObject);
+        if (_playerController != null && _playerController.gameObject != null)
+        {
+            Destroy(_playerController.gameObject);
+        }
     }
 
     public void LoseCase()
@@ -256,12 +258,20 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         gameOverText.gameObject.SetActive(false);
+        if (_gunController != null && _gunController.gameObject != null)
+        {
+            Destroy(_gunController.gameObject);
+        }
         gameManager.LoadNextScene();
     }
 
     public void LoadMainMenuScene()
     {
         gameOverText.gameObject.SetActive(false);
+        if (_gunController != null && _gunController.gameObject != null)
+        {
+            Destroy(_gunController.gameObject);
+        }
         gameManager.LoadMainMenuScene();
     }
 
@@ -270,6 +280,10 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.levelState = LevelState.InProgress;
         _analyticsManager.LogAnalytics();
         DestroyAllBullets();
+        if (_gunController != null && _gunController.gameObject != null)
+        {
+            Destroy(_gunController.gameObject);
+        }
         gameManager.RestartCurrentScene();
     }
 
