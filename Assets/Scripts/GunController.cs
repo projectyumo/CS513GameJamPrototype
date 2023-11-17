@@ -15,7 +15,7 @@ public class GunController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public LevelManager levelManager;
     private PlayerController _playerController;
-    private int _destroyTime = 5;
+    public int destroyBulletTime = 5;
 
     // Queue of active ghost players. Used to keep track of the ghost players.
     public Queue<GameObject> ghostPlayers = new Queue<GameObject>();
@@ -516,7 +516,7 @@ public class GunController : MonoBehaviour
         _analyticsManager.ld.shots[_analyticsManager.ld.shotsTaken - 1] = shotData;
         _analyticsManager.LogAnalytics();
 
-        Destroy(bullet, _destroyTime);
+        Destroy(bullet, destroyBulletTime);
 
         // Decrement remaining shots
         levelManager.BulletCountDown();
