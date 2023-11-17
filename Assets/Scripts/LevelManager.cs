@@ -134,7 +134,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         // Lose case
-        if (!_isGameOver && bulletCount == 0 && BulletControl.activeBulletCount == 0)
+        if (!_isGameOver && bulletCount == 0 && (BulletControl.activeBulletCount == 0 || currentLevel == 0))
         {
             Invoke(nameof(LoseCase), 1);
         }
