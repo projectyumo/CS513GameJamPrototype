@@ -96,7 +96,14 @@ public class BulletControl : MonoBehaviour
             if (_gunController != null && gameObject != null)
             {
                 _gunController.SaveBulletPosition(gameObject.transform.position);
+                
+
             }
+        }
+
+        if (gameObject != null && gameObject.name == "activeGhost")
+        {
+            _gunController.TurnOffShrink();
         }
     }
 
