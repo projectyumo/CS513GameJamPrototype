@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BulletControl : MonoBehaviour
@@ -5,6 +6,8 @@ public class BulletControl : MonoBehaviour
     private AnalyticsManager _analyticsManager;
     private GunController _gunController;
     private Rigidbody2D _rb;
+    private float _startTime;
+    private float _initialVelocity;
 
     public int minVelocity = 4;
 
@@ -20,6 +23,8 @@ public class BulletControl : MonoBehaviour
         _analyticsManager = FindObjectOfType<AnalyticsManager>();
         _gunController = FindObjectOfType<GunController>();
         _rb = GetComponent<Rigidbody2D>();
+        _startTime = Time.time;
+        _initialVelocity = _rb.velocity.magnitude;
 
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
@@ -27,13 +32,27 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
+        if (gameObject.name == "Bullet(Clone)")
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = getBulletColor();
+        }
         
-
         if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost")
         {
             
             Destroy(gameObject);
         }
+    }
+
+    Color getBulletColor()
+    {
+        float curTime = Time.time;
+        float timeElapsed = curTime - _startTime;
+        float timePercentage = (timeElapsed / _gunController.destroyBulletTime) * 100;
+        float speedPercentage = ((_initialVelocity - _rb.velocity.magnitude) / (_initialVelocity - minVelocity)) * 100;
+        float colorPercentage = Mathf.Max(timePercentage, speedPercentage);
+        float r = 1 - (colorPercentage / 100);
+        return new Color(r, 1, 1, 1);
     }
 
     //Detect collisions between the appropriate surfaces
