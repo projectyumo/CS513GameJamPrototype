@@ -126,8 +126,10 @@ public class GunController : MonoBehaviour
        // Debug.Log(shrinkGhosts.Length);
         foreach (GameObject shrink in shrinkGhosts)
         {
-           
-            shrink.SetActive(false);
+            if (shrink != null)
+            {
+                shrink.SetActive(false);
+            }
         }
     }
 
@@ -361,10 +363,8 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
-        Debug.Log(shrinkGhosts.Length);
         foreach(GameObject shrink in shrinkGhosts)
         {
-          
             shrink.SetActive(true);
         }
 
@@ -635,8 +635,10 @@ public class GunController : MonoBehaviour
     {
         foreach (GameObject shrink in shrinkGhosts)
         {
-            
-            shrink.SetActive(false);
+            if (shrink != null)
+            {
+                shrink.SetActive(false);
+            }
         }
     }
     private class ShotDetails
