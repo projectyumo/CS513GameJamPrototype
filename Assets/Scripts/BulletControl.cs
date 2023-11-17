@@ -13,6 +13,8 @@ public class BulletControl : MonoBehaviour
 
     public bool noDestroy;
 
+    public bool isShrunk = false;
+
     void Start()
     {
         _analyticsManager = FindObjectOfType<AnalyticsManager>();

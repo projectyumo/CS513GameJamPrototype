@@ -61,13 +61,8 @@ public class GunController : MonoBehaviour
 
     public bool canPerformAction = true;
 
-    //Reduce Ghost Bullet Size
-    public Text text;
-    public bool isGhostActive;
-    public bool powerUp;
-    public GameObject powerUpButton;
-    Vector3 _orginalGhost;
-    public int powerUpCount;
+    
+ 
 
     void Start()
     {
@@ -116,37 +111,8 @@ public class GunController : MonoBehaviour
                 Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
             }
         }
-
-        if (levelManager.featureFlags.shrinkPowerup)
-        {
-            powerUpButton.SetActive(false);
-            text.gameObject.SetActive(false);
-        }
     }
 
-    IEnumerator SetToFalse()
-    {
-        yield return new WaitForSeconds(15);
-        isGhostActive = false;
-    }
-
-    void LateUpdate()
-    {
-        if (levelManager.featureFlags.shrinkPowerup)
-        {
-            if (isGhostActive)
-            {
-                powerUpButton.SetActive(true);
-                text.gameObject.SetActive(true);
-            }
-            else
-            {
-                text.gameObject.SetActive(false);
-                powerUpButton.SetActive(false);
-                powerUpCount = 0;
-            }
-        }
-    }
 
     void Update()
     {
@@ -371,7 +337,7 @@ public class GunController : MonoBehaviour
 
     void CreateGhostPlayer()
     {
-        isGhostActive = true;
+        
         // Get previous bullet disappear position
         Vector3 prevShotPosition = prevBulletPositions.Dequeue();
         // Instantiate ghost player with previous shot disappear position
@@ -447,21 +413,7 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            if (levelManager.featureFlags.shrinkPowerup)
-            {
-                if (powerUp)
-                {
-                    if (powerUpCount == 1)
-                    {
-                        bullet.transform.localScale *= 0.5f;
-                    }
-                    else if (powerUpCount == 2)
-                    {
-                        bullet.transform.localScale /= 0.5f;
-                    }
-                    Debug.Log("Power Up After : " + powerUpCount);
-                }
-            }
+            
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -515,7 +467,7 @@ public class GunController : MonoBehaviour
             shotDetail.Direction.y,
             shotDetail.Velocity.x,
             shotDetail.Velocity.y,
-            powerUp,
+           
             _useCurvedTrajectory
         );
 
@@ -542,7 +494,7 @@ public class GunController : MonoBehaviour
             // Visual indication that its not player's turn
             playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
             _playerController.SetPlayerMovement(false);
-            isGhostActive = false;
+           
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -567,7 +519,7 @@ public class GunController : MonoBehaviour
         }
 
         _useCurvedTrajectory = false;
-        powerUp = false;
+       
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
@@ -649,40 +601,6 @@ public class GunController : MonoBehaviour
         positions[i] = trajectory[i];
       }
       _lr.SetPositions(positions);
-    }
-
-    public void ReduceGhostBulletSize()
-    {
-
-        if (levelManager.featureFlags.shrinkPowerup)
-        {
-            powerUpCount++;
-            Debug.Log("Power Up After increase: " + powerUpCount);
-            powerUp = true;
-            GameObject ghostPlayer;
-            try
-            {
-                ghostPlayer = ghostPlayers.Peek();
-            }
-            catch
-            {
-                ghostPlayer = null;
-                return;
-            }
-            if (powerUpCount == 1)
-            {
-                powerUpCount = 1;
-                levelManager.BulletCountDown();
-                ghostPlayer.transform.localScale *= 0.5f;
-            }
-            if (powerUpCount == 2)
-            {
-                levelManager.BulletCountUp();
-                ghostPlayer.transform.localScale /= 0.5f;
-                powerUpCount = 0;
-            }
-            _analyticsManager.ld.powerup++;
-        }
     }
 
     private class ShotDetails

@@ -72,5 +72,7 @@ public class AnalyticsManager : MonoBehaviour
         string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(ld);
         string url = $"{DatabaseURL}analytics_v6/{ld.levelSessionId}.json";
         StartCoroutine(_gameManager.PushDataCoroutine(url, jsonPayload));
+
+        Debug.Log(jsonPayload);
     }
 }
