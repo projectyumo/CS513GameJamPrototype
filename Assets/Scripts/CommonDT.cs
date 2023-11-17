@@ -14,10 +14,10 @@ public struct ShotData
     public float DirectionY;
     public float VelocityX;
     public float VelocityY;
-    public bool ShrinkShot;
+    
     public bool CurvedShot;
 
-    public ShotData(bool isGhost, float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY, bool shrinkShot, bool curvedShot)
+    public ShotData(bool isGhost, float positionX, float positionY, float positionZ, float directionX, float directionY, float velocityX, float velocityY, bool curvedShot)
     {
         IsGhost = isGhost;
         PositionX = positionX;
@@ -27,7 +27,7 @@ public struct ShotData
         DirectionY = directionY;
         VelocityX = velocityX;
         VelocityY = velocityY;
-        ShrinkShot = shrinkShot;
+       
         CurvedShot = curvedShot;
     }
 }
