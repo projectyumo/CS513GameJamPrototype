@@ -238,6 +238,7 @@ public class LevelManager : MonoBehaviour
         }
 
         _isGameOver = true;
+        _gunController.ResetShrinks();
         DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Failed;
         _analyticsManager.LogAnalytics();
@@ -248,6 +249,7 @@ public class LevelManager : MonoBehaviour
     public void WinCase()
     {
         _isGameOver = true;
+        _gunController.ResetShrinks();
         DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Completed;
         _analyticsManager.LogAnalytics();
@@ -260,6 +262,7 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         if (_gunController != null && _gunController.gameObject != null)
         {
+            
             Destroy(_gunController.gameObject);
         }
         gameManager.LoadNextScene();
