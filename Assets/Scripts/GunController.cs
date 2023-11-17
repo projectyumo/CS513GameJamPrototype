@@ -61,7 +61,8 @@ public class GunController : MonoBehaviour
 
     public bool canPerformAction = true;
 
-    static GameObject[] shrinkGhosts;
+    public static GameObject[] shrinkGhosts;
+    public GameObject lastGhost;
 
 
     void Start()
@@ -119,18 +120,15 @@ public class GunController : MonoBehaviour
     private void Awake()
     {
         if (shrinkGhosts == null)
-        {
+        { 
             shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
         }
 
-       // Debug.Log(shrinkGhosts.Length);
-        foreach (GameObject shrink in shrinkGhosts)
-        {
-            if (shrink != null)
-            {
-                shrink.SetActive(false);
-            }
-        }
+
+
+        TurnOffShrink();
+
+      
     }
 
     void Update()
@@ -363,9 +361,18 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
+
+       
         foreach(GameObject shrink in shrinkGhosts)
         {
-            shrink.SetActive(true);
+          if(shrink != null)
+            {
+                
+                shrink.SetActive(true);
+            }
+            
+
+
         }
 
         // Change the color of the ghost player
@@ -443,7 +450,8 @@ public class GunController : MonoBehaviour
         var bulletCollider = bullet.GetComponent<CircleCollider2D>();
         if (isGhost)
         {
-            
+            lastGhost = bullet;
+
             foreach (Collider2D glassShelfCollider in _glassShelfColliders)
             {
                 Physics2D.IgnoreCollision(bulletCollider, glassShelfCollider, true);
@@ -635,14 +643,26 @@ public class GunController : MonoBehaviour
 
     public void TurnOffShrink()
     {
+        if(shrinkGhosts == null)
+        {
+            return;
+        }
+
         foreach (GameObject shrink in shrinkGhosts)
         {
             if (shrink != null)
             {
                 shrink.SetActive(false);
             }
+
         }
     }
+
+    public void ResetShrinks()
+    {
+        shrinkGhosts = null;
+    }
+
     private class ShotDetails
     {
         public Vector3 Position;

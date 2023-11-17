@@ -27,8 +27,11 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
+        
+
         if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost")
         {
+            
             Destroy(gameObject);
         }
     }
@@ -99,10 +102,18 @@ public class BulletControl : MonoBehaviour
             }
         }
 
+        
         if (gameObject != null && gameObject.name == "activeGhost")
         {
-            _gunController.TurnOffShrink();
+            
+            if (_gunController.lastGhost == null)
+            {
+                _gunController.TurnOffShrink();
+            }
+
         }
+
+
     }
 
     // This analytic will help us understand how effectively is the player using the ghost.
