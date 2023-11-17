@@ -23,6 +23,7 @@ TagManager:
   - Bullet
   - Ceiling
   - CurvedShotTutorial
+  - ShrinkGhost
   layers:
   - Default
   - TransparentFX

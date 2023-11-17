@@ -73,6 +73,6 @@ public class AnalyticsManager : MonoBehaviour
         string url = $"{DatabaseURL}analytics_v6/{ld.levelSessionId}.json";
         StartCoroutine(_gameManager.PushDataCoroutine(url, jsonPayload));
 
-        Debug.Log(jsonPayload);
+        //Debug.Log(jsonPayload);
     }
 }

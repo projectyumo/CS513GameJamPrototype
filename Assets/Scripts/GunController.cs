@@ -61,8 +61,8 @@ public class GunController : MonoBehaviour
 
     public bool canPerformAction = true;
 
-    
- 
+    static GameObject[] shrinkGhosts;
+
 
     void Start()
     {
@@ -111,8 +111,25 @@ public class GunController : MonoBehaviour
                 Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
             }
         }
+
+       
+      
     }
 
+    private void Awake()
+    {
+        if (shrinkGhosts == null)
+        {
+            shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
+        }
+
+       // Debug.Log(shrinkGhosts.Length);
+        foreach (GameObject shrink in shrinkGhosts)
+        {
+           
+            shrink.SetActive(false);
+        }
+    }
 
     void Update()
     {
@@ -344,6 +361,13 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
+        Debug.Log(shrinkGhosts.Length);
+        foreach(GameObject shrink in shrinkGhosts)
+        {
+          
+            shrink.SetActive(true);
+        }
+
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
         ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
@@ -452,6 +476,10 @@ public class GunController : MonoBehaviour
 
             // Destroy ghost player
             Destroy(go);
+
+           
+
+            
         }
 
         // Debug.Log("Use Shrink: " + powerUp);
@@ -603,6 +631,14 @@ public class GunController : MonoBehaviour
       _lr.SetPositions(positions);
     }
 
+    public void TurnOffShrink()
+    {
+        foreach (GameObject shrink in shrinkGhosts)
+        {
+            
+            shrink.SetActive(false);
+        }
+    }
     private class ShotDetails
     {
         public Vector3 Position;
