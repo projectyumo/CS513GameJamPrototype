@@ -13,7 +13,7 @@ public class BulletControl : MonoBehaviour
 
     public bool noDestroy;
 
-    public bool isShrunk = false;
+    public bool isShrunk;
 
     void Start()
     {
@@ -96,8 +96,6 @@ public class BulletControl : MonoBehaviour
             if (_gunController != null && gameObject != null)
             {
                 _gunController.SaveBulletPosition(gameObject.transform.position);
-                
-
             }
         }
 
