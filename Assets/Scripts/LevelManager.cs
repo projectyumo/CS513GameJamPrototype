@@ -259,6 +259,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        _gunController.ResetShrinks();
         gameOverText.gameObject.SetActive(false);
         if (_gunController != null && _gunController.gameObject != null)
         {
@@ -270,6 +271,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadMainMenuScene()
     {
+        _gunController.ResetShrinks();
         gameOverText.gameObject.SetActive(false);
         if (_gunController != null && _gunController.gameObject != null)
         {
