@@ -63,6 +63,9 @@ public class GunController : MonoBehaviour
 
     public static GameObject[] shrinkGhosts;
     public GameObject lastGhost;
+    public static bool ShrunkOff = false;
+    public static int countofGhosts;
+
 
 
     void Start()
@@ -114,20 +117,18 @@ public class GunController : MonoBehaviour
         }
 
        
-      
+    
     }
 
     private void Awake()
     {
+      
         if (shrinkGhosts == null)
         { 
             shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
+            TurnOffShrink();
         }
-
-
-
-        TurnOffShrink();
-
+        
       
     }
 
@@ -354,25 +355,19 @@ public class GunController : MonoBehaviour
 
     void CreateGhostPlayer()
     {
-        
+        countofGhosts++;
         // Get previous bullet disappear position
         Vector3 prevShotPosition = prevBulletPositions.Dequeue();
         // Instantiate ghost player with previous shot disappear position
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
-
-       
         foreach(GameObject shrink in shrinkGhosts)
         {
           if(shrink != null)
             {
-                
                 shrink.SetActive(true);
             }
-            
-
-
         }
 
         // Change the color of the ghost player
@@ -389,6 +384,7 @@ public class GunController : MonoBehaviour
 
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
+        
     }
 
     public void SaveBulletPosition(Vector3 bulletPosition)
@@ -434,6 +430,8 @@ public class GunController : MonoBehaviour
         if (isGhost)
         {
             go = ghostPlayers.Dequeue();
+            
+            countofGhosts--;
             bo = ghostBulletObj;
         }
         else
@@ -643,11 +641,13 @@ public class GunController : MonoBehaviour
 
     public void TurnOffShrink()
     {
+
         if(shrinkGhosts == null)
         {
             return;
         }
 
+ 
         foreach (GameObject shrink in shrinkGhosts)
         {
             if (shrink != null)
@@ -669,4 +669,6 @@ public class GunController : MonoBehaviour
         public Vector2 Direction;
         public Vector2 Velocity;
     }
+
+    
 }

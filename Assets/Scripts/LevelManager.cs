@@ -280,6 +280,7 @@ public class LevelManager : MonoBehaviour
 
     public void RestartCurrentLevel()
     {
+        _gunController.ResetShrinks();
         _analyticsManager.ld.levelState = LevelState.InProgress;
         _analyticsManager.LogAnalytics();
         DestroyAllBullets();
