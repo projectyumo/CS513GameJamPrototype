@@ -126,10 +126,10 @@ public class GunController : MonoBehaviour
         if (shrinkGhosts == null)
         { 
             shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
-            TurnOffShrink();
+            
         }
-        
-      
+
+        TurnOffShrink();
     }
 
     void Update()
