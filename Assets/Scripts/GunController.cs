@@ -76,6 +76,9 @@ public class GunController : MonoBehaviour
         Transform gun = this.transform.Find("Gun");
         _spriteRenderer = gun.GetComponent<SpriteRenderer>();
 
+        _spritePath = "Sprites/aim_pointer_charge_6";
+        _spriteRenderer.sprite = Resources.Load<Sprite>(_spritePath);
+
         // Sprite renderer to toggle projectile shot.
         _parentSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
         _parentSpriteRenderer.drawMode = SpriteDrawMode.Sliced;
@@ -116,17 +119,17 @@ public class GunController : MonoBehaviour
             }
         }
 
-       
-    
+
+
     }
 
     private void Awake()
     {
-      
+
         if (shrinkGhosts == null)
-        { 
+        {
             shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
-            
+
         }
 
         TurnOffShrink();
@@ -166,21 +169,11 @@ public class GunController : MonoBehaviour
         }
 
         if (canPerformAction){
-          // While mouse is being held down, shot will charge
-          if (Input.GetMouseButton(0) && (GameObject.FindGameObjectsWithTag("Bullet") != null))
-          {
-              // Set Charge
-              //NOTE:KP: Set Charge has been updated to update the current speed at the same time so that trajectories can be updated.
-              // SetCharge();
-              HandleCharge();
-              SetSpritePathOnCharge();
+          HandleCharge();
 
-              // When mouse is released, and there is charge
-          }
-          else if (Input.GetMouseButtonUp(0)) //&& currentCharge > 0f )
+          if (Input.GetMouseButtonUp(0)) //&& currentCharge > 0f )
           {
-              // SetCharge();
-              HandleCharge();
+
               Shoot();
               ResetBulletTrajectory();
 
@@ -384,7 +377,7 @@ public class GunController : MonoBehaviour
 
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
-        
+
     }
 
     public void SaveBulletPosition(Vector3 bulletPosition)
@@ -423,14 +416,14 @@ public class GunController : MonoBehaviour
         {
             return;
         }
-        
+
         GameObject go; // Player or Ghost
         GameObject bo; // Bullet or Ghost Bullet
 
         if (isGhost)
         {
             go = ghostPlayers.Dequeue();
-            
+
             countofGhosts--;
             bo = ghostBulletObj;
         }
@@ -503,7 +496,7 @@ public class GunController : MonoBehaviour
             shotDetail.Direction.y,
             shotDetail.Velocity.x,
             shotDetail.Velocity.y,
-           
+
             _useCurvedTrajectory
         );
 
@@ -530,7 +523,7 @@ public class GunController : MonoBehaviour
             // Visual indication that its not player's turn
             playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
             _playerController.SetPlayerMovement(false);
-           
+
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -555,7 +548,7 @@ public class GunController : MonoBehaviour
         }
 
         _useCurvedTrajectory = false;
-       
+
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
@@ -647,7 +640,7 @@ public class GunController : MonoBehaviour
             return;
         }
 
- 
+
         foreach (GameObject shrink in shrinkGhosts)
         {
             if (shrink != null)
@@ -670,5 +663,5 @@ public class GunController : MonoBehaviour
         public Vector2 Velocity;
     }
 
-    
+
 }
