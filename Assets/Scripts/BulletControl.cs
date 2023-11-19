@@ -51,8 +51,8 @@ public class BulletControl : MonoBehaviour
         float timePercentage = (timeElapsed / _gunController.destroyBulletTime) * 100;
         float speedPercentage = ((_initialVelocity - _rb.velocity.magnitude) / (_initialVelocity - minVelocity)) * 100;
         float colorPercentage = Mathf.Max(timePercentage, speedPercentage);
-        float r = 1 - (colorPercentage / 100);
-        return new Color(r, 1, 1, 1);
+        float a = 1 - (colorPercentage / 100) * (1 - 0.2f);
+        return new Color(1, 1, 1, a);
     }
 
     //Detect collisions between the appropriate surfaces
