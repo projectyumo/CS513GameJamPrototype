@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
 //using System.Numerics;
@@ -364,10 +362,9 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
-        // Visually hide the player since ghost player will take the next shot
-        if (_playerSpriteRenderer != null && _spriteRenderer != null)
+        // Visually hide the aim pointer since ghost player will take the next shot
+        if (_spriteRenderer != null)
         {
-            _playerSpriteRenderer.enabled = false; // Disable rendering to hide the player visually
             _spriteRenderer.enabled = false;
         }
 
@@ -549,6 +546,7 @@ public class GunController : MonoBehaviour
             {
                 _playerSpriteRenderer.color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
             }
+            _playerController.SetPlayerMovement(false);
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -563,7 +561,6 @@ public class GunController : MonoBehaviour
                 if (_playerSpriteRenderer != null && _spriteRenderer != null)
                 {
                     _playerSpriteRenderer.color = Color.white;
-                    _playerSpriteRenderer.enabled = true; // Enable rendering to show the player visually
                     _spriteRenderer.enabled = true;
                 }
                 _playerController.SetPlayerMovement(true);
@@ -576,7 +573,6 @@ public class GunController : MonoBehaviour
             if (_playerSpriteRenderer != null && _spriteRenderer != null)
             {
                 _playerSpriteRenderer.color = Color.white;
-                _playerSpriteRenderer.enabled = true; // Enable rendering to show the player visually
                 _spriteRenderer.enabled = true;
             }
             _playerController.SetPlayerMovement(true);
