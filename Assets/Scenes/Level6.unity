@@ -211,10 +211,10 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.16, y: 0.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
@@ -1312,10 +1312,10 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.16, y: 0.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
@@ -1735,10 +1735,10 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.16, y: 0.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
@@ -2281,7 +2281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651527623753544701, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.89
+      value: -2.389
       objectReference: {fileID: 0}
     - target: {fileID: 7651527623753544701, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2318,6 +2318,10 @@ PrefabInstance:
     - target: {fileID: 7825013210250792475, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
       propertyPath: m_Name
       value: GlassShelf1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8270147028194819817, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
+      propertyPath: m_Size.x
+      value: 1.2098523
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 342b0be63dc98426d8f36d7358f4506c, type: 3}
