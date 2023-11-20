@@ -395,6 +395,139 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &320832489
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2739328243120887568, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.9697003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887568, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.468028
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887568, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3120918
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887568, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887568, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.7587
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: e7386a1cac8b74310b493b5d9bdcc085, type: 3}
+    - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_RenderMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_PlaybackSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.595711
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -46.650276
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258301, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258302, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_Name
+      value: TutorialVideo
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243308258302, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_TagString
+      value: ShrinkGhostTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243980718438, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.12255003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243980718438, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.468028
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243980718438, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243980718439, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328244273583317, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328244273583319, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328244863980866, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.829135
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328244863980866, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.2601
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215164031178652679, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_text
+      value: Hit the blue ball with the GHOST SHOT to reduce the size of the bullet.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055496426485561763, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -14
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
 --- !u!1001 &365489104
 PrefabInstance:
   m_ObjectHideFlags: 0

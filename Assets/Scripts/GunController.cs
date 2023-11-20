@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
@@ -62,6 +63,7 @@ public class GunController : MonoBehaviour
     public bool canPerformAction = true;
 
     public static GameObject[] shrinkGhosts;
+    public static GameObject[] shrinkGhostsText;
     public GameObject lastGhost;
     public static bool ShrunkOff = false;
     public static int countofGhosts;
@@ -129,10 +131,15 @@ public class GunController : MonoBehaviour
         if (shrinkGhosts == null)
         {
             shrinkGhosts = GameObject.FindGameObjectsWithTag("ShrinkGhost");
+        }
 
+        if (shrinkGhostsText == null)
+        {
+            shrinkGhostsText = GameObject.FindGameObjectsWithTag("ShrinkGhostTutorial");
         }
 
         TurnOffShrink();
+        TurnOffShrinkTutorial();
     }
 
     void Update()
@@ -362,6 +369,15 @@ public class GunController : MonoBehaviour
                 shrink.SetActive(true);
             }
         }
+
+        foreach (GameObject shrinktext in shrinkGhostsText)
+        {
+            if (shrinktext != null)
+            {
+                shrinktext.SetActive(true);
+            }
+        }
+
 
         // Change the color of the ghost player
         ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
@@ -651,9 +667,30 @@ public class GunController : MonoBehaviour
         }
     }
 
+    public void TurnOffShrinkTutorial()
+    {
+
+        if (shrinkGhostsText == null)
+        {
+            return;
+        }
+
+
+
+        foreach (GameObject shrinktext in shrinkGhostsText)
+        {
+            if (shrinktext != null)
+            {
+                shrinktext.SetActive(false);
+            }
+
+        }
+    }
+
     public void ResetShrinks()
     {
         shrinkGhosts = null;
+        shrinkGhostsText = null;
     }
 
     private class ShotDetails

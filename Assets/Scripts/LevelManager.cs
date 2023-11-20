@@ -58,10 +58,6 @@ public class LevelManager : MonoBehaviour
             barrierTutorialText = GameObject.FindGameObjectWithTag("BarrierTutorialText").GetComponent<TextMeshProUGUI>();
         }
 
-        if (GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText"))
-        {
-            reduceGhostBulletSizeText = GameObject.FindGameObjectWithTag("ReduceGhostBulletSizeText").GetComponent<TextMeshProUGUI>();
-        }
 
         if (GameObject.FindGameObjectWithTag("CurvedShotTutorial"))
         {

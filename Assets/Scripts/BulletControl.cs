@@ -130,6 +130,7 @@ public class BulletControl : MonoBehaviour
                 if(GunController.countofGhosts < 1)
                 {
                     _gunController.TurnOffShrink();
+                    _gunController.TurnOffShrinkTutorial();
                 }
                
             }
