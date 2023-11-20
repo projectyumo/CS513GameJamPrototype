@@ -963,7 +963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4198112740279862822, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 205.694
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4198112740279862822, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1029,6 +1029,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelTest
       objectReference: {fileID: 0}
+    - target: {fileID: 4198112740279862840, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 8f12c4da7fd3b46188f6b9b30004fb6a, type: 3}
     - target: {fileID: 4198112740279862841, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2219,7 +2223,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_text
-      value: 0
+      value: Tutorial
       objectReference: {fileID: 0}
     - target: {fileID: 4198112739652079076, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_fontSize
@@ -2328,6 +2332,22 @@ PrefabInstance:
     - target: {fileID: 4198112740279862823, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_Name
       value: Level0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112740279862840, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 46b4ce7c5ffc2440fbb9d1fa9abeefdd, type: 3}
+    - target: {fileID: 4198112740279862840, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112740279862840, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198112740279862840, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4198112740279862841, guid: e4033c47dcb4944708c96dbbfb6d189b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
