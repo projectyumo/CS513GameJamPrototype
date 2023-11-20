@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BulletControl : MonoBehaviour
 {
@@ -8,6 +8,9 @@ public class BulletControl : MonoBehaviour
     private Rigidbody2D _rb;
     private float _startTime;
     private float _initialVelocity;
+    private SpriteRenderer _spriteRenderer;
+    private Image _healthCircle;
+    private GameObject _healthCircleObject;
 
     public int minVelocity = 4;
 
@@ -28,31 +31,70 @@ public class BulletControl : MonoBehaviour
 
         // Increment activeBulletCount to track the number of bullets in the scene
         activeBulletCount++;
+
+        // Set the bullet health loader
+        SetBulletHealthLoader();
+    }
+    
+    void SetBulletHealthLoader()
+    {
+        // Create a new UI Image element under the Canvas
+        _healthCircleObject = new GameObject("HealthCircle");
+        _healthCircleObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        _healthCircle = _healthCircleObject.AddComponent<Image>();
+        // Change the image type to filled
+        _healthCircle.type = Image.Type.Filled;
+
+        // Set the sprite for _healthCircle
+        Sprite loaderSprite = Resources.Load<Sprite>("Sprites/circle_loader");
+        _healthCircle.sprite = loaderSprite;
+        _healthCircle.color = Color.green;
+        
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+
+        if (_spriteRenderer.sprite != null && _healthCircle.sprite != null)
+        {
+            // Set the size of the _healthCircle to match the size of the bullet sprite
+            RectTransform rectTransform = _healthCircle.GetComponent<RectTransform>();
+            float bulletDiameter = _spriteRenderer.sprite.bounds.size.x * gameObject.transform.localScale.x;
+            float loaderDiameter = _healthCircle.sprite.rect.width;
+
+            // Assuming the Canvas is using Screen Space - Overlay
+            if (Camera.main != null)
+            {
+                float scaleRatio = (bulletDiameter / loaderDiameter) * Screen.height / Camera.main.orthographicSize;
+                rectTransform.sizeDelta = new Vector2(loaderDiameter * scaleRatio, loaderDiameter * scaleRatio);
+            }
+        }
     }
 
     void Update()
     {
-        if (gameObject.name == "Bullet(Clone)")
-        {
-            gameObject.GetComponent<SpriteRenderer>().color = getBulletColor();
-        }
+        SetBulletLife();
         
         if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost")
         {
-            
             Destroy(gameObject);
         }
     }
 
-    Color getBulletColor()
+    void SetBulletLife()
     {
         float curTime = Time.time;
         float timeElapsed = curTime - _startTime;
         float timePercentage = (timeElapsed / _gunController.destroyBulletTime) * 100;
         float speedPercentage = ((_initialVelocity - _rb.velocity.magnitude) / (_initialVelocity - minVelocity)) * 100;
-        float colorPercentage = Mathf.Max(timePercentage, speedPercentage);
-        float a = 1 - (colorPercentage / 100) * (1 - 0.2f);
-        return new Color(1, 1, 1, a);
+        float life = Mathf.Max(timePercentage, speedPercentage);
+        
+        if (_healthCircle != null)
+        {
+            _healthCircle.fillAmount = (100 - life) / 100;
+            if (Camera.main != null)
+            {
+                Vector3 bulletScreenPosition = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                _healthCircle.transform.position = bulletScreenPosition;
+            }
+        }
     }
 
     //Detect collisions between the appropriate surfaces
@@ -112,6 +154,11 @@ public class BulletControl : MonoBehaviour
     {
         activeBulletCount--;
 
+        if (_healthCircleObject != null)
+        {
+            Destroy(_healthCircleObject);
+        }
+
         // Save position of the bullet when it is destroyed for the echo shot player
         if (gameObject != null && gameObject.name == "Bullet(Clone)")
         {
@@ -132,12 +179,8 @@ public class BulletControl : MonoBehaviour
                     _gunController.TurnOffShrink();
                     _gunController.TurnOffShrinkTutorial();
                 }
-               
             }
-
         }
-
-
     }
 
     // This analytic will help us understand how effectively is the player using the ghost.
