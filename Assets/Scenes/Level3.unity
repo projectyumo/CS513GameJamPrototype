@@ -1797,6 +1797,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_Url
+      value: https://projectyumo.github.io/CS526Game/Assets/Videos/glass_shelf_passthrough.webm
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_VideoClip
       value: 
       objectReference: {fileID: 32900000, guid: 1faff07ae9f574b97bf53ec21f4ca9e5, type: 3}
@@ -1847,6 +1851,10 @@ PrefabInstance:
     - target: {fileID: 2739328243308258302, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_Name
       value: TutorialVideo
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739328244273583317, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
+      propertyPath: m_Url
+      value: https://projectyumo.github.io/CS526Game/Assets/Videos/glass_shelf_collision.webm
       objectReference: {fileID: 0}
     - target: {fileID: 2739328244273583317, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_VideoClip
