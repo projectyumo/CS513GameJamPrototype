@@ -14,6 +14,7 @@ public class GunController : MonoBehaviour
     public GameObject playerObj;
     private AnalyticsManager _analyticsManager;
     private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _playerSpriteRenderer;
     public LevelManager levelManager;
     private PlayerController _playerController;
     public int destroyBulletTime = 5;
@@ -77,6 +78,7 @@ public class GunController : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
         Transform gun = this.transform.Find("Gun");
         _spriteRenderer = gun.GetComponent<SpriteRenderer>();
+        _playerSpriteRenderer = playerObj.GetComponent<SpriteRenderer>();
 
         _spritePath = "Sprites/aim_pointer_charge_6";
         _spriteRenderer.sprite = Resources.Load<Sprite>(_spritePath);
@@ -362,6 +364,13 @@ public class GunController : MonoBehaviour
         GameObject ghostPlayer = Instantiate(playerObj, prevShotPosition, Quaternion.identity);
         ghostPlayer.name = "ghostPlayer";
 
+        // Visually hide the player since ghost player will take the next shot
+        if (_playerSpriteRenderer != null && _spriteRenderer != null)
+        {
+            _playerSpriteRenderer.enabled = false; // Disable rendering to hide the player visually
+            _spriteRenderer.enabled = false;
+        }
+
         foreach(GameObject shrink in shrinkGhosts)
         {
           if(shrink != null)
@@ -378,10 +387,10 @@ public class GunController : MonoBehaviour
             }
         }
 
-
         // Change the color of the ghost player
-        ghostPlayer.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 0.7f);
-        ghostPlayer.GetComponent<SpriteRenderer>().sortingOrder = 5;
+        SpriteRenderer ghostSpriteRenderer = ghostPlayer.GetComponent<SpriteRenderer>();
+        ghostSpriteRenderer.color = new Color(0, 1, 1, 0.7f);
+        ghostSpriteRenderer.sortingOrder = 5;
 
         // Set the SmilingGhostIcon active
         GameObject ghostIcon = ghostPlayer.transform.Find("SmilingGhostIcon").gameObject;
@@ -393,7 +402,6 @@ public class GunController : MonoBehaviour
 
         // Track ghostPlayer objects
         ghostPlayers.Enqueue(ghostPlayer);
-
     }
 
     public void SaveBulletPosition(Vector3 bulletPosition)
@@ -537,9 +545,10 @@ public class GunController : MonoBehaviour
             ShootBullet(false);
             _isPlayer = false;
             // Visual indication that its not player's turn
-            playerObj.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
-            _playerController.SetPlayerMovement(false);
-
+            if (_playerSpriteRenderer != null)
+            {
+                _playerSpriteRenderer.color = new Color(0.4f, 0.5f, 0.5f, 0.7f);
+            }
         }
 
         // FEATURE_FLAG_CONTROL: Core Mechanic
@@ -551,7 +560,12 @@ public class GunController : MonoBehaviour
                 ShootBullet(true);
                 _isPlayer = true;
                 // Visual indication that its player's turn
-                playerObj.GetComponent<SpriteRenderer>().color = Color.white;
+                if (_playerSpriteRenderer != null && _spriteRenderer != null)
+                {
+                    _playerSpriteRenderer.color = Color.white;
+                    _playerSpriteRenderer.enabled = true; // Enable rendering to show the player visually
+                    _spriteRenderer.enabled = true;
+                }
                 _playerController.SetPlayerMovement(true);
             }
         }
@@ -559,12 +573,16 @@ public class GunController : MonoBehaviour
         {
             _isPlayer = true;
             // Visual indication that its player's turn
-            playerObj.GetComponent<SpriteRenderer>().color = Color.white;
+            if (_playerSpriteRenderer != null && _spriteRenderer != null)
+            {
+                _playerSpriteRenderer.color = Color.white;
+                _playerSpriteRenderer.enabled = true; // Enable rendering to show the player visually
+                _spriteRenderer.enabled = true;
+            }
             _playerController.SetPlayerMovement(true);
         }
 
         _useCurvedTrajectory = false;
-
     }
 
     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, bool useCurvedTrajectory) {
@@ -699,6 +717,4 @@ public class GunController : MonoBehaviour
         public Vector2 Direction;
         public Vector2 Velocity;
     }
-
-
 }
