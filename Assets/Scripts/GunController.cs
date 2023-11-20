@@ -432,12 +432,6 @@ public class GunController : MonoBehaviour
 
     void ShootBullet(bool isGhost)
     {
-        // Hot fix for level 0 since proper fix will require significant changes
-        if (levelManager.currentLevel == 0 && levelManager.bulletCount == 0)
-        {
-            return;
-        }
-
         GameObject go; // Player or Ghost
         GameObject bo; // Bullet or Ghost Bullet
 
@@ -536,6 +530,11 @@ public class GunController : MonoBehaviour
 
     void Shoot()
     {
+        if (levelManager.bulletCount == 0)
+        {
+            return;
+        }
+        
         // Player shoots
         if (_isPlayer)
         {
