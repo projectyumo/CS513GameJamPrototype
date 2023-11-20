@@ -1176,7 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8e96d2f0b7549f486db4e4618192c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletCount: 4
+  bulletCount: 6
   totalPoints: 0
   pocketPoints: 0100000002000000
   gameOverText: {fileID: 184722743}
@@ -1189,6 +1189,7 @@ MonoBehaviour:
   barrierTutorialText: {fileID: 0}
   reduceGhostBulletSizeText: {fileID: 0}
   curvedShotTutorial: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971

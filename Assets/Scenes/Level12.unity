@@ -745,7 +745,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 3410210cc54994cdbab2c25611af9759, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 3410210cc54994cdbab2c25611af9759, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8e96d2f0b7549f486db4e4618192c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletCount: 5
+  bulletCount: 6
   totalPoints: 0
   pocketPoints: 03000000
   gameOverText: {fileID: 0}
@@ -1027,6 +1027,7 @@ MonoBehaviour:
   barrierTutorialText: {fileID: 0}
   reduceGhostBulletSizeText: {fileID: 0}
   curvedShotTutorial: {fileID: 0}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
   levelName: 
   currentLevel: 0
 --- !u!4 &1113648971
@@ -1302,7 +1303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1557904435784834017, guid: 62179ec5381194606bde8d17f951ec4d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1536,7 +1537,7 @@ RectTransform:
   - {fileID: 109747179}
   - {fileID: 938198556}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
