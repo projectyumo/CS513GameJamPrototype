@@ -18,12 +18,12 @@ TagManager:
   - GhostBall
   - Barrier
   - BarrierTutorialText
-  - ReduceGhostBulletSizeText
   - GhostBullet
   - Bullet
   - Ceiling
   - CurvedShotTutorial
   - ShrinkGhost
+  - ShrinkGhostTutorial
   layers:
   - Default
   - TransparentFX
