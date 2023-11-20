@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using static GameConstants;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI barrierTutorialText;
     public TextMeshProUGUI reduceGhostBulletSizeText;
     public GameObject curvedShotTutorial;
+
+    public Color flashColor = Color.red; // The color to flash
+    // public float flashDuration = 0.5f; // Duration for each flash
 
     public string levelName;
 
@@ -57,7 +61,6 @@ public class LevelManager : MonoBehaviour
         {
             barrierTutorialText = GameObject.FindGameObjectWithTag("BarrierTutorialText").GetComponent<TextMeshProUGUI>();
         }
-
 
         if (GameObject.FindGameObjectWithTag("CurvedShotTutorial"))
         {
@@ -99,7 +102,7 @@ public class LevelManager : MonoBehaviour
         }
 
         SetFeatureFlags();
-        
+
         // Loop through all the pockets and set the points for each pocket
         for (int i = 0; i < maxPocketCount; i++)
         {
@@ -161,7 +164,31 @@ public class LevelManager : MonoBehaviour
         var text = bulletCount < 0 ? "0" : bulletCount.ToString();
 
         bulletCountText.text = text;
+
+        if (bulletCount<=2){
+          StartCoroutine(FlashColor(bulletCountText, Color.red, 0.5f, 3));
+        }
+
+        if (bulletCount==4){
+          StartCoroutine(FlashColor(bulletCountText, Color.yellow, 0.5f, 3));
+        }
     }
+
+    private IEnumerator FlashColor(TextMeshProUGUI text, Color flashColor, float flashDuration, int flashes)
+    {
+        Color originalColor = text.color; // Store the original color
+
+        // Flash three times
+        for (int i = 0; i < flashes; i++)
+        {
+            text.color = flashColor; // Change to flash color
+            yield return new WaitForSeconds(flashDuration); // Wait for the duration
+
+            text.color = originalColor; // Revert to original color
+            yield return new WaitForSeconds(flashDuration); // Wait for the duration
+        }
+    }
+
 
     public void BulletCountUp()
     {
@@ -175,6 +202,9 @@ public class LevelManager : MonoBehaviour
         gameManager.totalScore += points;
         totalPoints += points;
         pointText.text = gameManager.totalScore.ToString();
+
+        StartCoroutine(FlashColor(pointText, Color.green, 1.0f, 1));
+
         _analyticsManager.ld.ballsPerPocket[pocketNumber - 1]++;
         _analyticsManager.ld.totalScore = gameManager.totalScore;
         _analyticsManager.ld.levelScore = totalPoints;
@@ -259,7 +289,7 @@ public class LevelManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         if (_gunController != null && _gunController.gameObject != null)
         {
-            
+
             Destroy(_gunController.gameObject);
         }
         gameManager.LoadNextScene();
