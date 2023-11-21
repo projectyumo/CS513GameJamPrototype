@@ -24,6 +24,7 @@ TagManager:
   - CurvedShotTutorial
   - ShrinkGhost
   - ShrinkGhostTutorial
+  - LoseMenu
   layers:
   - Default
   - TransparentFX
