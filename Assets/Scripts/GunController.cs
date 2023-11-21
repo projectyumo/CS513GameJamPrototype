@@ -414,7 +414,7 @@ public class GunController : MonoBehaviour
                 if (_isFirstGhostPlayer)
                 {
                     // Hook for tutorial
-                    levelManager.ShowGhostPlayerTutorialText();
+                    // levelManager.ShowGhostPlayerTutorialText();
 
                     _isFirstGhostPlayer = false;
                 }
