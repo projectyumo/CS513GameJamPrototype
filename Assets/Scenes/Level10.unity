@@ -344,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_Url
-      value: https://projectyumo.github.io/CS526Game/Assets/Videos/shrink_ghost.mov
+      value: https://projectyumo.github.io/CS526Game/Assets/Videos/shrink_ghost.webm
       objectReference: {fileID: 0}
     - target: {fileID: 2739328243120887583, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_VideoClip
