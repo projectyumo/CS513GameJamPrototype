@@ -69,11 +69,12 @@ public class BulletControl : MonoBehaviour
             // Convert the viewport units to rectTransform sizeDelta units
             Vector2 canvasSize = ((RectTransform)GameObject.Find("Canvas").transform).sizeDelta;
             Vector2 bulletSizeInCanvasUnits = new Vector2(bulletViewportSize.x * canvasSize.x, bulletViewportSize.y * canvasSize.y);
-
-            float thicknessFactor = 1.2f; 
             
             // Set the sizeDelta of the health circle
-            rectTransform.sizeDelta = bulletSizeInCanvasUnits * thicknessFactor;
+            rectTransform.sizeDelta = bulletSizeInCanvasUnits;
+            
+            // Initially hide the health circle
+            _healthCircleObject.SetActive(false);
         }
     }
 
@@ -98,8 +99,9 @@ public class BulletControl : MonoBehaviour
         if (_healthCircle != null)
         {
             _healthCircle.fillAmount = (100 - life) / 100;
-            if (Camera.main != null)
+            if (Camera.main != null && _healthCircleObject != null)
             {
+                _healthCircleObject.SetActive(true);
                 Vector3 bulletScreenPosition = Camera.main.WorldToScreenPoint(gameObject.transform.position);
                 _healthCircle.transform.position = bulletScreenPosition;
             }
