@@ -52,19 +52,28 @@ public class BulletControl : MonoBehaviour
         
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
-        if (_spriteRenderer.sprite != null && _healthCircle.sprite != null)
+        if (_spriteRenderer.sprite != null && _healthCircle.sprite != null && Camera.main != null)
         {
             // Set the size of the _healthCircle to match the size of the bullet sprite
             RectTransform rectTransform = _healthCircle.GetComponent<RectTransform>();
-            float bulletDiameter = _spriteRenderer.sprite.bounds.size.x * gameObject.transform.localScale.x;
-            float loaderDiameter = _healthCircle.sprite.rect.width;
+            Vector3 bulletBounds = _spriteRenderer.sprite.bounds.size;
+            Vector3 bulletScale = gameObject.transform.localScale;
+            Vector3 bulletWorldSize = new Vector3(
+                bulletBounds.x * bulletScale.x,
+                bulletBounds.y * bulletScale.y,
+                bulletBounds.z * bulletScale.z);
 
-            // Assuming the Canvas is using Screen Space - Overlay
-            if (Camera.main != null)
-            {
-                float scaleRatio = (bulletDiameter / loaderDiameter) * Screen.height / Camera.main.orthographicSize;
-                rectTransform.sizeDelta = new Vector2(loaderDiameter * scaleRatio, loaderDiameter * scaleRatio);
-            }
+            // Convert the bullet size from world units to viewport units
+            Vector2 bulletViewportSize = Camera.main.WorldToViewportPoint(bulletWorldSize) - Camera.main.WorldToViewportPoint(Vector2.zero);
+
+            // Convert the viewport units to rectTransform sizeDelta units
+            Vector2 canvasSize = ((RectTransform)GameObject.Find("Canvas").transform).sizeDelta;
+            Vector2 bulletSizeInCanvasUnits = new Vector2(bulletViewportSize.x * canvasSize.x, bulletViewportSize.y * canvasSize.y);
+
+            float thicknessFactor = 1.2f; 
+            
+            // Set the sizeDelta of the health circle
+            rectTransform.sizeDelta = bulletSizeInCanvasUnits * thicknessFactor;
         }
     }
 
