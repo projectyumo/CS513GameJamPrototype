@@ -481,8 +481,10 @@ public class GunController : MonoBehaviour
         // To create curvature, create gravity for object if toggled on
         if (_useCurvedTrajectory) {
           bulletRb.gravityScale = 3;
+          destroyBulletTime = 4;
         } else {
           bulletRb.gravityScale = 0;
+          destroyBulletTime = 5;
         }
 
         var shotDetail = new ShotDetails
@@ -534,7 +536,7 @@ public class GunController : MonoBehaviour
         {
             return;
         }
-        
+
         // Player shoots
         if (_isPlayer)
         {

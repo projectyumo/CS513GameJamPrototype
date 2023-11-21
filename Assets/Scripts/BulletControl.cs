@@ -35,7 +35,7 @@ public class BulletControl : MonoBehaviour
         // Set the bullet health loader
         SetBulletHealthLoader();
     }
-    
+
     void SetBulletHealthLoader()
     {
         // Create a new UI Image element under the Canvas
@@ -49,7 +49,7 @@ public class BulletControl : MonoBehaviour
         Sprite loaderSprite = Resources.Load<Sprite>("Sprites/circle_loader");
         _healthCircle.sprite = loaderSprite;
         _healthCircle.color = Color.green;
-        
+
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         if (_spriteRenderer.sprite != null && _healthCircle.sprite != null && Camera.main != null)
@@ -69,10 +69,10 @@ public class BulletControl : MonoBehaviour
             // Convert the viewport units to rectTransform sizeDelta units
             Vector2 canvasSize = ((RectTransform)GameObject.Find("Canvas").transform).sizeDelta;
             Vector2 bulletSizeInCanvasUnits = new Vector2(bulletViewportSize.x * canvasSize.x, bulletViewportSize.y * canvasSize.y);
-            
+
             // Set the sizeDelta of the health circle
             rectTransform.sizeDelta = bulletSizeInCanvasUnits;
-            
+
             // Initially hide the health circle
             _healthCircleObject.SetActive(false);
         }
@@ -81,8 +81,8 @@ public class BulletControl : MonoBehaviour
     void Update()
     {
         SetBulletLife();
-        
-        if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost")
+
+        if (_rb.velocity.magnitude < minVelocity && this.name != "idleGhost" && _rb.gravityScale == 0)
         {
             Destroy(gameObject);
         }
@@ -95,7 +95,10 @@ public class BulletControl : MonoBehaviour
         float timePercentage = (timeElapsed / _gunController.destroyBulletTime) * 100;
         float speedPercentage = ((_initialVelocity - _rb.velocity.magnitude) / (_initialVelocity - minVelocity)) * 100;
         float life = Mathf.Max(timePercentage, speedPercentage);
-        
+        if (_rb.gravityScale != 0){
+          life = timePercentage;
+        }
+
         if (_healthCircle != null)
         {
             _healthCircle.fillAmount = (100 - life) / 100;
@@ -179,10 +182,10 @@ public class BulletControl : MonoBehaviour
             }
         }
 
-        
+
         if (gameObject != null && gameObject.name == "activeGhost")
         {
-            
+
             if (_gunController.lastGhost == null)
             {
                 if(GunController.countofGhosts < 1)
@@ -224,7 +227,7 @@ public class BulletControl : MonoBehaviour
                 _analyticsManager.ld.ghostBallGhostCollisions++;
                 break;
         }
-        
+
         _analyticsManager.LogAnalytics();
     }
 
