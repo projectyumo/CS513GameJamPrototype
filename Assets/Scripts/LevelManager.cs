@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public int[] pocketPoints = new int[maxPocketCount];
 
     public TextMeshProUGUI gameOverText;
+    public GameObject loseMenu;
     public TextMeshProUGUI bulletCountText;
     public TextMeshProUGUI pointText;
     public TextMeshProUGUI levelText;
@@ -49,6 +50,7 @@ public class LevelManager : MonoBehaviour
         _gunController = FindObjectOfType<GunController>();
         _ballManager = FindObjectOfType<BallManager>();
 
+        loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
         gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<TextMeshProUGUI>();
         bulletCountText = GameObject.FindGameObjectWithTag("BulletCountText").GetComponent<TextMeshProUGUI>();
         pointText = GameObject.FindGameObjectWithTag("PointText").GetComponent<TextMeshProUGUI>();
@@ -72,6 +74,7 @@ public class LevelManager : MonoBehaviour
         _analyticsManager.ld.currentLevel = currentLevel;
         _analyticsManager.ld.levelName = levelName;
         gameOverText.gameObject.SetActive(false);
+        loseMenu.SetActive(false);
         bulletCountText.text = bulletCount.ToString();
         pointText.text = gameManager.totalScore.ToString();
         levelText.text = currentLevel.ToString();
@@ -268,8 +271,9 @@ public class LevelManager : MonoBehaviour
         DestroyPlayers();
         _analyticsManager.ld.levelState = LevelState.Failed;
         _analyticsManager.LogAnalytics();
-        ShowGameOverText(loseText);
-        Invoke(nameof(LoadMainMenuScene), winTextDisplayTime);
+        // ShowGameOverText(loseText);
+        loseMenu.SetActive(true);
+        // Invoke(nameof(LoadMainMenuScene), winTextDisplayTime);
     }
 
     public void WinCase()
