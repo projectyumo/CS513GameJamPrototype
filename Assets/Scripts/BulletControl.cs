@@ -70,8 +70,10 @@ public class BulletControl : MonoBehaviour
             Vector2 canvasSize = ((RectTransform)GameObject.Find("Canvas").transform).sizeDelta;
             Vector2 bulletSizeInCanvasUnits = new Vector2(bulletViewportSize.x * canvasSize.x, bulletViewportSize.y * canvasSize.y);
 
+            float thickness = 1.2f;
+            
             // Set the sizeDelta of the health circle
-            rectTransform.sizeDelta = bulletSizeInCanvasUnits;
+            rectTransform.sizeDelta = bulletSizeInCanvasUnits * thickness;
 
             // Initially hide the health circle
             _healthCircleObject.SetActive(false);
