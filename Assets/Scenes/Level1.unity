@@ -1587,7 +1587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5215164031178652679, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
       propertyPath: m_text
-      value: Ghost appears when shot loses all health
+      value: Ghost appears when shot loses all energy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed8761aa9183e460281e2ae6d568286a, type: 3}
