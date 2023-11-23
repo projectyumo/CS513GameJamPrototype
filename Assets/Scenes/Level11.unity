@@ -1479,7 +1479,6 @@ MonoBehaviour:
   totalPoints: 0
   pocketPoints: 0400000003000000
   gameOverText: {fileID: 464945790}
-  loseMenu: {fileID: 0}
   bulletCountText: {fileID: 464945789}
   pointText: {fileID: 464945787}
   levelText: {fileID: 0}
@@ -2329,7 +2328,7 @@ PrefabInstance:
     - target: {fileID: 8321491016976537904, guid: a2944a4eae5ac49248c061e60edff542, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 39a858c31caba764c9e5d7ebfee147b4, type: 3}
+      objectReference: {fileID: 21300000, guid: 0625f7e70cf27594e9b0d09e0582b61b, type: 3}
     - target: {fileID: 8763175109022728507, guid: a2944a4eae5ac49248c061e60edff542, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
