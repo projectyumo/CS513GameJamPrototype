@@ -117,7 +117,10 @@ public class GunController : MonoBehaviour
         {
             foreach (Collider2D ghostBallCollider in _ghostBallColliders)
             {
-                Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
+                if (ballCollider && ghostBallCollider)
+                {
+                  Physics2D.IgnoreCollision(ballCollider, ghostBallCollider, true);
+                }
             }
         }
 
@@ -200,11 +203,11 @@ public class GunController : MonoBehaviour
           if (_parentSpriteRenderer.sprite.name == "curved-shot-sprite"){
             maxBulletSpeed = 30f;
             _parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/straight-shot-sprite");
-            levelManager.BulletCountUp();
+            // levelManager.BulletCountUp();
           } else{
             maxBulletSpeed = 35f;
             _parentSpriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Curved-shot-sprite");
-            levelManager.BulletCountDown();
+            // levelManager.BulletCountDown();
           }
           _parentSpriteRenderer.size = new Vector2(1f, 1f);
         }

@@ -28,7 +28,6 @@ public class LevelManager : MonoBehaviour
     public GameObject curvedShotTutorial;
     public GameObject loseMenu;
 
-    public Color flashColor = Color.red; // The color to flash
     // public float flashDuration = 0.5f; // Duration for each flash
 
     public string levelName;
@@ -181,14 +180,21 @@ public class LevelManager : MonoBehaviour
     private IEnumerator FlashColor(TextMeshProUGUI text, Color flashColor, float flashDuration, int flashes)
     {
         Color originalColor = text.color; // Store the original color
+        float originalFontSize = text.fontSize; // Store the original font size
 
         // Flash three times
         for (int i = 0; i < flashes; i++)
         {
             text.color = flashColor; // Change to flash color
+            if (flashColor == Color.red) { text.fontSize *= 1.5f;}
+            else { text.fontSize *= 1.25f; }
             yield return new WaitForSeconds(flashDuration); // Wait for the duration
 
-            text.color = originalColor; // Revert to original color
+            // Original color and font size hardcoded because if player shoots twice
+            // the script might not reach this point and
+            // the text might not revert
+            text.color = Color.white;
+            text.fontSize = 40;
             yield return new WaitForSeconds(flashDuration); // Wait for the duration
         }
     }
