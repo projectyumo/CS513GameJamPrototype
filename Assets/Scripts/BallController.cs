@@ -11,6 +11,9 @@ public class BallController : MonoBehaviour
     private bool _isMoving;
     private readonly float _stationaryThreshold = 0.1f;
 
+    public GameObject starPrefab;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,14 +48,23 @@ public class BallController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pocket"))
         {
+
+            // newStar.GetComponent<StarController>().MoveToTarget(starCounterPosition);
+
             PocketController pocket = other.gameObject.GetComponent<PocketController>();
+            for (int i = 0; i < pocket.points; i++)
+            {
+                GameObject newStar = Instantiate(starPrefab, transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f),UnityEngine.Random.Range(-0.75f, 0.75f) ,0), Quaternion.identity);
+            }
+
             levelManager.AddPoints(pocket.points, pocket.pocketNumber);
             ballManager.HandleBallCollision(gameObject);
-            if (_isMoving)
-            {
-                ballManager.BallStoppedMoving();
-            }
             StartCoroutine(ShrinkAndDestroy(other, Mathf.Abs(_rb.velocity.x)));
+            // if (_isMoving)
+            // {
+            //     ballManager.BallStoppedMoving();
+            // }
+
         }
     }
     private IEnumerator ShrinkAndDestroy(Collider2D other, float horizontalMoveSpeed)
@@ -69,7 +81,7 @@ public class BallController : MonoBehaviour
 
         // Use the maximum of the horizontalMoveSpeed and minHorizontalSpeed
         float horizontalSpeed = Mathf.Max(horizontalMoveSpeed, minHorizontalSpeed);
-    
+
         // Complete the movement in stages: first horizontally, then to halfway, and finally shrinking while moving to the pocket
         const double TOLERANCE = 0.1f;
         while (Math.Abs(transform.position.x - pocketPosition.x) > TOLERANCE || transform.localScale.x > targetScale.x)

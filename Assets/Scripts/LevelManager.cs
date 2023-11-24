@@ -213,7 +213,7 @@ public class LevelManager : MonoBehaviour
         totalPoints += points;
         pointText.text = gameManager.totalScore.ToString();
 
-        StartCoroutine(FlashColor(pointText, Color.green, 1.0f, 1));
+        StartCoroutine(FlashColor(pointText, Color.yellow, 1.0f, 1));
 
         _analyticsManager.ld.ballsPerPocket[pocketNumber - 1]++;
         _analyticsManager.ld.totalScore = gameManager.totalScore;

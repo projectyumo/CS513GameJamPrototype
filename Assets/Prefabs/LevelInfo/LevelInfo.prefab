@@ -405,6 +405,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 461316873169402693}
     m_Modifications:
+    - target: {fileID: 126184558494648457, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -53.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_text
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_margin.x
+      value: 10.479126
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_margin.z
+      value: -35.3938
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656411719938299477, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299478, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_Name
       value: ScoreBoard
@@ -475,7 +499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299483, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 860.6
+      value: 859.2
       objectReference: {fileID: 0}
     - target: {fileID: 5656411719938299483, guid: 27615ba7099774e1db6a04dd0cd1d16c, type: 3}
       propertyPath: m_AnchoredPosition.y

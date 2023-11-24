@@ -138,3 +138,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelManager: {fileID: 0}
   ballManager: {fileID: 0}
+  starPrefab: {fileID: 6898575357446847441, guid: 30d3b09f9c8984427aaf2e71f291b6ff, type: 3}
