@@ -1477,7 +1477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletCount: 12
   totalPoints: 0
-  pocketPoints: 0400000003000000
+  pocketPoints: 0500000002000000
   gameOverText: {fileID: 464945790}
   bulletCountText: {fileID: 464945789}
   pointText: {fileID: 464945787}
