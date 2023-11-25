@@ -29,7 +29,7 @@ public class StarController: MonoBehaviour
         // Step 3: Move to target position
         while (transform.position != targetPosition)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(16.35f, 17.35f, 0f), speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(16.65f, 17.35f, 0f), speed * Time.deltaTime);
             yield return null;
         }
 
