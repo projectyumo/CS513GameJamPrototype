@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StarController: MonoBehaviour
 {
-    public Vector3 targetPosition;
+    private Vector3 targetPosition = new Vector3(16.65f, 17.35f, 0f);
     public float speed = 20f;
     public float hoverHeight = 1f;
     private bool shouldMove = false;
@@ -27,9 +27,9 @@ public class StarController: MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         // Step 3: Move to target position
-        while (transform.position != targetPosition)
+        while (Vector3.Distance(transform.position, targetPosition) >= 0.3f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(16.65f, 17.35f, 0f), speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
             yield return null;
         }
 
