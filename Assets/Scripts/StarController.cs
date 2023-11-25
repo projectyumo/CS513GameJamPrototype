@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StarController: MonoBehaviour
 {
-    private Vector3 targetPosition = new Vector3(16.65f, 17.35f, 0f);
+    private Vector3 targetPosition = new Vector3(16.65f, 17.35f, -1f);
     public float speed = 20f;
     public float hoverHeight = 1f;
 
