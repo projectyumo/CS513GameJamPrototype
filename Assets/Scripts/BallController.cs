@@ -73,7 +73,7 @@ public class BallController : MonoBehaviour
         const float shrinkSpeed = 3f; // Adjust this value for the shrinking speed
         const float minHorizontalSpeed = 2f; // Adjust this value for the minimum horizontal speed
         Vector3 pocketPosition = other.gameObject.transform.position;
-        Vector3 targetScale = new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 targetScale = new Vector3(0.5f, 0.5f, 1f);
 
         // Remove trigger from ball and freeze physics
         Destroy(GetComponent<Collider2D>());
@@ -89,10 +89,12 @@ public class BallController : MonoBehaviour
             // Move to the horizontal position of the pocket
             if (Math.Abs(transform.position.x - pocketPosition.x) > TOLERANCE)
             {
-                transform.position = new Vector3(
-                    Mathf.MoveTowards(transform.position.x, pocketPosition.x, horizontalSpeed * Time.deltaTime),
-                    transform.position.y,
-                    transform.position.z);
+                var position = transform.position;
+                position = new Vector3(
+                    Mathf.MoveTowards(position.x, pocketPosition.x, horizontalSpeed * Time.deltaTime),
+                    position.y,
+                    -1f);
+                transform.position = position;
             }
             // Once horizontal position is reached, move to halfway and shrink
             else
