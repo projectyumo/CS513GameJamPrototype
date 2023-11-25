@@ -6,7 +6,6 @@ public class StarController: MonoBehaviour
     private Vector3 targetPosition = new Vector3(16.65f, 17.35f, 0f);
     public float speed = 20f;
     public float hoverHeight = 1f;
-    private bool shouldMove = false;
 
     void Start()
     {
@@ -16,7 +15,7 @@ public class StarController: MonoBehaviour
     IEnumerator MoveSequence()
     {
         // Step 1: Hover up
-        Vector3 hoverPosition = new Vector3(transform.position.x, transform.position.y + hoverHeight, transform.position.z);
+        Vector3 hoverPosition = transform.position + new Vector3(0f, hoverHeight, 0f);
         while (transform.position != hoverPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, hoverPosition, 10 * Time.deltaTime);
